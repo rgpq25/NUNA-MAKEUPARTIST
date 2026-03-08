@@ -24,7 +24,7 @@ export default function HeroSection() {
           <motion.div className="order-2 md:order-1" {...leftMotion}>
             <div className="aspect-[3/4] overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1762068863020-4ca97ec60cb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmlkYWwlMjBtYWtldXAlMjBlbGVnYW50JTIwYnJpZGV8ZW58MXx8fHwxNzcyNjczMjE4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src="/images/real-work/IMG_2166.jpeg"
                 alt="NUNA Makeup Artist"
                 className="h-full w-full object-cover"
               />

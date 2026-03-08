@@ -26,7 +26,7 @@ export default function BiographySection() {
           <motion.div className="order-2 md:order-1" {...leftMotion}>
             <div className="aspect-[3/4] overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1762522916987-dcac71355ba1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYWtldXAlMjBhcnRpc3QlMjBwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzI2NzQzNDB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src="/images/real-work/IMG_9757.jpeg"
                 alt="NUNA - Makeup Artist"
                 className="h-full w-full object-cover"
               />
