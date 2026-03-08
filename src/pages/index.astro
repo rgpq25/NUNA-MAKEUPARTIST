@@ -1,0 +1,36 @@
+---
+import BiographySection from "../components/BiographySection";
+import ContactSection from "../components/ContactSection";
+import HeroSection from "../components/HeroSection";
+import Navigation from "../components/Navigation";
+import PreviewCarousel from "../components/PreviewCarousel";
+import { previewSections } from "../data/home";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="NUNA Makeup Artist | Home"
+  description="Landing page editorial para NUNA Makeup Artist, creada a partir del export de Figma."
+>
+  <div id="top" class="w-full">
+    <Navigation client:load />
+
+    <main>
+      <HeroSection client:load />
+
+      {
+        previewSections.map((section, index) => (
+          <div
+            id={section.id}
+            class={`${index % 2 === 0 ? "bg-[#faf8f5]" : "bg-[#f5f2ed]"} scroll-mt-32 md:scroll-mt-36`}
+          >
+            <PreviewCarousel client:visible {...section} />
+          </div>
+        ))
+      }
+
+      <BiographySection client:visible />
+      <ContactSection client:visible />
+    </main>
+  </div>
+</BaseLayout>
