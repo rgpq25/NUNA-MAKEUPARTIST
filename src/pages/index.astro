@@ -4,33 +4,52 @@ import ContactSection from "../components/ContactSection";
 import HeroSection from "../components/HeroSection";
 import Navigation from "../components/Navigation";
 import PreviewCarousel from "../components/PreviewCarousel";
-import { previewSections } from "../data/home";
+import { getHomepageContent } from "../lib/homepage";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const homepage = await getHomepageContent();
 ---
 
 <BaseLayout
-  title="NUNA Makeup Artist | Home"
-  description="Landing page editorial para NUNA Makeup Artist, creada a partir del export de Figma."
+  title={homepage.seo.title}
+  description={homepage.seo.description}
 >
   <div id="top" class="w-full">
-    <Navigation client:load />
+    <Navigation
+      client:load
+      brandTitle={homepage.branding.title}
+      brandSubtitle={homepage.branding.subtitle}
+      links={homepage.navigation}
+    />
 
     <main>
-      <HeroSection client:load />
+      <HeroSection
+        client:load
+        brandTitle={homepage.branding.title}
+        brandSubtitle={homepage.branding.subtitle}
+        headline={homepage.hero.headline}
+        description={homepage.hero.description}
+        location={homepage.hero.location}
+        image={homepage.hero.image}
+        imageAlt={homepage.hero.imageAlt}
+      />
 
       {
-        previewSections.map((section, index) => (
+        homepage.sections.map((section, index) => (
           <div
-            id={section.id}
+            id={section.slug}
             class={`${index % 2 === 0 ? "bg-[#faf8f5]" : "bg-[#f5f2ed]"} scroll-mt-32 md:scroll-mt-36`}
           >
-            <PreviewCarousel client:visible {...section} />
+            <PreviewCarousel client:visible {...section} reversed={index % 2 === 1} />
           </div>
         ))
       }
 
-      <BiographySection client:visible />
-      <ContactSection client:visible />
+      <BiographySection client:visible {...homepage.biography} />
+      <ContactSection
+        client:visible
+        serviceOptions={homepage.sections.map((section) => section.title)}
+      />
     </main>
   </div>
 </BaseLayout>

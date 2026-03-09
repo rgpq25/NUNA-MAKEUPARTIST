@@ -1,23 +1,54 @@
 export interface NavLink {
   label: string;
   href: string;
+  type: "section" | "contact";
 }
 
 export interface PreviewSection {
-  id: string;
+  slug: string;
   title: string;
   description: string;
   images: string[];
   href: string;
-  reversed?: boolean;
 }
 
-export const navLinks: NavLink[] = [
-  { label: "Bridal", href: "#bridal" },
-  { label: "Social", href: "#social" },
-  { label: "Editorial", href: "#editorial" },
-  { label: "Contact", href: "#contact" },
-];
+export interface BrandingContent {
+  title: string;
+  subtitle: string;
+}
+
+export interface HeroContent {
+  headline: string;
+  description: string;
+  location: string;
+  image: string;
+  imageAlt: string;
+}
+
+export interface BiographyContent {
+  title: string;
+  image: string;
+  imageAlt: string;
+  paragraphs: string[];
+  certificationsTitle: string;
+  certifications: string[];
+}
+
+export interface SEOContent {
+  title: string;
+  description: string;
+}
+
+export interface HomePageContent {
+  seo: SEOContent;
+  branding: BrandingContent;
+  navigation: NavLink[];
+  hero: HeroContent;
+  biography: BiographyContent;
+  sections: PreviewSection[];
+}
+
+export const getSectionHref = (slug: string) => `/works/${slug}`;
 
 const bridalImages = [
   "/images/real-work/IMG_1600.jpeg",
@@ -47,39 +78,81 @@ const brandImages = [
   "/images/real-work/IMG_9320.jpeg",
 ];
 
-export const previewSections: PreviewSection[] = [
+const fallbackSectionEntries = [
   {
-    id: "bridal",
+    slug: "bridal",
     title: "Bridal",
     description:
       "Elegancia atemporal para el dia mas especial. Maquillaje nupcial que realza tu belleza natural con un toque de sofisticacion y romance.",
     images: bridalImages,
-    href: "/works/bridal",
   },
   {
-    id: "social",
+    slug: "social",
     title: "Social",
     description:
       "Glamour moderno para eventos inolvidables. Looks vibrantes y contemporaneos que capturan la energia de cada celebracion.",
     images: socialImages,
-    href: "/works/social",
-    reversed: true,
   },
   {
-    id: "editorial",
+    slug: "editorial",
     title: "Editorial",
     description:
       "Alta moda y fotografia editorial. Creaciones audaces que trascienden las tendencias y definen nuevos estandares de belleza.",
     images: editorialImages,
-    href: "/works/editorial",
   },
   {
-    id: "brand-work",
+    slug: "brand-work",
     title: "Brand Work",
     description:
       "Colaboraciones de lujo con marcas premium. Campanas profesionales que comunican sofisticacion y excelencia.",
     images: brandImages,
-    href: "/works/brand",
-    reversed: true,
   },
 ];
+
+export const fallbackSections: PreviewSection[] = fallbackSectionEntries.map((section) => ({
+  ...section,
+  href: getSectionHref(section.slug),
+}));
+
+export const fallbackHomepageContent: HomePageContent = {
+  seo: {
+    title: "NUNA Makeup Artist | Home",
+    description:
+      "Landing page editorial para NUNA Makeup Artist, creada a partir del export de Figma.",
+  },
+  branding: {
+    title: "NUNA",
+    subtitle: "Makeup Artist",
+  },
+  navigation: [
+    { label: "Bridal", href: "#bridal", type: "section" },
+    { label: "Social", href: "#social", type: "section" },
+    { label: "Editorial", href: "#editorial", type: "section" },
+    { label: "Contact", href: "#contact", type: "contact" },
+  ],
+  hero: {
+    headline: "Maquillaje editorial y novias con un enfoque atemporal",
+    description:
+      "Especializada en crear belleza que trasciende tendencias. Desde bodas intimas hasta campanas de alta moda, cada trabajo refleja sofisticacion, tecnica impecable y una vision artistica unica.",
+    location: "Basada en Madrid · Disponible internacionalmente",
+    image: "/images/real-work/IMG_2166.jpeg",
+    imageAlt: "NUNA Makeup Artist",
+  },
+  biography: {
+    title: "Biografia",
+    image: "/images/real-work/IMG_9757.jpeg",
+    imageAlt: "NUNA - Makeup Artist",
+    paragraphs: [
+      "Con mas de una decada de experiencia en la industria de la belleza, me especializo en crear maquillaje que realza la belleza natural y cuenta historias unicas a traves del arte.",
+      "Mi trabajo abarca desde novias que buscan elegancia atemporal hasta colaboraciones editoriales de alta moda con las principales revistas y marcas de lujo internacionales.",
+      "Formada en las mejores academias de maquillaje profesional, mi filosofia se centra en la personalizacion: cada rostro es un lienzo unico que merece un enfoque artistico y personalizado.",
+    ],
+    certificationsTitle: "Certificaciones",
+    certifications: [
+      "Maquillaje Profesional Avanzado",
+      "Especializacion en Novias",
+      "Maquillaje Editorial y Alta Moda",
+    ],
+  },
+  sections: fallbackSections,
+};

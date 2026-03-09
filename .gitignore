@@ -4,3 +4,12 @@ dist/
 .playwright-cli/
 output/
 npm-debug.log*
+.env
+.env.local
+cms/.env
+cms/.env.local
+cms/.next/
+cms/media/
+cms/payload.db
+cms/payload.db-*
+cms/src/payload-types.ts

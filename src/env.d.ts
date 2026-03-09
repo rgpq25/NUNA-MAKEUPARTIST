@@ -1,8 +1,10 @@
 /// <reference types="astro/client" />
 
-declare module "react-slick" {
-  import type { ComponentType } from "react";
+interface ImportMetaEnv {
+  readonly PAYLOAD_API_TOKEN?: string;
+  readonly PAYLOAD_API_URL?: string;
+}
 
-  const Slider: ComponentType<any>;
-  export default Slider;
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
 }

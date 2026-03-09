@@ -1,13 +1,19 @@
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
-import { navLinks } from "../data/home";
+import type { NavLink } from "../data/home";
 
-export default function Navigation() {
+interface NavigationProps {
+  brandTitle: string;
+  brandSubtitle: string;
+  links: NavLink[];
+}
+
+export default function Navigation({ brandTitle, brandSubtitle, links }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-  const leftLinks = navLinks.slice(0, 2);
-  const rightLinks = navLinks.slice(2);
+  const leftLinks = links.slice(0, 2);
+  const rightLinks = links.slice(2, 4);
   const motionProps = shouldReduceMotion
     ? {}
     : {
@@ -53,14 +59,14 @@ export default function Navigation() {
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
-          <a href="#top" className="flex flex-col items-center justify-center text-center">
-            <span className="font-['Cormorant_Garamond'] text-[2.45rem] leading-none tracking-[0.08em] text-[#2a2a2a] md:text-[4.2rem]">
-              NUNA
-            </span>
-            <span className="font-['Cormorant_Garamond'] text-[0.95rem] leading-none italic tracking-[0.04em] text-[#2a2a2a]/70 md:text-[1.65rem]">
-              Makeup Artist
-            </span>
-          </a>
+            <a href="#top" className="flex flex-col items-center justify-center text-center">
+              <span className="font-['Cormorant_Garamond'] text-[2.45rem] leading-none tracking-[0.08em] text-[#2a2a2a] md:text-[4.2rem]">
+                {brandTitle}
+              </span>
+              <span className="font-['Cormorant_Garamond'] text-[0.95rem] leading-none italic tracking-[0.04em] text-[#2a2a2a]/70 md:text-[1.65rem]">
+                {brandSubtitle}
+              </span>
+            </a>
 
           <div className="hidden items-center justify-end gap-10 md:flex">
             {rightLinks.map((link) => (
@@ -85,7 +91,7 @@ export default function Navigation() {
             >
               <div className="mt-4 border-t border-[#2a2a2a]/10 bg-[#faf8f5] px-1 pb-2 pt-4">
                 <div className="grid gap-2">
-                  {navLinks.map((link) => (
+                  {links.map((link) => (
                     <a
                       key={link.label}
                       href={link.href}

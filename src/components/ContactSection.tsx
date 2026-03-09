@@ -20,8 +20,15 @@ function InstagramIcon() {
   );
 }
 
-export default function ContactSection() {
+interface ContactSectionProps {
+  serviceOptions: string[];
+}
+
+export default function ContactSection({ serviceOptions }: ContactSectionProps) {
   const shouldReduceMotion = useReducedMotion();
+  const availableServices = serviceOptions.length
+    ? serviceOptions
+    : ["Bridal", "Social", "Editorial", "Brand Work"];
   const titleMotion = shouldReduceMotion
     ? {}
     : {
@@ -217,10 +224,9 @@ export default function ContactSection() {
                   defaultValue="Selecciona un servicio"
                 >
                   <option>Selecciona un servicio</option>
-                  <option>Bridal</option>
-                  <option>Social</option>
-                  <option>Editorial</option>
-                  <option>Brand Work</option>
+                  {availableServices.map((service) => (
+                    <option key={service}>{service}</option>
+                  ))}
                 </select>
               </div>
 

@@ -1,6 +1,22 @@
 import { motion, useReducedMotion } from "motion/react";
 
-export default function BiographySection() {
+interface BiographySectionProps {
+  title: string;
+  image: string;
+  imageAlt: string;
+  paragraphs: string[];
+  certificationsTitle: string;
+  certifications: string[];
+}
+
+export default function BiographySection({
+  title,
+  image,
+  imageAlt,
+  paragraphs,
+  certificationsTitle,
+  certifications,
+}: BiographySectionProps) {
   const shouldReduceMotion = useReducedMotion();
   const leftMotion = shouldReduceMotion
     ? {}
@@ -26,8 +42,8 @@ export default function BiographySection() {
           <motion.div className="order-2 md:order-1" {...leftMotion}>
             <div className="aspect-[3/4] overflow-hidden">
               <img
-                src="/images/real-work/IMG_9757.jpeg"
-                alt="NUNA - Makeup Artist"
+                src={image}
+                alt={imageAlt}
                 className="h-full w-full object-cover"
               />
             </div>
@@ -38,40 +54,26 @@ export default function BiographySection() {
             {...rightMotion}
           >
             <h2 className="mb-8 font-['Cormorant_Garamond'] text-6xl tracking-wide text-[#2a2a2a] md:text-7xl">
-              Biografia
+              {title}
             </h2>
             <div className="space-y-6">
-              <p className="font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
-                Con mas de una decada de experiencia en la industria de la
-                belleza, me especializo en crear maquillaje que realza la
-                belleza natural y cuenta historias unicas a traves del arte.
-              </p>
-              <p className="font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
-                Mi trabajo abarca desde novias que buscan elegancia atemporal
-                hasta colaboraciones editoriales de alta moda con las
-                principales revistas y marcas de lujo internacionales.
-              </p>
-              <p className="font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
-                Formada en las mejores academias de maquillaje profesional, mi
-                filosofia se centra en la personalizacion: cada rostro es un
-                lienzo unico que merece un enfoque artistico y personalizado.
-              </p>
+              {paragraphs.map((paragraph) => (
+                <p className="font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
+                  {paragraph}
+                </p>
+              ))}
             </div>
 
             <div className="mt-10 border-t border-[#2a2a2a]/10 pt-8">
               <p className="mb-4 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
-                Certificaciones
+                {certificationsTitle}
               </p>
               <div className="space-y-2">
-                <p className="font-['Montserrat'] text-sm text-[#2a2a2a]/60">
-                  • Maquillaje Profesional Avanzado
-                </p>
-                <p className="font-['Montserrat'] text-sm text-[#2a2a2a]/60">
-                  • Especializacion en Novias
-                </p>
-                <p className="font-['Montserrat'] text-sm text-[#2a2a2a]/60">
-                  • Maquillaje Editorial y Alta Moda
-                </p>
+                {certifications.map((certification) => (
+                  <p className="font-['Montserrat'] text-sm text-[#2a2a2a]/60">
+                    • {certification}
+                  </p>
+                ))}
               </div>
             </div>
           </motion.div>
