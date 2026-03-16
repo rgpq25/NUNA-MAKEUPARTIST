@@ -1,10 +1,13 @@
 import {
   fallbackHomepageContent,
+  fallbackSectionPages,
   fallbackSections,
   getSectionHref,
   type HomePageContent,
   type NavLink,
+  type Photoshoot,
   type PreviewSection,
+  type SectionPageContent,
 } from "../data/home";
 
 type PayloadID = number | string;
@@ -22,6 +25,16 @@ type PayloadSection = {
   title?: string | null;
   mainDescription?: string | null;
   mainImages?: Array<PayloadMedia | PayloadID> | null;
+  photoshoots?: Array<PayloadPhotoshoot | PayloadID> | null;
+};
+
+type PayloadPhotoshoot = {
+  id?: PayloadID;
+  slug?: string | null;
+  title?: string | null;
+  description?: string | null;
+  mainImage?: PayloadMedia | PayloadID | null;
+  images?: Array<PayloadMedia | PayloadID> | null;
 };
 
 type PayloadHomepage = {
@@ -121,6 +134,14 @@ function isPreviewSection(value: PreviewSection | null): value is PreviewSection
   return value !== null;
 }
 
+function isSectionPageContent(value: SectionPageContent | null): value is SectionPageContent {
+  return value !== null;
+}
+
+function isPhotoshoot(value: Photoshoot | null): value is Photoshoot {
+  return value !== null;
+}
+
 function isDefinedString(value: string | undefined): value is string {
   return Boolean(value);
 }
@@ -143,6 +164,46 @@ function mapSection(section: PayloadSection | null | undefined) {
     images,
     href: getSectionHref(section.slug),
   } satisfies PreviewSection;
+}
+
+function mapPhotoshoot(photoshoot: PayloadPhotoshoot | PayloadID | null | undefined) {
+  if (!isPayloadPhotoshoot(photoshoot) || !photoshoot.slug || !photoshoot.title) {
+    return null;
+  }
+
+  const galleryImages = (photoshoot.images ?? []).map((image) => getMediaURL(image)).filter(Boolean);
+  const mainImage = getMediaURL(photoshoot.mainImage);
+  const images = galleryImages.length ? galleryImages : mainImage ? [mainImage] : [];
+
+  if (!images.length) {
+    return null;
+  }
+
+  return {
+    slug: photoshoot.slug,
+    title: photoshoot.title,
+    description: photoshoot.description?.trim() || "",
+    images,
+  } satisfies Photoshoot;
+}
+
+function mapSectionPage(section: PayloadSection | null | undefined) {
+  if (!section?.slug || !section.title || !section.mainDescription) {
+    return null;
+  }
+
+  const photoshoots = (section.photoshoots ?? []).map((photoshoot) => mapPhotoshoot(photoshoot)).filter(isPhotoshoot);
+
+  if (!photoshoots.length) {
+    return null;
+  }
+
+  return {
+    slug: section.slug,
+    title: section.title,
+    description: section.mainDescription,
+    photoshoots,
+  } satisfies SectionPageContent;
 }
 
 function mapNavigation(
@@ -207,6 +268,12 @@ function isPayloadSection(value: PayloadSection | PayloadID | null | undefined):
   return typeof value === "object" && value !== null;
 }
 
+function isPayloadPhotoshoot(
+  value: PayloadPhotoshoot | PayloadID | null | undefined,
+): value is PayloadPhotoshoot {
+  return typeof value === "object" && value !== null;
+}
+
 async function fetchPayloadJSON<T>(path: string) {
   if (!payloadAPIURL) {
     return null;
@@ -232,7 +299,7 @@ async function fetchPayloadJSON<T>(path: string) {
 async function fetchSectionDocs() {
   try {
     const response = await fetchPayloadJSON<PayloadDocsResponse<PayloadSection>>(
-      "/api/sections?depth=2&limit=100&sort=createdAt",
+      "/api/sections?depth=3&limit=100&sort=createdAt",
     );
 
     return response?.docs ?? null;
@@ -259,6 +326,18 @@ export async function getSectionPreviews() {
   const sections = sectionDocs.map((section) => mapSection(section)).filter(isPreviewSection);
 
   return sections.length ? sections : fallbackSections;
+}
+
+export async function getSectionPages() {
+  const sectionDocs = await fetchSectionDocs();
+
+  if (!sectionDocs?.length) {
+    return fallbackSectionPages;
+  }
+
+  const sections = sectionDocs.map((section) => mapSectionPage(section)).filter(isSectionPageContent);
+
+  return sections.length ? sections : fallbackSectionPages;
 }
 
 export async function getHomepageContent(): Promise<HomePageContent> {

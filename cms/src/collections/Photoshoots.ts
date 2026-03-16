@@ -2,15 +2,14 @@ import type { CollectionConfig } from "payload";
 
 import { slugify } from "../utilities/slugify";
 
-export const Sections: CollectionConfig = {
-  slug: "sections",
+export const Photoshoots: CollectionConfig = {
+  slug: "photoshoots",
   access: {
     read: () => true,
   },
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "slug", "updatedAt"],
-    description: "Homepage sections. Each section must reference at least one photoshoot.",
   },
   fields: [
     {
@@ -55,26 +54,21 @@ export const Sections: CollectionConfig = {
       required: true,
     },
     {
-      name: "mainDescription",
+      name: "description",
       type: "textarea",
+    },
+    {
+      name: "mainImage",
+      label: "Main image",
+      type: "relationship",
+      relationTo: "images",
       required: true,
     },
     {
-      name: "mainImages",
-      label: "Main images",
+      name: "images",
       type: "relationship",
       relationTo: "images",
       hasMany: true,
-      required: true,
-      minRows: 1,
-    },
-    {
-      name: "photoshoots",
-      type: "relationship",
-      relationTo: "photoshoots",
-      hasMany: true,
-      required: true,
-      minRows: 1,
     },
   ],
 };

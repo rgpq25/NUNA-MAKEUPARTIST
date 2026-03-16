@@ -13,11 +13,11 @@ This folder contains the standalone Payload app for managing homepage content us
 ## Content model
 
 - `images`: upload collection used by the homepage hero, biography, and section galleries.
-- `sections`: editable homepage sections with `slug`, `title`, `mainDescription`, and `mainImages`.
+- `photoshoots`: reusable photoshoot entries with `slug`, `title`, `description`, `mainImage`, and gallery images.
+- `sections`: editable homepage sections with `slug`, `title`, `mainDescription`, `mainImages`, and one-or-more related `photoshoots`.
 - `homepage`: global for SEO, branding, hero content, biography content, and a max-4 navigation selector that can point to sections plus `Contact`.
 
 ## Notes
 
-- `photoshoots` is intentionally not included yet because the collection does not exist in the frontend.
 - The Astro site keeps a fallback dataset until the CMS is populated.
-- The frontend creates `/works/[slug]` pages from the section entries, so `Ver todo` now resolves to a slug-based route.
+- The frontend creates `/works/[slug]` pages from the section entries, and each page now lists that section's related photoshoots.

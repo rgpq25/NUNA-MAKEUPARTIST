@@ -12,6 +12,20 @@ export interface PreviewSection {
   href: string;
 }
 
+export interface Photoshoot {
+  slug: string;
+  title: string;
+  description: string;
+  images: string[];
+}
+
+export interface SectionPageContent {
+  slug: string;
+  title: string;
+  description: string;
+  photoshoots: Photoshoot[];
+}
+
 export interface BrandingContent {
   title: string;
   subtitle: string;
@@ -113,6 +127,90 @@ export const fallbackSections: PreviewSection[] = fallbackSectionEntries.map((se
   ...section,
   href: getSectionHref(section.slug),
 }));
+
+export const fallbackSectionPages: SectionPageContent[] = [
+  {
+    slug: "bridal",
+    title: "Bridal",
+    description:
+      "Elegancia atemporal para el dia mas especial. Maquillaje nupcial que realza tu belleza natural con un toque de sofisticacion y romance.",
+    photoshoots: [
+      {
+        slug: "bridal-atelier",
+        title: "Bridal Atelier",
+        description: "Preparacion luminosa y retratos suaves para novias contemporaneas.",
+        images: [
+          "/images/real-work/IMG_1600.jpeg",
+          "/images/real-work/IMG_2177.jpeg",
+          "/images/real-work/IMG_2178.jpeg",
+        ],
+      },
+      {
+        slug: "bridal-ceremony",
+        title: "Bridal Ceremony",
+        description: "Acabados impecables pensados para ceremonia y fotografia editorial.",
+        images: ["/images/real-work/IMG_9751.jpeg"],
+      },
+    ],
+  },
+  {
+    slug: "social",
+    title: "Social",
+    description:
+      "Glamour moderno para eventos inolvidables. Looks vibrantes y contemporaneos que capturan la energia de cada celebracion.",
+    photoshoots: [
+      {
+        slug: "social-evening",
+        title: "Social Evening",
+        description: "Looks de noche con brillo, definicion y una energia festiva.",
+        images: [
+          "https://images.unsplash.com/photo-1766113479701-f3d0a8583088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYXJ0eSUyMG1ha2V1cCUyMHNvY2lhbCUyMGV2ZW50fGVufDF8fHx8MTc3MjY3NDMxM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+          "https://images.unsplash.com/photo-1767781901512-853ebef609d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxldmVuaW5nJTIwbWFrZXVwJTIwZ2xhbW9yb3VzfGVufDF8fHx8MTc3MjY3NDMxNHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+          "https://images.unsplash.com/photo-1766879220930-5d4a4524d0e9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYXJ0eSUyMGdsYW0lMjBtYWtldXAlMjBldmVuaW5nfGVufDF8fHx8MTc3MjY3MzQ5NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+          "https://images.unsplash.com/photo-1763625650052-47fd71d9ea2f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFtb3JvdXMlMjBldmVudCUyMG1ha2V1cCUyMHNvY2lhbHxlbnwxfHx8fDE3NzI2NzMyMTl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "editorial",
+    title: "Editorial",
+    description:
+      "Alta moda y fotografia editorial. Creaciones audaces que trascienden las tendencias y definen nuevos estandares de belleza.",
+    photoshoots: [
+      {
+        slug: "editorial-studio",
+        title: "Editorial Studio",
+        description: "Texturas, contraste y direccion creativa para producciones editoriales.",
+        images: [
+          "/images/real-work/IMG_6515.jpeg",
+          "/images/real-work/IMG_6510.jpeg",
+          "/images/real-work/IMG_2677.jpeg",
+          "/images/real-work/IMG_9300.jpeg",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "brand-work",
+    title: "Brand Work",
+    description:
+      "Colaboraciones de lujo con marcas premium. Campanas profesionales que comunican sofisticacion y excelencia.",
+    photoshoots: [
+      {
+        slug: "brand-campaign",
+        title: "Brand Campaign",
+        description: "Contenido de marca con una direccion visual elegante y pulida.",
+        images: [
+          "/images/real-work/IMG_2225.jpeg",
+          "/images/real-work/IMG_2228.jpeg",
+          "/images/real-work/IMG_9284.jpeg",
+          "/images/real-work/IMG_9320.jpeg",
+        ],
+      },
+    ],
+  },
+];
 
 export const fallbackHomepageContent: HomePageContent = {
   seo: {

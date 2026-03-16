@@ -6,6 +6,7 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 
 import { Images } from "./collections/Images";
+import { Photoshoots } from "./collections/Photoshoots";
 import { Sections } from "./collections/Sections";
 import { Users } from "./collections/Users";
 import { Homepage } from "./globals/Homepage";
@@ -22,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Images, Sections],
+  collections: [Users, Images, Photoshoots, Sections],
   globals: [Homepage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "change-this-secret",
