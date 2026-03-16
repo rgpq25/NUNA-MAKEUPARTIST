@@ -16,6 +16,7 @@ export interface Photoshoot {
   slug: string;
   title: string;
   description: string;
+  mainImage: string;
   images: string[];
 }
 
@@ -63,6 +64,8 @@ export interface HomePageContent {
 }
 
 export const getSectionHref = (slug: string) => `/works/${slug}`;
+export const getPhotoshootHref = (sectionSlug: string, photoshootSlug: string) =>
+  `/works/${sectionSlug}/${photoshootSlug}`;
 
 const bridalImages = [
   "/images/real-work/IMG_1600.jpeg",
@@ -139,6 +142,7 @@ export const fallbackSectionPages: SectionPageContent[] = [
         slug: "bridal-atelier",
         title: "Bridal Atelier",
         description: "Preparacion luminosa y retratos suaves para novias contemporaneas.",
+        mainImage: "/images/real-work/IMG_1600.jpeg",
         images: [
           "/images/real-work/IMG_1600.jpeg",
           "/images/real-work/IMG_2177.jpeg",
@@ -149,6 +153,7 @@ export const fallbackSectionPages: SectionPageContent[] = [
         slug: "bridal-ceremony",
         title: "Bridal Ceremony",
         description: "Acabados impecables pensados para ceremonia y fotografia editorial.",
+        mainImage: "/images/real-work/IMG_9751.jpeg",
         images: ["/images/real-work/IMG_9751.jpeg"],
       },
     ],
@@ -163,6 +168,8 @@ export const fallbackSectionPages: SectionPageContent[] = [
         slug: "social-evening",
         title: "Social Evening",
         description: "Looks de noche con brillo, definicion y una energia festiva.",
+        mainImage:
+          "https://images.unsplash.com/photo-1766113479701-f3d0a8583088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYXJ0eSUyMG1ha2V1cCUyMHNvY2lhbCUyMGV2ZW50fGVufDF8fHx8MTc3MjY3NDMxM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
         images: [
           "https://images.unsplash.com/photo-1766113479701-f3d0a8583088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYXJ0eSUyMG1ha2V1cCUyMHNvY2lhbCUyMGV2ZW50fGVufDF8fHx8MTc3MjY3NDMxM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
           "https://images.unsplash.com/photo-1767781901512-853ebef609d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxldmVuaW5nJTIwbWFrZXVwJTIwZ2xhbW9yb3VzfGVufDF8fHx8MTc3MjY3NDMxNHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
@@ -182,6 +189,7 @@ export const fallbackSectionPages: SectionPageContent[] = [
         slug: "editorial-studio",
         title: "Editorial Studio",
         description: "Texturas, contraste y direccion creativa para producciones editoriales.",
+        mainImage: "/images/real-work/IMG_6515.jpeg",
         images: [
           "/images/real-work/IMG_6515.jpeg",
           "/images/real-work/IMG_6510.jpeg",
@@ -201,6 +209,7 @@ export const fallbackSectionPages: SectionPageContent[] = [
         slug: "brand-campaign",
         title: "Brand Campaign",
         description: "Contenido de marca con una direccion visual elegante y pulida.",
+        mainImage: "/images/real-work/IMG_2225.jpeg",
         images: [
           "/images/real-work/IMG_2225.jpeg",
           "/images/real-work/IMG_2228.jpeg",

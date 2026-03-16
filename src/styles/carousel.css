@@ -2,6 +2,19 @@
   bottom: -40px;
 }
 
+.section-photoshoot-track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.section-photoshoot-track::-webkit-scrollbar {
+  display: none;
+}
+
+.section-photoshoot-slide {
+  scroll-snap-align: center;
+}
+
 .preview-carousel .slick-dots li button::before {
   color: #c9a96e;
   opacity: 0.3;

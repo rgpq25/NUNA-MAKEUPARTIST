@@ -1,0 +1,74 @@
+---
+import type { Photoshoot, SectionPageContent } from "../../../data/home";
+import { getPhotoshootPages } from "../../../lib/homepage";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const pages = await getPhotoshootPages();
+
+  return pages.map(
+    ({ section, photoshoot }: { section: SectionPageContent; photoshoot: Photoshoot }) => ({
+      params: {
+        sectionSlug: section.slug,
+        photoshootSlug: photoshoot.slug,
+      },
+      props: {
+        section,
+        photoshoot,
+      },
+    }),
+  );
+}
+
+const { section, photoshoot } = Astro.props as {
+  section: SectionPageContent;
+  photoshoot: Photoshoot;
+};
+---
+
+<BaseLayout
+  title={`NUNA Makeup Artist | ${photoshoot.title}`}
+  description={photoshoot.description || section.description}
+>
+  <main class="min-h-screen bg-[#faf8f5] px-6 py-16 md:px-12 md:py-20">
+    <div class="mx-auto max-w-7xl">
+      <a
+        href={`/works/${section.slug}`}
+        class="mb-10 inline-flex border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]"
+      >
+        Volver a {section.title}
+      </a>
+
+      <header class="mb-12 max-w-4xl">
+        <p class="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.32em] text-[#2a2a2a]/42 uppercase">
+          {section.title}
+        </p>
+        <h1 class="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl">
+          {photoshoot.title}
+        </h1>
+        {
+          photoshoot.description ? (
+            <p class="mt-5 font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/72 md:text-base">
+              {photoshoot.description}
+            </p>
+          ) : null
+        }
+      </header>
+
+      <div class="columns-1 gap-4 sm:columns-2 xl:columns-3">
+        {
+          photoshoot.images.map((image: string, index: number) => (
+            <figure class="mb-4 break-inside-avoid overflow-hidden bg-[#efe6da]">
+              <img
+                src={image}
+                alt={`${photoshoot.title} ${index + 1}`}
+                class="h-auto w-full object-cover"
+                loading={index < 3 ? "eager" : "lazy"}
+              />
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</BaseLayout>

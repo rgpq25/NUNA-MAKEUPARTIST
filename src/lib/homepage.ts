@@ -2,6 +2,7 @@ import {
   fallbackHomepageContent,
   fallbackSectionPages,
   fallbackSections,
+  getPhotoshootHref,
   getSectionHref,
   type HomePageContent,
   type NavLink,
@@ -183,6 +184,7 @@ function mapPhotoshoot(photoshoot: PayloadPhotoshoot | PayloadID | null | undefi
     slug: photoshoot.slug,
     title: photoshoot.title,
     description: photoshoot.description?.trim() || "",
+    mainImage: mainImage || images[0],
     images,
   } satisfies Photoshoot;
 }
@@ -338,6 +340,24 @@ export async function getSectionPages() {
   const sections = sectionDocs.map((section) => mapSectionPage(section)).filter(isSectionPageContent);
 
   return sections.length ? sections : fallbackSectionPages;
+}
+
+export async function getSectionPageBySlug(slug: string) {
+  const sections = await getSectionPages();
+
+  return sections.find((section) => section.slug === slug) ?? null;
+}
+
+export async function getPhotoshootPages() {
+  const sections = await getSectionPages();
+
+  return sections.flatMap((section) =>
+    section.photoshoots.map((photoshoot) => ({
+      section,
+      photoshoot,
+      href: getPhotoshootHref(section.slug, photoshoot.slug),
+    })),
+  );
 }
 
 export async function getHomepageContent(): Promise<HomePageContent> {
