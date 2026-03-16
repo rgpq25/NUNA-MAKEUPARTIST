@@ -2,9 +2,20 @@
   bottom: -40px;
 }
 
+.section-photoshoot-viewport {
+  cursor: grab;
+}
+
+.section-photoshoot-viewport:active {
+  cursor: grabbing;
+}
+
 .section-photoshoot-track {
+  height: 100%;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
 }
 
 .section-photoshoot-track::-webkit-scrollbar {
@@ -12,7 +23,9 @@
 }
 
 .section-photoshoot-slide {
-  scroll-snap-align: center;
+  aspect-ratio: 4 / 5;
+  flex: 0 0 auto;
+  height: 100%;
 }
 
 .preview-carousel .slick-dots li button::before {
