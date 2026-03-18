@@ -4,6 +4,7 @@
 
 .section-photoshoot-viewport {
   cursor: grab;
+  overflow: hidden;
 }
 
 .section-photoshoot-viewport:active {
@@ -12,6 +13,7 @@
 
 .section-photoshoot-track {
   height: 100%;
+  align-items: center;
   scrollbar-width: none;
   -ms-overflow-style: none;
   touch-action: pan-y pinch-zoom;
@@ -24,8 +26,9 @@
 
 .section-photoshoot-slide {
   aspect-ratio: 4 / 5;
-  flex: 0 0 auto;
-  height: 100%;
+  flex: 0 0 var(--section-photoshoot-slide-width);
+  height: auto;
+  align-self: center;
 }
 
 .preview-carousel .slick-dots li button::before {
