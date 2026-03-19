@@ -10,6 +10,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const WORK_CARD_ASPECT_RATIO = 10 / 13;
 const MOBILE_WORK_CARD_ASPECT_RATIO = 9 / 13;
 const MAX_FOCUS_SCALE = 1.035;
+const AUTO_SCROLL_INTERVAL_MS = 2000;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
@@ -32,6 +33,7 @@ export default function SectionPhotoshootCarousel({
   const shouldReduceMotion = useReducedMotion();
   const carouselAreaRef = useRef<HTMLDivElement | null>(null);
   const slideRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [slideWidth, setSlideWidth] = useState<number | null>(null);
@@ -89,6 +91,34 @@ export default function SectionPhotoshootCarousel({
     });
   }, [emblaApi]);
 
+  const clearAutoScroll = useCallback(() => {
+    if (autoScrollTimeoutRef.current !== null) {
+      clearTimeout(autoScrollTimeoutRef.current);
+      autoScrollTimeoutRef.current = null;
+    }
+  }, []);
+
+  const scheduleAutoScroll = useCallback(() => {
+    clearAutoScroll();
+
+    if (!emblaApi || shouldReduceMotion || photoshoots.length < 2) {
+      return;
+    }
+
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      if (!emblaApi) {
+        return;
+      }
+
+      if (emblaApi.canScrollNext()) {
+        emblaApi.scrollNext();
+        return;
+      }
+
+      emblaApi.scrollTo(0);
+    }, AUTO_SCROLL_INTERVAL_MS);
+  }, [clearAutoScroll, emblaApi, photoshoots.length, shouldReduceMotion]);
+
   useEffect(() => {
     if (!emblaApi) {
       return;
@@ -97,22 +127,30 @@ export default function SectionPhotoshootCarousel({
     updateEmblaState();
     syncSlideStyles();
     emblaApi
+      .on("pointerDown", clearAutoScroll)
       .on("reInit", updateEmblaState)
       .on("reInit", syncSlideStyles)
+      .on("reInit", scheduleAutoScroll)
       .on("scroll", syncSlideStyles)
       .on("select", updateEmblaState)
+      .on("settle", scheduleAutoScroll)
       .on("settle", syncSlideStyles);
     emblaApi.scrollTo(0, true);
+    scheduleAutoScroll();
 
     return () => {
+      clearAutoScroll();
       emblaApi
+        .off("pointerDown", clearAutoScroll)
         .off("reInit", updateEmblaState)
         .off("reInit", syncSlideStyles)
+        .off("reInit", scheduleAutoScroll)
         .off("scroll", syncSlideStyles)
         .off("select", updateEmblaState)
+        .off("settle", scheduleAutoScroll)
         .off("settle", syncSlideStyles);
     };
-  }, [emblaApi, photoshoots, syncSlideStyles, updateEmblaState]);
+  }, [clearAutoScroll, emblaApi, photoshoots, scheduleAutoScroll, syncSlideStyles, updateEmblaState]);
 
   useEffect(() => {
     const carouselArea = carouselAreaRef.current;
