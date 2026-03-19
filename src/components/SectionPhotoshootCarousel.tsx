@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getPhotoshootHref, type Photoshoot } from "../data/home";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const WORK_CARD_ASPECT_RATIO = 10 / 13;
 const MOBILE_WORK_CARD_ASPECT_RATIO = 9 / 13;
@@ -77,13 +78,11 @@ export default function SectionPhotoshootCarousel({
       const focus = clamp(1 - Math.abs(snap - scrollProgress) / influenceRange, 0, 1);
       const scale = mix(0.92, 1.035, focus);
       const opacity = mix(0.68, 1, focus);
-      const shadowOpacity = mix(0.02, 0.18, focus);
       const overlayOpacity = mix(0.84, 0.58, focus);
       const contentOpacity = clamp((focus - 0.72) / 0.2, 0, 1);
 
       slide.style.setProperty("--section-photoshoot-slide-scale", scale.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-opacity", opacity.toFixed(3));
-      slide.style.setProperty("--section-photoshoot-slide-shadow-opacity", shadowOpacity.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-overlay-opacity", overlayOpacity.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-content-opacity", contentOpacity.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-z-index", String(Math.round(mix(1, 20, focus))));
@@ -176,26 +175,29 @@ export default function SectionPhotoshootCarousel({
     <section className="section-photoshoot-carousel relative h-dvh overflow-hidden bg-[#f7f1e9] text-[#2a2a2a]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.16),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.8),_rgba(247,241,233,0.96))]" />
 
-      <div className="relative grid h-full w-full grid-rows-[auto_minmax(0,1fr)_auto] gap-6 py-8 md:py-10">
-        <div className="mx-auto flex w-full max-w-7xl items-start justify-between gap-6 px-6 md:px-10">
-          <div className="max-w-2xl">
-            <p className="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
-              Works / {sectionTitle}
-            </p>
-            <h1 className="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl">
-              {sectionTitle}
-            </h1>
-            <p className="mt-5 max-w-xl font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/68 md:text-base">
-              {sectionDescription}
-            </p>
+      <div className="relative grid h-full w-full grid-rows-[auto_minmax(0,1fr)_auto] gap-2 md:gap-6 py-8 md:py-10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-6 md:px-10">
+          <div className="flex items-start justify-between gap-6">
+            <div className="max-w-2xl">
+              <p className="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
+                Works / {sectionTitle}
+              </p>
+              <h1 className="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl">
+                {sectionTitle}
+              </h1>
+            </div>
+
+            <a
+              href={`/#${sectionSlug}`}
+              className="inline-flex shrink-0 border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]"
+            >
+              Volver
+            </a>
           </div>
 
-          <a
-            href={`/#${sectionSlug}`}
-            className="inline-flex shrink-0 border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]"
-          >
-            Volver
-          </a>
+          <p className="max-w-4xl font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/68 md:text-base">
+            {sectionDescription}
+          </p>
         </div>
 
         <div ref={carouselAreaRef} className="relative min-h-0 w-full">
@@ -247,29 +249,31 @@ export default function SectionPhotoshootCarousel({
             type="button"
             onClick={scrollPrev}
             disabled={prevDisabled}
-            className="absolute left-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#2a2a2a]/10 bg-[#f7f1e9]/90 text-[#2a2a2a]/70 backdrop-blur transition-opacity disabled:cursor-not-allowed disabled:opacity-35 md:inline-flex"
+            className="inline-flex absolute left-4 top-1/2 z-20 h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#2a2a2a]/10 bg-[#f7f1e9]/90 text-[#2a2a2a]/70 backdrop-blur transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
             aria-label="Previous photoshoot"
           >
-            ←
+            <ChevronLeft className="h-5 w-5" strokeWidth={1.7} />
           </button>
 
           <button
             type="button"
             onClick={scrollNext}
             disabled={nextDisabled}
-            className="absolute right-4 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#2a2a2a]/10 bg-[#f7f1e9]/90 text-[#2a2a2a]/70 backdrop-blur transition-opacity disabled:cursor-not-allowed disabled:opacity-35 md:inline-flex"
+            className="inline-flex absolute right-4 top-1/2 z-20  h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#2a2a2a]/10 bg-[#f7f1e9]/90 text-[#2a2a2a]/70 backdrop-blur transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
             aria-label="Next photoshoot"
           >
-            →
+            <ChevronRight className="h-5 w-5" strokeWidth={1.7} />
           </button>
         </div>
 
         <div className="mx-auto flex w-full max-w-7xl justify-center px-6 pt-2 md:px-10">
-          <a
-            href="/#contact"
-            className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-[#f7f1e9] uppercase transition-transform duration-300 hover:scale-[1.02]"
+          <a href="/#contact">
+            <span
+            
+            className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-white uppercase transition-transform duration-300"
           >
             Contactame
+          </span>
           </a>
         </div>
       </div>
