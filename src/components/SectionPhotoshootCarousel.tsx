@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import { useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -11,6 +11,7 @@ const WORK_CARD_ASPECT_RATIO = 10 / 13;
 const MOBILE_WORK_CARD_ASPECT_RATIO = 9 / 13;
 const MAX_FOCUS_SCALE = 1.035;
 const AUTO_SCROLL_INTERVAL_MS = 2000;
+const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
@@ -90,6 +91,38 @@ export default function SectionPhotoshootCarousel({
       slide.style.setProperty("--section-photoshoot-slide-z-index", String(Math.round(mix(1, 20, focus))));
     });
   }, [emblaApi]);
+
+  const buildRevealMotion = useCallback(
+    (delay: number, y = 24) =>
+      shouldReduceMotion
+        ? {}
+        : {
+            initial: { opacity: 0, y },
+            animate: { opacity: 1, y: 0 },
+            transition: {
+              duration: 0.82,
+              delay,
+              ease: REVEAL_EASE,
+            },
+          },
+    [shouldReduceMotion],
+  );
+
+  const buildSlideRevealMotion = useCallback(
+    (index: number) =>
+      shouldReduceMotion
+        ? {}
+        : {
+            initial: { opacity: 0, y: 24 },
+            animate: { opacity: 1, y: 0 },
+            transition: {
+              duration: 0.78,
+              delay: 0.18 + Math.min(index, 4) * 0.08,
+              ease: REVEAL_EASE,
+            },
+          },
+    [shouldReduceMotion],
+  );
 
   const clearAutoScroll = useCallback(() => {
     if (autoScrollTimeoutRef.current !== null) {
@@ -213,8 +246,11 @@ export default function SectionPhotoshootCarousel({
     <section className="section-photoshoot-carousel relative h-dvh overflow-hidden bg-[#f7f1e9] text-[#2a2a2a]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.16),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.8),_rgba(247,241,233,0.96))]" />
 
-      <div className="relative grid h-full w-full grid-rows-[auto_minmax(0,1fr)_auto] gap-2 md:gap-6 py-8 md:py-10">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-6 md:px-10">
+      <div className="relative grid h-full w-full grid-rows-[auto_minmax(0,1fr)_auto] gap-2 py-8 md:gap-6 md:py-10">
+        <motion.div
+          className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-6 md:px-10"
+          {...buildRevealMotion(0.08, 18)}
+        >
           <div className="flex items-start justify-between gap-6">
             <div className="max-w-2xl">
               <p className="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
@@ -225,18 +261,19 @@ export default function SectionPhotoshootCarousel({
               </h1>
             </div>
 
-            <a
+            <motion.a
               href={`/#${sectionSlug}`}
               className="inline-flex shrink-0 border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]"
+              {...buildRevealMotion(0.14, 14)}
             >
               Volver
-            </a>
+            </motion.a>
           </div>
 
           <p className="max-w-4xl font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/68 md:text-base">
             {sectionDescription}
           </p>
-        </div>
+        </motion.div>
 
         <div ref={carouselAreaRef} className="relative min-h-0 w-full">
           <div
@@ -252,68 +289,74 @@ export default function SectionPhotoshootCarousel({
                   ref={(element) => {
                     slideRefs.current[index] = element;
                   }}
-                  className="section-photoshoot-slide group relative shrink-0 overflow-hidden bg-[#eadfce]"
+                  className="section-photoshoot-slide group relative shrink-0 overflow-hidden"
                 >
-                  <img
-                    src={photoshoot.mainImage}
-                    alt={photoshoot.title}
-                    draggable={false}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-[#120d09]/70 via-[#120d09]/8 to-transparent"
-                    style={{ opacity: "var(--section-photoshoot-slide-overlay-opacity, 0.84)" }}
-                  />
+                  <motion.div className="absolute inset-0" {...buildSlideRevealMotion(index)}>
+                    <img
+                      src={photoshoot.mainImage}
+                      alt={photoshoot.title}
+                      draggable={false}
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-[#120d09]/70 via-[#120d09]/8 to-transparent"
+                      style={{ opacity: "var(--section-photoshoot-slide-overlay-opacity, 0.84)" }}
+                    />
 
-                  <div
-                    className="absolute inset-x-0 bottom-0 p-5 text-white transition-opacity duration-300 ease-out md:p-6"
-                    style={{
-                      opacity: "var(--section-photoshoot-slide-content-opacity, 0.7)",
-                    }}
-                  >
-                    <p className="mb-3 font-['Montserrat'] text-[0.66rem] tracking-[0.28em] text-white/78 uppercase">
-                      {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <h2 className="max-w-[16rem] font-['Cormorant_Garamond'] text-3xl leading-[0.96] md:text-4xl">
-                      {photoshoot.title}
-                    </h2>
-                  </div>
+                    <div
+                      className="absolute inset-x-0 bottom-0 p-5 text-white transition-opacity duration-300 ease-out md:p-6"
+                      style={{
+                        opacity: "var(--section-photoshoot-slide-content-opacity, 0.7)",
+                      }}
+                    >
+                      <p className="mb-3 font-['Montserrat'] text-[0.66rem] tracking-[0.28em] text-white/78 uppercase">
+                        {String(index + 1).padStart(2, "0")}
+                      </p>
+                      <h2 className="max-w-[16rem] font-['Cormorant_Garamond'] text-3xl leading-[0.96] md:text-4xl">
+                        {photoshoot.title}
+                      </h2>
+                    </div>
+                  </motion.div>
                 </a>
               ))}
             </div>
           </div>
 
-          <button
+          <motion.button
             type="button"
             onClick={scrollPrev}
             disabled={prevDisabled}
             className="inline-flex absolute left-4 top-1/2 z-20 h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#2a2a2a]/10 bg-[#f7f1e9]/90 text-[#2a2a2a]/70 backdrop-blur transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
             aria-label="Previous photoshoot"
+            {...buildRevealMotion(0.3, 18)}
           >
             <ChevronLeft className="h-5 w-5" strokeWidth={1.7} />
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
             onClick={scrollNext}
             disabled={nextDisabled}
             className="inline-flex absolute right-4 top-1/2 z-20  h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#2a2a2a]/10 bg-[#f7f1e9]/90 text-[#2a2a2a]/70 backdrop-blur transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
             aria-label="Next photoshoot"
+            {...buildRevealMotion(0.34, 18)}
           >
             <ChevronRight className="h-5 w-5" strokeWidth={1.7} />
-          </button>
+          </motion.button>
         </div>
 
-        <div className="mx-auto flex w-full max-w-7xl justify-center px-6 pt-2 md:px-10">
+        <motion.div
+          className="mx-auto flex w-full max-w-7xl justify-center px-6 pt-2 md:px-10"
+          {...buildRevealMotion(0.38, 18)}
+        >
           <a href="/#contact">
             <span
-            
-            className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-white uppercase transition-transform duration-300"
-          >
-            Contactame
-          </span>
+              className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-white uppercase transition-transform duration-300"
+            >
+              Contactame
+            </span>
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
