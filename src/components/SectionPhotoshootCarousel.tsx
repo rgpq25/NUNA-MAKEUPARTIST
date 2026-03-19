@@ -79,18 +79,13 @@ export default function SectionPhotoshootCarousel({
       const opacity = mix(0.68, 1, focus);
       const shadowOpacity = mix(0.02, 0.18, focus);
       const overlayOpacity = mix(0.84, 0.58, focus);
-      const contentOpacity = mix(0.7, 1, focus);
-      const contentOffset = mix(18, 0, focus);
+      const contentOpacity = clamp((focus - 0.72) / 0.2, 0, 1);
 
       slide.style.setProperty("--section-photoshoot-slide-scale", scale.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-opacity", opacity.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-shadow-opacity", shadowOpacity.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-overlay-opacity", overlayOpacity.toFixed(3));
       slide.style.setProperty("--section-photoshoot-slide-content-opacity", contentOpacity.toFixed(3));
-      slide.style.setProperty(
-        "--section-photoshoot-slide-content-offset",
-        `${contentOffset.toFixed(1)}px`,
-      );
       slide.style.setProperty("--section-photoshoot-slide-z-index", String(Math.round(mix(1, 20, focus))));
     });
   }, [emblaApi]);
@@ -231,10 +226,9 @@ export default function SectionPhotoshootCarousel({
                   />
 
                   <div
-                    className="absolute inset-x-0 bottom-0 p-5 text-white md:p-6"
+                    className="absolute inset-x-0 bottom-0 p-5 text-white transition-opacity duration-300 ease-out md:p-6"
                     style={{
                       opacity: "var(--section-photoshoot-slide-content-opacity, 0.7)",
-                      transform: "translateY(var(--section-photoshoot-slide-content-offset, 18px))",
                     }}
                   >
                     <p className="mb-3 font-['Montserrat'] text-[0.66rem] tracking-[0.28em] text-white/78 uppercase">
