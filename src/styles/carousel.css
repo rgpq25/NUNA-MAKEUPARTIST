@@ -37,6 +37,12 @@
   will-change: transform, opacity, box-shadow;
 }
 
+@media (max-width: 639px) {
+  .section-photoshoot-slide {
+    aspect-ratio: 9 / 13;
+  }
+}
+
 @media (min-width: 1024px) {
   .section-photoshoot-track {
     padding-inline: 2rem;

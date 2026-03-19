@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getPhotoshootHref, type Photoshoot } from "../data/home";
 
 const WORK_CARD_ASPECT_RATIO = 10 / 13;
+const MOBILE_WORK_CARD_ASPECT_RATIO = 9 / 13;
 const MAX_FOCUS_SCALE = 1.035;
 
 const clamp = (value: number, min: number, max: number) =>
@@ -134,7 +135,8 @@ export default function SectionPhotoshootCarousel({
       }
 
       const viewportInset = width >= 1024 ? 220 : width >= 768 ? 124 : width >= 640 ? 72 : 40;
-      const maxWidthFromHeight = (height * WORK_CARD_ASPECT_RATIO) / MAX_FOCUS_SCALE;
+      const cardAspectRatio = width < 640 ? MOBILE_WORK_CARD_ASPECT_RATIO : WORK_CARD_ASPECT_RATIO;
+      const maxWidthFromHeight = (height * cardAspectRatio) / MAX_FOCUS_SCALE;
       const maxWidthFromViewport = Math.max(width - viewportInset, 0);
       const nextSlideWidth = Math.floor(Math.min(maxWidthFromHeight, maxWidthFromViewport));
 
