@@ -181,8 +181,8 @@ export default function SectionPhotoshootCarousel({
     <section className="section-photoshoot-carousel relative h-dvh overflow-hidden bg-[#f7f1e9] text-[#2a2a2a]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.16),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.8),_rgba(247,241,233,0.96))]" />
 
-      <div className="relative mx-auto grid h-full w-full max-w-7xl grid-rows-[auto_minmax(0,1fr)_auto] gap-6 px-6 py-8 md:px-10 md:py-10">
-        <div className="flex items-start justify-between gap-6">
+      <div className="relative grid h-full w-full grid-rows-[auto_minmax(0,1fr)_auto] gap-6 py-8 md:py-10">
+        <div className="mx-auto flex w-full max-w-7xl items-start justify-between gap-6 px-6 md:px-10">
           <div className="max-w-2xl">
             <p className="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
               Works / {sectionTitle}
@@ -203,7 +203,7 @@ export default function SectionPhotoshootCarousel({
           </a>
         </div>
 
-        <div ref={carouselAreaRef} className="relative min-h-0">
+        <div ref={carouselAreaRef} className="relative min-h-0 w-full">
           <div
             ref={emblaRef}
             className="section-photoshoot-viewport h-full min-h-0 overflow-hidden"
@@ -270,7 +270,7 @@ export default function SectionPhotoshootCarousel({
           </button>
         </div>
 
-        <div className="flex justify-center pt-2">
+        <div className="mx-auto flex w-full max-w-7xl justify-center px-6 pt-2 md:px-10">
           <a
             href="/#contact"
             className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-[#f7f1e9] uppercase transition-transform duration-300 hover:scale-[1.02]"
