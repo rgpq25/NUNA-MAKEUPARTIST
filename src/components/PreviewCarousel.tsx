@@ -87,7 +87,7 @@ export default function PreviewCarousel({
   return (
     <section className="px-8 py-16 md:px-16 md:py-20">
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12">
+        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-14">
           <motion.div
             className={`md:col-span-4 ${reversed ? "md:order-2" : ""}`}
             {...textMotion}
@@ -95,7 +95,7 @@ export default function PreviewCarousel({
             <h3 className="mb-4 font-['Cormorant_Garamond'] text-5xl tracking-wide text-[#2a2a2a] md:text-6xl">
               {title}
             </h3>
-            <p className="mb-6 font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/70">
+            <p className="mb-6 py-2 font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/70">
               {description}
             </p>
             <CTAButton href={href} variant="dark">

@@ -1,6 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { NavLink } from "../data/home";
 
 interface NavigationProps {
@@ -12,6 +12,7 @@ interface NavigationProps {
 export default function Navigation({ brandTitle, brandSubtitle, links }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const navRef = useRef<HTMLElement | null>(null);
   const leftLinks = links.slice(0, 2);
   const rightLinks = links.slice(2, 4);
   const motionProps = shouldReduceMotion
@@ -30,8 +31,33 @@ export default function Navigation({ brandTitle, brandSubtitle, links }: Navigat
         transition: { duration: 0.2 },
       };
 
+  useEffect(() => {
+    const navElement = navRef.current;
+
+    if (!navElement) {
+      return;
+    }
+
+    const updateNavigationHeight = () => {
+      document.documentElement.style.setProperty(
+        "--site-nav-height",
+        `${navElement.getBoundingClientRect().height}px`,
+      );
+    };
+
+    const resizeObserver = new ResizeObserver(updateNavigationHeight);
+
+    resizeObserver.observe(navElement);
+    updateNavigationHeight();
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [isMenuOpen]);
+
   return (
     <motion.nav
+      ref={navRef}
       className="fixed top-0 left-0 right-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5]/95 px-6 py-4 backdrop-blur-sm md:px-16 md:py-5"
       {...motionProps}
     >
