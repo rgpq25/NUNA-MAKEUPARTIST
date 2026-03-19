@@ -25,10 +25,16 @@
 }
 
 .section-photoshoot-slide {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 10 / 13;
   flex: 0 0 var(--section-photoshoot-slide-width);
   height: auto;
   align-self: center;
+  z-index: var(--section-photoshoot-slide-z-index, 1);
+  opacity: var(--section-photoshoot-slide-opacity, 0.68);
+  transform: scale(var(--section-photoshoot-slide-scale, 0.92));
+  box-shadow: 0 24px 70px rgba(54, 40, 24, var(--section-photoshoot-slide-shadow-opacity, 0.02));
+  transform-origin: center center;
+  will-change: transform, opacity, box-shadow;
 }
 
 @media (min-width: 1024px) {

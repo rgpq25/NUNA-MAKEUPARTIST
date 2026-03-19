@@ -6,6 +6,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getPhotoshootHref, type Photoshoot } from "../data/home";
 
+const WORK_CARD_ASPECT_RATIO = 10 / 13;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const mix = (start: number, end: number, amount: number) => start + (end - start) * amount;
+
 interface SectionPhotoshootCarouselProps {
   sectionDescription: string;
   sectionSlug: string;
@@ -21,7 +28,7 @@ export default function SectionPhotoshootCarousel({
 }: SectionPhotoshootCarouselProps) {
   const shouldReduceMotion = useReducedMotion();
   const carouselAreaRef = useRef<HTMLDivElement | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const slideRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [slideWidth, setSlideWidth] = useState<number | null>(null);
@@ -39,9 +46,51 @@ export default function SectionPhotoshootCarousel({
       return;
     }
 
-    setSelectedIndex(emblaApi.selectedScrollSnap());
     setPrevDisabled(!emblaApi.canScrollPrev());
     setNextDisabled(!emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  const syncSlideStyles = useCallback(() => {
+    if (!emblaApi) {
+      return;
+    }
+
+    const scrollProgress = clamp(emblaApi.scrollProgress(), 0, 1);
+    const snapList = emblaApi.scrollSnapList();
+
+    slideRefs.current.forEach((slide, index) => {
+      if (!slide) {
+        return;
+      }
+
+      const snap = snapList[index] ?? 0;
+      const prevSnap = snapList[index - 1];
+      const nextSnap = snapList[index + 1];
+      const distanceToPrev = prevSnap === undefined ? Number.POSITIVE_INFINITY : snap - prevSnap;
+      const distanceToNext = nextSnap === undefined ? Number.POSITIVE_INFINITY : nextSnap - snap;
+      const neighborDistances = [distanceToPrev, distanceToNext].filter(
+        (distance): distance is number => Number.isFinite(distance) && distance > 0,
+      );
+      const influenceRange = neighborDistances.length > 0 ? Math.min(...neighborDistances) : 1;
+      const focus = clamp(1 - Math.abs(snap - scrollProgress) / influenceRange, 0, 1);
+      const scale = mix(0.92, 1.035, focus);
+      const opacity = mix(0.68, 1, focus);
+      const shadowOpacity = mix(0.02, 0.18, focus);
+      const overlayOpacity = mix(0.84, 0.58, focus);
+      const contentOpacity = mix(0.7, 1, focus);
+      const contentOffset = mix(18, 0, focus);
+
+      slide.style.setProperty("--section-photoshoot-slide-scale", scale.toFixed(3));
+      slide.style.setProperty("--section-photoshoot-slide-opacity", opacity.toFixed(3));
+      slide.style.setProperty("--section-photoshoot-slide-shadow-opacity", shadowOpacity.toFixed(3));
+      slide.style.setProperty("--section-photoshoot-slide-overlay-opacity", overlayOpacity.toFixed(3));
+      slide.style.setProperty("--section-photoshoot-slide-content-opacity", contentOpacity.toFixed(3));
+      slide.style.setProperty(
+        "--section-photoshoot-slide-content-offset",
+        `${contentOffset.toFixed(1)}px`,
+      );
+      slide.style.setProperty("--section-photoshoot-slide-z-index", String(Math.round(mix(1, 20, focus))));
+    });
   }, [emblaApi]);
 
   useEffect(() => {
@@ -50,13 +99,24 @@ export default function SectionPhotoshootCarousel({
     }
 
     updateEmblaState();
-    emblaApi.on("reInit", updateEmblaState).on("select", updateEmblaState);
+    syncSlideStyles();
+    emblaApi
+      .on("reInit", updateEmblaState)
+      .on("reInit", syncSlideStyles)
+      .on("scroll", syncSlideStyles)
+      .on("select", updateEmblaState)
+      .on("settle", syncSlideStyles);
     emblaApi.scrollTo(0, true);
 
     return () => {
-      emblaApi.off("reInit", updateEmblaState).off("select", updateEmblaState);
+      emblaApi
+        .off("reInit", updateEmblaState)
+        .off("reInit", syncSlideStyles)
+        .off("scroll", syncSlideStyles)
+        .off("select", updateEmblaState)
+        .off("settle", syncSlideStyles);
     };
-  }, [emblaApi, photoshoots, updateEmblaState]);
+  }, [emblaApi, photoshoots, syncSlideStyles, updateEmblaState]);
 
   useEffect(() => {
     const carouselArea = carouselAreaRef.current;
@@ -73,7 +133,7 @@ export default function SectionPhotoshootCarousel({
       }
 
       const viewportInset = width >= 1024 ? 220 : width >= 768 ? 124 : width >= 640 ? 72 : 40;
-      const maxWidthFromHeight = height * (4 / 5);
+      const maxWidthFromHeight = height * WORK_CARD_ASPECT_RATIO;
       const maxWidthFromViewport = Math.max(width - viewportInset, 0);
       const nextSlideWidth = Math.floor(Math.min(maxWidthFromHeight, maxWidthFromViewport));
 
@@ -99,7 +159,8 @@ export default function SectionPhotoshootCarousel({
 
     emblaApi.reInit();
     updateEmblaState();
-  }, [emblaApi, slideWidth, updateEmblaState]);
+    syncSlideStyles();
+  }, [emblaApi, slideWidth, syncSlideStyles, updateEmblaState]);
 
   const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev();
@@ -146,38 +207,42 @@ export default function SectionPhotoshootCarousel({
             style={viewportStyle}
           >
             <div className="section-photoshoot-track flex h-full items-center gap-3 sm:gap-4 lg:gap-0">
-              {photoshoots.map((photoshoot, index) => {
-                const isActive = index === selectedIndex;
+              {photoshoots.map((photoshoot, index) => (
+                <a
+                  key={photoshoot.slug}
+                  href={getPhotoshootHref(sectionSlug, photoshoot.slug)}
+                  ref={(element) => {
+                    slideRefs.current[index] = element;
+                  }}
+                  className="section-photoshoot-slide group relative shrink-0 overflow-hidden bg-[#eadfce]"
+                >
+                  <img
+                    src={photoshoot.mainImage}
+                    alt={photoshoot.title}
+                    draggable={false}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-[#120d09]/70 via-[#120d09]/8 to-transparent"
+                    style={{ opacity: "var(--section-photoshoot-slide-overlay-opacity, 0.84)" }}
+                  />
 
-                return (
-                  <a
-                    key={photoshoot.slug}
-                    href={getPhotoshootHref(sectionSlug, photoshoot.slug)}
-                    className={`section-photoshoot-slide group relative shrink-0 overflow-hidden bg-[#eadfce] transition-[transform,opacity,box-shadow] duration-500 ease-out ${
-                      isActive
-                        ? "z-20 scale-100 opacity-100 shadow-[0_24px_70px_rgba(54,40,24,0.18)] lg:scale-[1.05]"
-                        : "scale-100 opacity-72 lg:scale-[0.9]"
-                    }`}
+                  <div
+                    className="absolute inset-x-0 bottom-0 p-5 text-white md:p-6"
+                    style={{
+                      opacity: "var(--section-photoshoot-slide-content-opacity, 0.7)",
+                      transform: "translateY(var(--section-photoshoot-slide-content-offset, 18px))",
+                    }}
                   >
-                    <img
-                      src={photoshoot.mainImage}
-                      alt={photoshoot.title}
-                      draggable={false}
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#120d09]/70 via-[#120d09]/8 to-transparent" />
-
-                    <div className="absolute inset-x-0 bottom-0 p-5 text-white md:p-6">
-                      <p className="mb-3 font-['Montserrat'] text-[0.66rem] tracking-[0.28em] text-white/78 uppercase">
-                        {String(index + 1).padStart(2, "0")}
-                      </p>
-                      <h2 className="max-w-[16rem] font-['Cormorant_Garamond'] text-3xl leading-[0.96] md:text-4xl">
-                        {photoshoot.title}
-                      </h2>
-                    </div>
-                  </a>
-                );
-              })}
+                    <p className="mb-3 font-['Montserrat'] text-[0.66rem] tracking-[0.28em] text-white/78 uppercase">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <h2 className="max-w-[16rem] font-['Cormorant_Garamond'] text-3xl leading-[0.96] md:text-4xl">
+                      {photoshoot.title}
+                    </h2>
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
 
