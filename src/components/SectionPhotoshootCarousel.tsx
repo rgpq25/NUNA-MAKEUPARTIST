@@ -72,7 +72,7 @@ export default function SectionPhotoshootCarousel({
         return;
       }
 
-      const viewportInset = width >= 1024 ? 144 : width >= 768 ? 104 : width >= 640 ? 72 : 48;
+      const viewportInset = width >= 1024 ? 220 : width >= 768 ? 124 : width >= 640 ? 72 : 40;
       const maxWidthFromHeight = height * (4 / 5);
       const maxWidthFromViewport = Math.max(width - viewportInset, 0);
       const nextSlideWidth = Math.floor(Math.min(maxWidthFromHeight, maxWidthFromViewport));
@@ -145,7 +145,7 @@ export default function SectionPhotoshootCarousel({
             className="section-photoshoot-viewport h-full min-h-0 overflow-hidden"
             style={viewportStyle}
           >
-            <div className="section-photoshoot-track flex h-full items-center gap-4 sm:gap-5 lg:gap-6">
+            <div className="section-photoshoot-track flex h-full items-center gap-3 sm:gap-4 lg:gap-0">
               {photoshoots.map((photoshoot, index) => {
                 const isActive = index === selectedIndex;
 
@@ -155,8 +155,8 @@ export default function SectionPhotoshootCarousel({
                     href={getPhotoshootHref(sectionSlug, photoshoot.slug)}
                     className={`section-photoshoot-slide group relative shrink-0 overflow-hidden bg-[#eadfce] transition-[transform,opacity,box-shadow] duration-500 ease-out ${
                       isActive
-                        ? "z-10 scale-100 opacity-100 shadow-[0_24px_70px_rgba(54,40,24,0.18)]"
-                        : "scale-[0.92] opacity-72"
+                        ? "z-20 scale-100 opacity-100 shadow-[0_24px_70px_rgba(54,40,24,0.18)] lg:scale-[1.05]"
+                        : "scale-100 opacity-72 lg:scale-[0.9]"
                     }`}
                   >
                     <img

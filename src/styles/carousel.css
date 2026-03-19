@@ -31,6 +31,24 @@
   align-self: center;
 }
 
+@media (min-width: 1024px) {
+  .section-photoshoot-track {
+    padding-inline: 2rem;
+  }
+
+  .section-photoshoot-slide {
+    margin-inline: -1rem;
+  }
+
+  .section-photoshoot-slide:first-child {
+    margin-left: 0;
+  }
+
+  .section-photoshoot-slide:last-child {
+    margin-right: 0;
+  }
+}
+
 .preview-carousel .slick-dots li button::before {
   color: #c9a96e;
   opacity: 0.3;
