@@ -119,34 +119,53 @@ const brandImages = [
   "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 ];
 
+const repeatImages = (images: string[], count: number, start = 0) =>
+  Array.from({ length: count }, (_, index) => images[(start + index) % images.length]);
+
+const buildPhotoshoot = (
+  slug: string,
+  title: string,
+  description: string,
+  imagePool: string[],
+  mainIndex: number,
+  start = 0,
+  imageCount = 12,
+): Photoshoot => ({
+  slug,
+  title,
+  description,
+  mainImage: imagePool[mainIndex % imagePool.length],
+  images: repeatImages(imagePool, imageCount, start),
+});
+
 const fallbackSectionEntries = [
   {
     slug: "bridal",
     title: "Bridal",
     description:
       "Elegancia atemporal para el dia mas especial. Maquillaje nupcial que realza tu belleza natural con un toque de sofisticacion y romance.",
-    images: bridalImages,
+    images: repeatImages(bridalImages, 16),
   },
   {
     slug: "social",
     title: "Social",
     description:
       "Glamour moderno para eventos inolvidables. Looks vibrantes y contemporaneos que capturan la energia de cada celebracion.",
-    images: socialImages,
+    images: repeatImages(socialImages, 16),
   },
   {
     slug: "editorial",
     title: "Editorial",
     description:
       "Alta moda y fotografia editorial. Creaciones audaces que trascienden las tendencias y definen nuevos estandares de belleza.",
-    images: editorialImages,
+    images: repeatImages(editorialImages, 16),
   },
   {
     slug: "brand-work",
     title: "Brand Work",
     description:
       "Colaboraciones de lujo con marcas premium. Campanas profesionales que comunican sofisticacion y excelencia.",
-    images: brandImages,
+    images: repeatImages(brandImages, 16),
   },
 ];
 
@@ -162,27 +181,54 @@ export const fallbackSectionPages: SectionPageContent[] = [
     description:
       "Elegancia atemporal para el dia mas especial. Maquillaje nupcial que realza tu belleza natural con un toque de sofisticacion y romance.",
     photoshoots: [
-      {
-        slug: "bridal-atelier",
-        title: "Bridal Atelier",
-        description: "Preparacion luminosa y retratos suaves para novias contemporaneas.",
-        mainImage: "/images/real-work/IMG_1600.jpeg",
-        images: bridalImages.slice(0, 6),
-      },
-      {
-        slug: "bridal-ceremony",
-        title: "Bridal Ceremony",
-        description: "Acabados impecables pensados para ceremonia y fotografia editorial.",
-        mainImage: "/images/real-work/IMG_9751.jpeg",
-        images: [bridalImages[3], ...bridalImages.slice(4, 9)],
-      },
-      {
-        slug: "bridal-destination",
-        title: "Bridal Destination",
-        description: "Belleza romantica para bodas de destino, golden hour y retratos al aire libre.",
-        mainImage: bridalImages[4],
-        images: [bridalImages[4], bridalImages[5], bridalImages[6], bridalImages[1], bridalImages[8]],
-      },
+      buildPhotoshoot(
+        "bridal-atelier",
+        "Bridal Atelier",
+        "Preparacion luminosa y retratos suaves para novias contemporaneas.",
+        bridalImages,
+        0,
+        0,
+      ),
+      buildPhotoshoot(
+        "bridal-ceremony",
+        "Bridal Ceremony",
+        "Acabados impecables pensados para ceremonia y fotografia editorial.",
+        bridalImages,
+        3,
+        2,
+      ),
+      buildPhotoshoot(
+        "bridal-destination",
+        "Bridal Destination",
+        "Belleza romantica para bodas de destino, golden hour y retratos al aire libre.",
+        bridalImages,
+        4,
+        4,
+      ),
+      buildPhotoshoot(
+        "bridal-morning-suite",
+        "Bridal Morning Suite",
+        "Piel fresca, acabados delicados y detalles intimos del getting ready.",
+        bridalImages,
+        1,
+        1,
+      ),
+      buildPhotoshoot(
+        "bridal-garden-vows",
+        "Bridal Garden Vows",
+        "Romance al aire libre con luz natural y maquillaje de larga duracion.",
+        bridalImages,
+        6,
+        5,
+      ),
+      buildPhotoshoot(
+        "bridal-evening-reception",
+        "Bridal Evening Reception",
+        "Transiciones elegantes del altar a la fiesta con glamour suave y sofisticado.",
+        bridalImages,
+        8,
+        7,
+      ),
     ],
   },
   {
@@ -191,27 +237,54 @@ export const fallbackSectionPages: SectionPageContent[] = [
     description:
       "Glamour moderno para eventos inolvidables. Looks vibrantes y contemporaneos que capturan la energia de cada celebracion.",
     photoshoots: [
-      {
-        slug: "social-evening",
-        title: "Social Evening",
-        description: "Looks de noche con brillo, definicion y una energia festiva.",
-        mainImage: socialImages[0],
-        images: socialImages.slice(0, 6),
-      },
-      {
-        slug: "social-cocktail",
-        title: "Social Cocktail",
-        description: "Piel satinada, color estrategico y acabados pulidos para celebraciones sofisticadas.",
-        mainImage: socialImages[4],
-        images: socialImages.slice(3, 9),
-      },
-      {
-        slug: "social-red-carpet",
-        title: "Social Red Carpet",
-        description: "Inspiracion red carpet con foco en luz, estructura y presencia frente a camara.",
-        mainImage: socialImages[8],
-        images: [socialImages[8], socialImages[9], socialImages[1], socialImages[2], socialImages[5], socialImages[6]],
-      },
+      buildPhotoshoot(
+        "social-evening",
+        "Social Evening",
+        "Looks de noche con brillo, definicion y una energia festiva.",
+        socialImages,
+        0,
+        0,
+      ),
+      buildPhotoshoot(
+        "social-cocktail",
+        "Social Cocktail",
+        "Piel satinada, color estrategico y acabados pulidos para celebraciones sofisticadas.",
+        socialImages,
+        4,
+        3,
+      ),
+      buildPhotoshoot(
+        "social-red-carpet",
+        "Social Red Carpet",
+        "Inspiracion red carpet con foco en luz, estructura y presencia frente a camara.",
+        socialImages,
+        8,
+        7,
+      ),
+      buildPhotoshoot(
+        "social-gala-night",
+        "Social Gala Night",
+        "Glamour intenso, acabados de alto impacto y sofisticacion para grandes eventos.",
+        socialImages,
+        2,
+        1,
+      ),
+      buildPhotoshoot(
+        "social-celebration-edit",
+        "Social Celebration Edit",
+        "Looks versatiles para cenas, fiestas privadas y momentos especiales frente a camara.",
+        socialImages,
+        6,
+        5,
+      ),
+      buildPhotoshoot(
+        "social-vip-guest",
+        "Social VIP Guest",
+        "Definicion pulida y piel luminosa para invitadas que buscan presencia impecable.",
+        socialImages,
+        9,
+        8,
+      ),
     ],
   },
   {
@@ -220,27 +293,54 @@ export const fallbackSectionPages: SectionPageContent[] = [
     description:
       "Alta moda y fotografia editorial. Creaciones audaces que trascienden las tendencias y definen nuevos estandares de belleza.",
     photoshoots: [
-      {
-        slug: "editorial-studio",
-        title: "Editorial Studio",
-        description: "Texturas, contraste y direccion creativa para producciones editoriales.",
-        mainImage: "/images/real-work/IMG_6515.jpeg",
-        images: editorialImages.slice(0, 6),
-      },
-      {
-        slug: "editorial-beauty-story",
-        title: "Editorial Beauty Story",
-        description: "Close-ups de belleza con acabado pulido, color controlado y narrativa visual refinada.",
-        mainImage: editorialImages[4],
-        images: editorialImages.slice(4, 10),
-      },
-      {
-        slug: "editorial-monochrome",
-        title: "Editorial Monochrome",
-        description: "Series conceptuales con una direccion minimalista y una presencia fotografica fuerte.",
-        mainImage: editorialImages[2],
-        images: [editorialImages[2], editorialImages[6], editorialImages[7], editorialImages[1], editorialImages[8]],
-      },
+      buildPhotoshoot(
+        "editorial-studio",
+        "Editorial Studio",
+        "Texturas, contraste y direccion creativa para producciones editoriales.",
+        editorialImages,
+        0,
+        0,
+      ),
+      buildPhotoshoot(
+        "editorial-beauty-story",
+        "Editorial Beauty Story",
+        "Close-ups de belleza con acabado pulido, color controlado y narrativa visual refinada.",
+        editorialImages,
+        4,
+        4,
+      ),
+      buildPhotoshoot(
+        "editorial-monochrome",
+        "Editorial Monochrome",
+        "Series conceptuales con una direccion minimalista y una presencia fotografica fuerte.",
+        editorialImages,
+        2,
+        2,
+      ),
+      buildPhotoshoot(
+        "editorial-cover-story",
+        "Editorial Cover Story",
+        "Belleza de portada con foco en piel, estructura y una narrativa de moda marcada.",
+        editorialImages,
+        7,
+        6,
+      ),
+      buildPhotoshoot(
+        "editorial-runway-notes",
+        "Editorial Runway Notes",
+        "Detalles de backstage y acabados graficos con una actitud moderna.",
+        editorialImages,
+        5,
+        3,
+      ),
+      buildPhotoshoot(
+        "editorial-art-direction",
+        "Editorial Art Direction",
+        "Composiciones intensas pensadas para campañas visuales y editoriales de belleza.",
+        editorialImages,
+        9,
+        8,
+      ),
     ],
   },
   {
@@ -249,27 +349,54 @@ export const fallbackSectionPages: SectionPageContent[] = [
     description:
       "Colaboraciones de lujo con marcas premium. Campanas profesionales que comunican sofisticacion y excelencia.",
     photoshoots: [
-      {
-        slug: "brand-campaign",
-        title: "Brand Campaign",
-        description: "Contenido de marca con una direccion visual elegante y pulida.",
-        mainImage: "/images/real-work/IMG_2225.jpeg",
-        images: brandImages.slice(0, 6),
-      },
-      {
-        slug: "brand-launch",
-        title: "Brand Launch",
-        description: "Imagenes de lanzamiento con foco comercial, consistencia visual y maquillaje camera-ready.",
-        mainImage: brandImages[4],
-        images: brandImages.slice(4, 10),
-      },
-      {
-        slug: "brand-studio-portraits",
-        title: "Brand Studio Portraits",
-        description: "Retratos de marca para lookbooks, key visuals y contenido digital premium.",
-        mainImage: brandImages[2],
-        images: [brandImages[2], brandImages[3], brandImages[6], brandImages[7], brandImages[8], brandImages[1]],
-      },
+      buildPhotoshoot(
+        "brand-campaign",
+        "Brand Campaign",
+        "Contenido de marca con una direccion visual elegante y pulida.",
+        brandImages,
+        0,
+        0,
+      ),
+      buildPhotoshoot(
+        "brand-launch",
+        "Brand Launch",
+        "Imagenes de lanzamiento con foco comercial, consistencia visual y maquillaje camera-ready.",
+        brandImages,
+        4,
+        4,
+      ),
+      buildPhotoshoot(
+        "brand-studio-portraits",
+        "Brand Studio Portraits",
+        "Retratos de marca para lookbooks, key visuals y contenido digital premium.",
+        brandImages,
+        2,
+        2,
+      ),
+      buildPhotoshoot(
+        "brand-product-visuals",
+        "Brand Product Visuals",
+        "Campanas enfocadas en producto con maquillaje preciso y una estetica premium.",
+        brandImages,
+        6,
+        5,
+      ),
+      buildPhotoshoot(
+        "brand-digital-launch",
+        "Brand Digital Launch",
+        "Series para redes y ecommerce con consistencia visual y acabados listos para conversion.",
+        brandImages,
+        8,
+        7,
+      ),
+      buildPhotoshoot(
+        "brand-signature-look",
+        "Brand Signature Look",
+        "Imagen de marca con retratos hero, detalle de textura y lenguaje visual refinado.",
+        brandImages,
+        1,
+        1,
+      ),
     ],
   },
 ];

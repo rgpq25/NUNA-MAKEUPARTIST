@@ -36,9 +36,9 @@ export default function HeroSection({
       };
 
   return (
-    <section className="min-h-screen bg-[#faf8f5] px-8 py-24 pt-40 md:px-16 md:pt-48">
+    <section className="min-h-screen bg-[#faf8f5] px-8 pb-24 pt-28 md:px-16 md:pt-48">
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-20">
+        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10 lg:gap-16">
           <motion.div className="order-2 md:order-1" {...leftMotion}>
             <div className="aspect-[3/4] overflow-hidden">
               <img
@@ -50,10 +50,10 @@ export default function HeroSection({
           </motion.div>
 
           <motion.div
-            className="order-1 flex flex-col justify-center md:order-2"
+            className="order-1 flex flex-col gap-3 justify-center md:order-2"
             {...rightMotion}
           >
-            <div className="mb-12">
+            <div className="">
               <h1 className="font-['Cormorant_Garamond'] text-7xl leading-none tracking-wider text-[#2a2a2a] md:text-8xl">
                 {brandTitle}
               </h1>
@@ -62,7 +62,7 @@ export default function HeroSection({
               </p>
             </div>
 
-            <h2 className="mb-8 font-['Cormorant_Garamond'] text-4xl leading-tight text-[#2a2a2a] italic md:text-5xl">
+            <h2 className="font-['Cormorant_Garamond'] text-4xl leading-tight text-[#2a2a2a] italic md:text-5xl">
               {headline}
             </h2>
 
