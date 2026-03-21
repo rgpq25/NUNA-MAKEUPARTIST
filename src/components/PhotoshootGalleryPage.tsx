@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState, type SyntheticEvent } from "react
 
 import { getSectionHref, type Photoshoot } from "../data/home";
 import WorksPageHeader from "./WorksPageHeader";
+import WorksPageLayout from "./WorksPageLayout";
 
 const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 const DEFAULT_IMAGE_RATIO = 4 / 5;
@@ -132,12 +133,10 @@ export default function PhotoshootGalleryPage({
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#faf8f5] px-6 py-8 md:px-12 md:py-10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.14),_transparent_38%),linear-gradient(180deg,_rgba(255,255,255,0.84),_rgba(250,248,245,0.98))]" />
-
-      <div className="relative mx-auto max-w-7xl">
+    <WorksPageLayout
+      header={
         <WorksPageHeader
-          className="mb-12 md:mb-14"
+          className="mb-6 md:mb-8"
           contentClassName="space-y-2"
           backHref={getSectionHref(sectionSlug)}
           breadcrumbs={[
@@ -151,46 +150,46 @@ export default function PhotoshootGalleryPage({
           titleClassName="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl"
           descriptionClassName="max-w-3xl pt-2 font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/72 md:text-base"
         />
+      }
+    >
+      <div
+        ref={galleryRef}
+        className="grid items-start gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6"
+      >
+        {masonryColumns.map((column, columnIndex) => (
+          <div key={`column-${columnIndex}`} className="flex flex-col gap-4 md:gap-5 xl:gap-6">
+            {column.map((imageIndex) => {
+              const image = photoshoot.images[imageIndex];
+              const ratio = imageRatios[imageIndex] ?? DEFAULT_IMAGE_RATIO;
 
-        <div
-          ref={galleryRef}
-          className="grid items-start gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6"
-        >
-          {masonryColumns.map((column, columnIndex) => (
-            <div key={`column-${columnIndex}`} className="flex flex-col gap-4 md:gap-5 xl:gap-6">
-              {column.map((imageIndex) => {
-                const image = photoshoot.images[imageIndex];
-                const ratio = imageRatios[imageIndex] ?? DEFAULT_IMAGE_RATIO;
+              return (
+                <motion.figure
+                  key={`${image}-${imageIndex}`}
+                  className="group relative overflow-hidden bg-[#efe6da]"
+                  style={{ aspectRatio: 1 / ratio }}
+                  {...buildGalleryItemMotion(imageIndex)}
+                >
+                  <img
+                    src={image}
+                    alt={`${photoshoot.title} ${imageIndex + 1}`}
+                    loading={imageIndex < 3 ? "eager" : "lazy"}
+                    fetchPriority={imageIndex === 0 ? "high" : "auto"}
+                    decoding="async"
+                    onLoad={(event) => handleImageLoad(imageIndex, event)}
+                    className="block h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
 
-                return (
-                  <motion.figure
-                    key={`${image}-${imageIndex}`}
-                    className="group relative overflow-hidden bg-[#efe6da]"
-                    style={{ aspectRatio: 1 / ratio }}
-                    {...buildGalleryItemMotion(imageIndex)}
-                  >
-                    <img
-                      src={image}
-                      alt={`${photoshoot.title} ${imageIndex + 1}`}
-                      loading={imageIndex < 3 ? "eager" : "lazy"}
-                      fetchPriority={imageIndex === 0 ? "high" : "auto"}
-                      decoding="async"
-                      onLoad={(event) => handleImageLoad(imageIndex, event)}
-                      className="block h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                    />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,_rgba(250,248,245,0.06),_rgba(18,13,9,0.14))]" />
 
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,_rgba(250,248,245,0.06),_rgba(18,13,9,0.14))]" />
-
-                    <div className="pointer-events-none absolute left-4 top-4 border border-white/45 bg-white/12 px-3 py-2 font-['Montserrat'] text-[0.62rem] tracking-[0.24em] text-white uppercase backdrop-blur-sm">
-                      {String(imageIndex + 1).padStart(2, "0")}
-                    </div>
-                  </motion.figure>
-                );
-              })}
-            </div>
-          ))}
-        </div>
+                  <div className="pointer-events-none absolute left-4 top-4 border border-white/45 bg-white/12 px-3 py-2 font-['Montserrat'] text-[0.62rem] tracking-[0.24em] text-white uppercase backdrop-blur-sm">
+                    {String(imageIndex + 1).padStart(2, "0")}
+                  </div>
+                </motion.figure>
+              );
+            })}
+          </div>
+        ))}
       </div>
-    </section>
+    </WorksPageLayout>
   );
 }
