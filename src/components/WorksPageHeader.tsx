@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 
 import WorksBreadcrumbs, { type WorksBreadcrumbItem } from "./WorksBreadcrumbs";
+import { cn } from "../lib/utils";
 
 const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -17,15 +18,6 @@ interface WorksPageHeaderProps {
 	descriptionClassName?: string;
 }
 
-const buttonClassName =
-	"shrink-0 border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]";
-
-const defaultTitleClassName =
-	"font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl";
-
-const defaultDescriptionClassName =
-	"max-w-4xl font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/68 md:text-base";
-
 export default function WorksPageHeader({
 	backHref,
 	backLabel = "Volver",
@@ -35,16 +27,13 @@ export default function WorksPageHeader({
 	className,
 	contentClassName,
 	titleWrapperClassName,
-	titleClassName = defaultTitleClassName,
-	descriptionClassName = defaultDescriptionClassName,
+	titleClassName,
+	descriptionClassName,
 }: WorksPageHeaderProps) {
 	const shouldReduceMotion = useReducedMotion();
-	const rootClassName = ["space-y-4 md:space-y-0", className]
-		.filter(Boolean)
-		.join(" ");
-	const resolvedContentClassName = ["space-y-1", contentClassName]
-		.filter(Boolean)
-		.join(" ");
+
+	const buttonClassName =
+		"shrink-0 border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]";
 
 	const buildRevealMotion = (delay: number, y = 24) =>
 		shouldReduceMotion
@@ -60,7 +49,7 @@ export default function WorksPageHeader({
 				};
 
 	return (
-		<div className={rootClassName}>
+		<div className={cn("space-y-4 md:space-y-0", className)}>
 			<motion.a
 				href={backHref}
 				className={`${buttonClassName} inline-flex md:hidden`}
@@ -70,7 +59,7 @@ export default function WorksPageHeader({
 			</motion.a>
 
 			<motion.div
-				className={resolvedContentClassName}
+				className={cn("space-y-1", contentClassName)}
 				{...buildRevealMotion(0.08, 18)}
 			>
 				<div className="flex items-start justify-between gap-6">
@@ -79,7 +68,14 @@ export default function WorksPageHeader({
 							items={breadcrumbs}
 							className="mb-4"
 						/>
-						<h1 className={titleClassName}>{title}</h1>
+						<h1
+							className={cn(
+								"font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl",
+								titleClassName,
+							)}
+						>
+							{title}
+						</h1>
 					</div>
 
 					<motion.a
@@ -92,7 +88,14 @@ export default function WorksPageHeader({
 				</div>
 
 				{description ? (
-					<p className={descriptionClassName}>{description}</p>
+					<p
+						className={cn(
+							"font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/68 md:text-base",
+							descriptionClassName,
+						)}
+					>
+						{description}
+					</p>
 				) : null}
 			</motion.div>
 		</div>
