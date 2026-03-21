@@ -41,7 +41,7 @@ export default function WorksPageLayout({
 		>
 			<div
 				className={cn(
-					"pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.14),_transparent_38%),linear-gradient(180deg,_rgba(255,255,255,0.84),_rgba(250,248,245,0.98))]",
+					"pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(201,169,110,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.84),rgba(250,248,245,0.98))]",
 					overlayClassName,
 				)}
 			/>

@@ -194,9 +194,6 @@ export default function PhotoshootGalleryPage({
 										loading={
 											imageIndex < 3 ? "eager" : "lazy"
 										}
-										fetchPriority={
-											imageIndex === 0 ? "high" : "auto"
-										}
 										decoding="async"
 										onLoad={(event) =>
 											handleImageLoad(imageIndex, event)
