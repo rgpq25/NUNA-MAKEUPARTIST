@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getPhotoshootHref, type Photoshoot } from "../data/home";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import WorksPageHeader from "./WorksPageHeader";
 
 const WORK_CARD_ASPECT_RATIO = 10 / 13;
 const MOBILE_WORK_CARD_ASPECT_RATIO = 9 / 13;
@@ -247,33 +248,14 @@ export default function SectionPhotoshootCarousel({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.16),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.8),_rgba(247,241,233,0.96))]" />
 
       <div className="relative grid h-full w-full grid-rows-[auto_minmax(0,1fr)_auto] gap-2 py-8 md:gap-6 md:py-10">
-        <motion.div
-          className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-6 md:px-10"
-          {...buildRevealMotion(0.08, 18)}
-        >
-          <div className="flex items-start justify-between gap-6">
-            <div className="">
-              <p className="mb-4 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
-                Works / {sectionTitle}
-              </p>
-              <h1 className="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl">
-                {sectionTitle}
-              </h1>
-            </div>
-
-            <motion.a
-              href={`/#${sectionSlug}`}
-              className="inline-flex shrink-0 border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]"
-              {...buildRevealMotion(0.14, 14)}
-            >
-              Volver
-            </motion.a>
-          </div>
-
-          <p className="max-w-4xl font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/68 md:text-base">
-            {sectionDescription}
-          </p>
-        </motion.div>
+        <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
+          <WorksPageHeader
+            backHref={`/#${sectionSlug}`}
+            breadcrumbs={[{ label: "Works" }, { label: sectionTitle }]}
+            title={sectionTitle}
+            description={sectionDescription}
+          />
+        </div>
 
         <div ref={carouselAreaRef} className="relative min-h-0 w-full">
           <div

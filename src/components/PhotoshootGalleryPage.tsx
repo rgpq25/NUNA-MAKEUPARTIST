@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useRef, useState, type SyntheticEvent } from "react";
 
-import type { Photoshoot } from "../data/home";
+import { getSectionHref, type Photoshoot } from "../data/home";
+import WorksPageHeader from "./WorksPageHeader";
 
 const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 const DEFAULT_IMAGE_RATIO = 4 / 5;
@@ -73,19 +74,6 @@ export default function PhotoshootGalleryPage({
     };
   }, []);
 
-  const buildRevealMotion = (delay: number, y = 24) =>
-    shouldReduceMotion
-      ? {}
-      : {
-          initial: { opacity: 0, y },
-          animate: { opacity: 1, y: 0 },
-          transition: {
-            duration: 0.82,
-            delay,
-            ease: REVEAL_EASE,
-          },
-        };
-
   const buildGalleryItemMotion = (index: number) =>
     shouldReduceMotion
       ? {}
@@ -144,31 +132,25 @@ export default function PhotoshootGalleryPage({
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#faf8f5] px-6 py-16 md:px-12 md:py-20">
+    <section className="relative min-h-screen overflow-hidden bg-[#faf8f5] px-6 py-8 md:px-12 md:py-10">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.14),_transparent_38%),linear-gradient(180deg,_rgba(255,255,255,0.84),_rgba(250,248,245,0.98))]" />
 
       <div className="relative mx-auto max-w-7xl">
-        <motion.a
-          href={`/works/${sectionSlug}`}
-          className="mb-10 inline-flex border border-[#2a2a2a]/15 px-4 py-3 font-['Montserrat'] text-[0.68rem] tracking-[0.24em] text-[#2a2a2a]/75 uppercase transition-colors duration-300 hover:border-[#c9a96e]/45 hover:text-[#c9a96e]"
-          {...buildRevealMotion(0.08, 14)}
-        >
-          Volver a {sectionTitle}
-        </motion.a>
-
-        <motion.header className="mb-12 max-w-4xl md:mb-14" {...buildRevealMotion(0.16, 26)}>
-          <p className="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.32em] text-[#2a2a2a]/42 uppercase">
-            {sectionTitle}
-          </p>
-          <h1 className="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl">
-            {photoshoot.title}
-          </h1>
-          {photoshoot.description ? (
-            <p className="pt-2 max-w-3xl font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/72 md:text-base">
-              {photoshoot.description}
-            </p>
-          ) : null}
-        </motion.header>
+        <WorksPageHeader
+          className="mb-12 md:mb-14"
+          contentClassName="space-y-2"
+          backHref={getSectionHref(sectionSlug)}
+          breadcrumbs={[
+            { label: "Works" },
+            { label: sectionTitle, href: getSectionHref(sectionSlug) },
+            { label: photoshoot.title },
+          ]}
+          title={photoshoot.title}
+          description={photoshoot.description}
+          titleWrapperClassName="max-w-4xl"
+          titleClassName="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl"
+          descriptionClassName="max-w-3xl pt-2 font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/72 md:text-base"
+        />
 
         <div
           ref={galleryRef}
