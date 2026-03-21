@@ -79,7 +79,7 @@ export default function ContactSection({ serviceOptions }: ContactSectionProps) 
             className="mx-auto max-w-2xl font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70"
             {...bodyMotion}
           >
-            ¿Lista para transformar tu vision en realidad? Contactame para
+            ¿Lista para transformar tu vision en realidad? Contáctame para
             reservas, colaboraciones o consultas sobre servicios personalizados.
           </motion.p>
         </div>

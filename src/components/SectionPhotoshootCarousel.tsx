@@ -252,8 +252,8 @@ export default function SectionPhotoshootCarousel({
           {...buildRevealMotion(0.08, 18)}
         >
           <div className="flex items-start justify-between gap-6">
-            <div className="max-w-2xl">
-              <p className="mb-3 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
+            <div className="">
+              <p className="mb-4 font-['Montserrat'] text-[0.68rem] tracking-[0.34em] text-[#2a2a2a]/44 uppercase">
                 Works / {sectionTitle}
               </p>
               <h1 className="font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl">
@@ -353,7 +353,7 @@ export default function SectionPhotoshootCarousel({
             <span
               className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-white uppercase transition-transform duration-300"
             >
-              Contactame
+              Contáctame
             </span>
           </a>
         </motion.div>
