@@ -1,11 +1,11 @@
 import type { CSSProperties } from "react";
 
-import { motion, useReducedMotion } from "motion/react";
 import useEmblaCarousel from "embla-carousel-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { getPhotoshootHref, type Photoshoot } from "../data/home";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getPhotoshootHref, type Photoshoot } from "../data/home";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -315,7 +315,7 @@ export default function SectionPhotoshootCarousel({
 			bleedContent={
 				<div
 					ref={carouselAreaRef}
-					className="relative min-h-0 w-full h-full"
+					className="relative min-h-100 w-full h-full"
 				>
 					<div
 						ref={emblaRef}
@@ -346,7 +346,7 @@ export default function SectionPhotoshootCarousel({
 											className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 										/>
 										<div
-											className="absolute inset-0 bg-gradient-to-t from-[#120d09]/70 via-[#120d09]/8 to-transparent"
+											className="absolute inset-0 bg-linear-to-t from-[#120d09]/70 via-[#120d09]/8 to-transparent"
 											style={{
 												opacity:
 													"var(--section-photoshoot-slide-overlay-opacity, 0.84)",

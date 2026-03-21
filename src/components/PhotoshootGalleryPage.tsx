@@ -163,7 +163,7 @@ export default function PhotoshootGalleryPage({
 					]}
 					title={photoshoot.title}
 					description={photoshoot.description}
-					titleClassName="text-5xl md:text-5xl lg:text-6xl"
+					titleClassName="text-4xl md:text-5xl lg:text-6xl"
 				/>
 			}
 		>
@@ -204,7 +204,7 @@ export default function PhotoshootGalleryPage({
 										className="block h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 									/>
 
-									<div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,_rgba(250,248,245,0.06),_rgba(18,13,9,0.14))]" />
+									<div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(250,248,245,0.06),rgba(18,13,9,0.14))]" />
 
 									<div className="pointer-events-none absolute left-4 top-4 border border-white/45 bg-white/12 px-3 py-2 font-['Montserrat'] text-[0.62rem] tracking-[0.24em] text-white uppercase backdrop-blur-sm">
 										{String(imageIndex + 1).padStart(
