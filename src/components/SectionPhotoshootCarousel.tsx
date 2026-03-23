@@ -5,7 +5,8 @@ import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getPhotoshootHref, type Photoshoot } from "../data/home";
+import { getPhotoshootHref } from "../lib/content-links";
+import type { Photoshoot } from "../types/content";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -404,7 +405,7 @@ export default function SectionPhotoshootCarousel({
 				className="flex justify-center pt-2"
 				{...buildRevealMotion(0.38, 18)}
 			>
-				<a href="/#contact">
+				<a href="/#contacto">
 					<span className="inline-flex min-h-12 items-center justify-center bg-[#1c1a17] px-8 py-4 font-['Montserrat'] text-[0.72rem] tracking-[0.24em] text-white uppercase transition-transform duration-300">
 						Contáctame
 					</span>

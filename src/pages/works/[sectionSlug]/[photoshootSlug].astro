@@ -1,42 +1,48 @@
 ---
 import PhotoshootGalleryPage from "../../../components/PhotoshootGalleryPage";
-import type { Photoshoot, SectionPageContent } from "../../../data/home";
-import { getPhotoshootPages } from "../../../lib/homepage";
+import { getPhotoshootPages } from "../../../api/photoshoots";
+import type { Photoshoot, SectionPageContent } from "../../../types/content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
-  const pages = await getPhotoshootPages();
+	const pages = await getPhotoshootPages();
 
-  return pages.map(
-    ({ section, photoshoot }: { section: SectionPageContent; photoshoot: Photoshoot }) => ({
-      params: {
-        sectionSlug: section.slug,
-        photoshootSlug: photoshoot.slug,
-      },
-      props: {
-        section,
-        photoshoot,
-      },
-    }),
-  );
+	return pages.map(
+		({
+			section,
+			photoshoot,
+		}: {
+			section: SectionPageContent;
+			photoshoot: Photoshoot;
+		}) => ({
+			params: {
+				sectionSlug: section.slug,
+				photoshootSlug: photoshoot.slug,
+			},
+			props: {
+				section,
+				photoshoot,
+			},
+		}),
+	);
 }
 
 const { section, photoshoot } = Astro.props as {
-  section: SectionPageContent;
-  photoshoot: Photoshoot;
+	section: SectionPageContent;
+	photoshoot: Photoshoot;
 };
 ---
 
 <BaseLayout
-  title={`NUNA Makeup Artist | ${photoshoot.title}`}
-  description={photoshoot.description || section.description}
+	title={`NUNA Makeup Artist | ${photoshoot.title}`}
+	description={photoshoot.description || section.description}
 >
-  <main>
-    <PhotoshootGalleryPage
-      client:load
-      sectionSlug={section.slug}
-      sectionTitle={section.title}
-      photoshoot={photoshoot}
-    />
-  </main>
+	<main>
+		<PhotoshootGalleryPage
+			client:load
+			sectionSlug={section.slug}
+			sectionTitle={section.title}
+			photoshoot={photoshoot}
+		/>
+	</main>
 </BaseLayout>

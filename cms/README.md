@@ -20,4 +20,4 @@ This folder contains the standalone Payload app for managing homepage content us
 ## Notes
 
 - The Astro site keeps a fallback dataset until the CMS is populated.
-- The frontend creates `/works/[slug]` pages from the section entries, and each page now lists that section's related photoshoots.
+- The frontend creates `/works/[sectionSlug]` pages from the section entries, and each page now lists that section's related photoshoots.

@@ -1,14 +1,14 @@
 ---
 import SectionPhotoshootCarousel from "../../components/SectionPhotoshootCarousel";
-import type { SectionPageContent } from "../../data/home";
-import { getSectionPages } from "../../lib/homepage";
+import { getSectionPages } from "../../api/sections";
+import type { SectionPageContent } from "../../types/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const sections = await getSectionPages();
 
   return sections.map((section: SectionPageContent) => ({
-    params: { slug: section.slug },
+    params: { sectionSlug: section.slug },
     props: { section },
   }));
 }
