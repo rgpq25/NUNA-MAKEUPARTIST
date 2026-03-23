@@ -72,7 +72,7 @@ export default function PreviewCarousel({
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {images.map((img, index) => (
         <div key={index} className="overflow-hidden">
-          <div className="aspect-[3/4] overflow-hidden">
+          <div className="aspect-3/4 overflow-hidden">
             <img
               src={img}
               alt={`${title} ${index + 1}`}

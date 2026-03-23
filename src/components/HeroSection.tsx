@@ -50,7 +50,7 @@ export default function HeroSection({
 						className="lg:h-full"
 						{...leftMotion}
 					>
-						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-[48rem]">
+						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
 							<img
 								src={image}
 								alt={imageAlt}

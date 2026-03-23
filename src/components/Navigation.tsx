@@ -65,8 +65,8 @@ export default function Navigation({
 			className="fixed top-0 left-0 right-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5]/95 px-6 py-4 backdrop-blur-sm md:px-16 md:py-5"
 			{...motionProps}
 		>
-			<div className="container mx-auto max-w-7xl">
-				<div className="relative grid grid-cols-[auto_1fr_auto] items-center gap-4 md:grid-cols-[1fr_auto_1fr]">
+			<div className="container relative mx-auto max-w-7xl">
+				<div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 md:grid-cols-[1fr_auto_1fr]">
 					<div className="hidden items-center gap-10 md:flex overflow-hidden">
 						{leftLinks.map((link) => (
 							<a
@@ -123,10 +123,10 @@ export default function Navigation({
 				<AnimatePresence>
 					{isMenuOpen ? (
 						<motion.div
-							className="overflow-hidden md:hidden"
+							className="absolute inset-x-0 top-full overflow-hidden pt-4 md:hidden -mx-6 shadow-md"
 							{...drawerMotion}
 						>
-							<div className="mt-4 border-t border-[#2a2a2a]/10 bg-[#faf8f5] px-1 pb-2 pt-4">
+							<div className="border-t border-[#2a2a2a]/10 bg-[#faf8f5] p-6">
 								<div className="grid gap-2">
 									{links.map((link) => (
 										<a
