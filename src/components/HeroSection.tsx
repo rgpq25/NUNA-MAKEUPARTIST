@@ -1,81 +1,94 @@
 import { motion, useReducedMotion } from "motion/react";
 
 interface HeroSectionProps {
-  brandTitle: string;
-  brandSubtitle: string;
-  headline: string;
-  description: string;
-  location: string;
-  image: string;
-  imageAlt: string;
+	brandTitle: string;
+	brandSubtitle: string;
+	headline: string;
+	description: string;
+	location: string;
+	image: string;
+	imageAlt: string;
 }
 
 export default function HeroSection({
-  brandTitle,
-  brandSubtitle,
-  headline,
-  description,
-  location,
-  image,
-  imageAlt,
+	brandTitle,
+	brandSubtitle,
+	headline,
+	description,
+	location,
+	image,
+	imageAlt,
 }: HeroSectionProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const leftMotion = shouldReduceMotion
-    ? {}
-    : {
-        initial: { opacity: 0, x: -40 },
-        animate: { opacity: 1, x: 0 },
-        transition: { duration: 1, delay: 0.5 },
-      };
-  const rightMotion = shouldReduceMotion
-    ? {}
-    : {
-        initial: { opacity: 0, x: 40 },
-        animate: { opacity: 1, x: 0 },
-        transition: { duration: 1, delay: 0.3 },
-      };
+	const shouldReduceMotion = useReducedMotion();
+	const leftMotion = shouldReduceMotion
+		? {}
+		: {
+				initial: { opacity: 0, x: -40 },
+				animate: { opacity: 1, x: 0 },
+				transition: { duration: 1, delay: 0.5 },
+			};
+	const rightMotion = shouldReduceMotion
+		? {}
+		: {
+				initial: { opacity: 0, x: 40 },
+				animate: { opacity: 1, x: 0 },
+				transition: { duration: 1, delay: 0.3 },
+			};
 
-  return (
-    <section className="min-h-screen bg-[#faf8f5] px-8 pb-24 pt-28 md:px-16 md:pt-48">
-      <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10 lg:gap-16">
-          <motion.div className="order-2 md:order-1" {...leftMotion}>
-            <div className="aspect-[3/4] overflow-hidden">
-              <img
-                src={image}
-                alt={imageAlt}
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </motion.div>
+	return (
+		<section
+			className="bg-[#faf8f5] px-5 md:px-10 lg:px-16"
+			style={{
+				paddingTop:
+					"calc(var(--site-nav-height, 88px) + clamp(1.5rem, 3vw, 6rem))",
+				paddingBottom: "clamp(1.5rem, 3vw, 6rem)",
+			}}
+		>
+			<div className="mx-auto max-w-7xl">
+				<div className="grid grid-cols-1 items-start gap-6 sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20 lg:h-[calc(100svh-var(--site-nav-height,88px)-4.5rem)] lg:max-h-192 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-center">
+					<motion.div
+						className="lg:h-full"
+						{...leftMotion}
+					>
+						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-[48rem]">
+							<img
+								src={image}
+								alt={imageAlt}
+								loading="eager"
+								decoding="async"
+								sizes="(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw"
+								className="h-full w-full object-cover object-center"
+							/>
+						</div>
+					</motion.div>
 
-          <motion.div
-            className="order-1 flex flex-col gap-3 justify-center md:order-2"
-            {...rightMotion}
-          >
-            <div className="">
-              <h1 className="font-['Cormorant_Garamond'] text-7xl leading-none tracking-wider text-[#2a2a2a] md:text-8xl">
-                {brandTitle}
-              </h1>
-              <p className="font-['Montserrat'] text-sm tracking-widest text-[#2a2a2a]/60 uppercase">
-                {brandSubtitle}
-              </p>
-            </div>
+					<motion.div
+						className="flex flex-col justify-center gap-3 self-center lg:gap-4"
+						{...rightMotion}
+					>
+						<div className="space-y-2">
+							<p className="font-['Montserrat'] text-[0.7rem] font-medium tracking-[0.3em] text-[#2a2a2a]/55 uppercase sm:text-[0.78rem]">
+								{brandSubtitle}
+							</p>
+							<h1 className="font-['Cormorant_Garamond'] text-[clamp(3.4rem,12vw,6.6rem)] leading-[0.9] tracking-[0.06em] text-[#2a2a2a]">
+								{brandTitle}
+							</h1>
+						</div>
 
-            <h2 className="font-['Cormorant_Garamond'] text-4xl leading-tight text-[#2a2a2a] italic md:text-5xl">
-              {headline}
-            </h2>
+						<h2 className=" font-['Cormorant_Garamond'] text-[clamp(2rem,6vw,3rem)] leading-[1.02] text-[#2a2a2a] italic">
+							{headline}
+						</h2>
 
-            <p className="mb-6 font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
-              {description}
-            </p>
+						<p className="font-['Montserrat'] text-[0.85rem] sm:text-[0.98rem] text-[#2a2a2a]/72 md:text-base leading-6">
+							{description}
+						</p>
 
-            <p className="font-['Montserrat'] text-sm leading-relaxed text-[#2a2a2a]/60">
-              {location}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
+						<p className="border-l border-[#c9a96e]/50 pl-4 font-['Montserrat'] text-[0.70rem] sm:text-[0.80rem] leading-relaxed tracking-[0.18em] text-[#2a2a2a]/62 uppercase">
+							{location}
+						</p>
+					</motion.div>
+				</div>
+			</div>
+		</section>
+	);
 }

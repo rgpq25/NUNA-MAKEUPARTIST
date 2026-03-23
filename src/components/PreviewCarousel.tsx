@@ -112,7 +112,7 @@ export default function PreviewCarousel({
                 <Slider {...settings}>
                   {images.map((img, index) => (
                     <div key={index} className="px-2">
-                      <div className="aspect-[3/4] overflow-hidden">
+                      <div className="aspect-3/4 overflow-hidden">
                         <img
                           src={img}
                           alt={`${title} ${index + 1}`}

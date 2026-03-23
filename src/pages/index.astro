@@ -38,7 +38,8 @@ const homepage = await getHomepageContent();
         homepage.sections.map((section, index) => (
           <div
             id={section.slug}
-            class={`${index % 2 === 0 ? "bg-[#faf8f5]" : "bg-[#f5f2ed]"} scroll-mt-32 md:scroll-mt-36`}
+            class={`${index % 2 === 0 ? "bg-[#f5f2ed]" : "bg-[#faf8f5]"}`}
+            style="scroll-margin-top: calc(var(--site-nav-height, 88px) + 1.5rem);"
           >
             <PreviewCarousel client:load {...section} reversed={index % 2 === 1} />
           </div>

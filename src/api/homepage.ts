@@ -81,7 +81,7 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 
 			return {
 				label: item.section.title,
-				href: item.section.slug,
+				href: `#${item.section.slug}`,
 			};
 		},
 	);
