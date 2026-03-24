@@ -370,8 +370,8 @@ export const fallbackHomepageContent: HomePageContent = {
 		imageAlt: "NUNA Makeup Artist",
 	},
 	biography: {
-		title: "Biografia",
-		image: "/images/real-work/IMG_9757.jpeg",
+		title: "Biografía",
+		image: "/images/real-work/IMG_9320.jpeg",
 		imageAlt: "NUNA - Makeup Artist",
 		paragraphs: [
 			"Con mas de una decada de experiencia en la industria de la belleza, me especializo en crear maquillaje que realza la belleza natural y cuenta historias unicas a traves del arte.",
