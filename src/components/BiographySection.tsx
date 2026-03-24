@@ -36,10 +36,10 @@ export default function BiographySection({
 			};
 
 	return (
-		<section className="bg-[#f5f2ed] px-8 py-24 md:min-h-screen md:px-16 md:py-32">
-			<div className="container mx-auto max-w-6xl">
-				<div className="grid grid-cols-1 items-center gap-16 md:grid-cols-2 md:gap-20">
-					<motion.div className="order-2 md:order-1" {...leftMotion}>
+		<section className="bg-[#f5f2ed] px-8 md:px-16 py-14 md:py-24 lg:py-32">
+			<div className="mx-auto max-w-7xl">
+				<div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
+					<motion.div className="order-2 lg:order-1" {...leftMotion}>
 						<div className="aspect-3/4 overflow-hidden">
 							<img
 								src={image}
@@ -50,13 +50,13 @@ export default function BiographySection({
 					</motion.div>
 
 					<motion.div
-						className="order-1 flex flex-col justify-center md:order-2"
+						className="order-1 flex flex-col justify-center lg:order-2"
 						{...rightMotion}
 					>
-						<h2 className="mb-8 font-['Cormorant_Garamond'] text-6xl tracking-wide text-[#2a2a2a] md:text-7xl">
+						<h2 className="font-['Cormorant_Garamond'] text-5xl sm:text-6xl tracking-wide text-[#2a2a2a]">
 							{title}
 						</h2>
-						<div className="space-y-6">
+						<div className="mt-3.5 space-y-6">
 							{paragraphs.map((paragraph, idx) => (
 								<p
 									key={idx}
@@ -67,21 +67,25 @@ export default function BiographySection({
 							))}
 						</div>
 
-						<div className="mt-10 border-t border-[#2a2a2a]/10 pt-8">
-							<p className="mb-4 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
-								{certificationsTitle}
-							</p>
-							<div className="space-y-2">
-								{certifications.map((certification, idx) => (
-									<p
-										key={idx}
-										className="font-['Montserrat'] text-sm text-[#2a2a2a]/60"
-									>
-										• {certification}
-									</p>
-								))}
+						{certifications.length > 0 && (
+							<div className="mt-5 border-t border-[#2a2a2a]/10 pt-5">
+								<p className="mb-4 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
+									{certificationsTitle}
+								</p>
+								<div className="space-y-2">
+									{certifications.map(
+										(certification, idx) => (
+											<p
+												key={idx}
+												className="font-['Montserrat'] text-sm text-[#2a2a2a]/60"
+											>
+												• {certification}
+											</p>
+										),
+									)}
+								</div>
 							</div>
-						</div>
+						)}
 					</motion.div>
 				</div>
 			</div>
