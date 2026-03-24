@@ -53,10 +53,10 @@ export default function BiographySection({
 						className="order-1 flex flex-col justify-center lg:order-2"
 						{...rightMotion}
 					>
-						<h2 className="font-['Cormorant_Garamond'] text-5xl sm:text-6xl tracking-wide text-[#2a2a2a]">
+						<h2 className="font-['Cormorant_Garamond'] text-5xl sm:text-6xl md:text-7xl tracking-wide text-[#2a2a2a]">
 							{title}
 						</h2>
-						<div className="mt-3.5 space-y-6">
+						<div className="mt-3.5 space-y-2 md:space-y-6">
 							{paragraphs.map((paragraph, idx) => (
 								<p
 									key={idx}
