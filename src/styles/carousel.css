@@ -80,11 +80,11 @@
 }
 
 .preview-carousel .slick-prev {
-  left: -50px;
+  left: -40px;
 }
 
 .preview-carousel .slick-next {
-  right: -50px;
+  right: -40px;
 }
 
 .preview-carousel .slick-prev::before,
@@ -101,10 +101,10 @@
 
 @media (max-width: 768px) {
   .preview-carousel .slick-prev {
-    left: -20px;
+    left: -30px;
   }
 
   .preview-carousel .slick-next {
-    right: -20px;
+    right: -30px;
   }
 }
