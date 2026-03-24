@@ -86,7 +86,7 @@ const fallbackSectionEntries = [
 		title: "Bridal",
 		description:
 			"Elegancia atemporal para el dia mas especial. Maquillaje nupcial que realza tu belleza natural con un toque de sofisticacion y romance.",
-		images: repeatImages(bridalImages, 16),
+		images: repeatImages(bridalImages, 10),
 	},
 	{
 		slug: "social",

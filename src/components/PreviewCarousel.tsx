@@ -86,8 +86,8 @@ export default function PreviewCarousel({
 
   return (
     <section className="px-8 py-16 md:px-16 md:py-20">
-      <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-14">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 items-center gap-8 md:gap-20 md:grid-cols-12">
           <motion.div
             className={`md:col-span-4 ${reversed ? "md:order-2" : ""}`}
             {...textMotion}
