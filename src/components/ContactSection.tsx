@@ -67,18 +67,18 @@ export default function ContactSection({
 	return (
 		<section
 			id="contacto"
-			className="scroll-mt-32 bg-[#faf8f5] px-8 py-24 md:min-h-screen md:px-16 md:py-32"
+			className="scroll-mt-32 bg-[#faf8f5] px-8 py-24 md:px-16 md:py-32"
 		>
 			<div className="container mx-auto max-w-6xl">
 				<div className="mb-16 text-center flex flex-col">
 					<motion.h2
-						className="mb-6 font-['Cormorant_Garamond'] text-6xl tracking-wider text-[#2a2a2a] md:text-8xl"
+						className="font-['Cormorant_Garamond'] text-6xl tracking-wider text-[#2a2a2a] md:text-8xl"
 						{...titleMotion}
 					>
 						Contacto
 					</motion.h2>
 					<motion.div className="mx-auto" {...bodyMotion}>
-						<p className="max-w-2xl font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
+						<p className="mt-2 max-w-2xl font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
 							¿Lista para transformar tu vision en realidad?
 							Contáctame para reservas, colaboraciones o consultas
 							sobre servicios personalizados.
@@ -90,7 +90,7 @@ export default function ContactSection({
 					<motion.div className="space-y-8" {...leftMotion}>
 						<div>
 							<h3 className="mb-6 font-['Cormorant_Garamond'] text-3xl text-[#2a2a2a]">
-								Informacion de contacto
+								Información de contacto
 							</h3>
 
 							<div className="space-y-6">
