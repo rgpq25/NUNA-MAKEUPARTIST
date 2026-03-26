@@ -70,7 +70,7 @@ export default function WorksPageHeader({
 						/>
 						<h1
 							className={cn(
-								"font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-8xl",
+								"font-['Cormorant_Garamond'] text-5xl leading-none text-[#2a2a2a] md:text-7xl lg:text-[80px]",
 								titleClassName,
 							)}
 						>

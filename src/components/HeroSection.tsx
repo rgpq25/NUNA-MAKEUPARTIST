@@ -1,5 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 
+import ResponsiveImage from "./ResponsiveImage";
+
 interface HeroSectionProps {
 	brandTitle: string;
 	brandSubtitle: string;
@@ -51,11 +53,10 @@ export default function HeroSection({
 						{...leftMotion}
 					>
 						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
-							<img
+							<ResponsiveImage
 								src={image}
 								alt={imageAlt}
-								loading="eager"
-								decoding="async"
+								priority
 								sizes="(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw"
 								className="h-full w-full object-cover object-center"
 							/>

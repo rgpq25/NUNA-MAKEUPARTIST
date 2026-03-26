@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CTAButton from "./CTAButton";
+import ResponsiveImage from "./ResponsiveImage";
 
 interface PreviewCarouselProps {
 	title: string;
@@ -73,9 +74,10 @@ export default function PreviewCarousel({
 			{images.map((img, index) => (
 				<div key={index} className="overflow-hidden">
 					<div className="aspect-3/4 overflow-hidden">
-						<img
+						<ResponsiveImage
 							src={img}
 							alt={`${title} ${index + 1}`}
+							sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 33vw"
 							className="h-full w-full object-cover"
 						/>
 					</div>
@@ -113,9 +115,10 @@ export default function PreviewCarousel({
 									{images.map((img, index) => (
 										<div key={index} className="px-2">
 											<div className="aspect-3/4 overflow-hidden">
-												<img
+												<ResponsiveImage
 													src={img}
 													alt={`${title} ${index + 1}`}
+													sizes="(max-width: 639px) 88vw, (max-width: 1023px) 48vw, 30vw"
 													className="h-full w-full object-cover"
 												/>
 											</div>

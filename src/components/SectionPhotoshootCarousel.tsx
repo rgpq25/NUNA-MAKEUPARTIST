@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getPhotoshootHref } from "../lib/content-links";
 import type { Photoshoot } from "../types/content";
+import ResponsiveImage from "./ResponsiveImage";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -340,10 +341,12 @@ export default function SectionPhotoshootCarousel({
 										className="absolute inset-0"
 										{...buildSlideRevealMotion(index)}
 									>
-										<img
+										<ResponsiveImage
 											src={photoshoot.mainImage}
 											alt={photoshoot.title}
 											draggable={false}
+											sizes="(max-width: 639px) 82vw, (max-width: 1023px) 60vw, 38vw"
+											loading={index === 0 ? "eager" : "lazy"}
 											className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 										/>
 										<div
