@@ -316,7 +316,7 @@ export default function SectionPhotoshootCarousel({
 			bleedContent={
 				<div
 					ref={carouselAreaRef}
-					className="relative min-h-100 w-full h-full"
+					className="relative min-h-120 w-full h-full"
 				>
 					<div
 						ref={emblaRef}
