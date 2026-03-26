@@ -41,14 +41,14 @@ const homepage = await getHomepageContent();
             class={`${index % 2 === 0 ? "bg-[#f5f2ed]" : "bg-[#faf8f5]"}`}
             style="scroll-margin-top: calc(var(--site-nav-height, 88px) + 1.5rem);"
           >
-            <PreviewCarousel client:visible {...section} reversed={index % 2 === 1} />
+            <PreviewCarousel client:load {...section} reversed={index % 2 === 1} />
           </div>
         ))
       }
 
-      <BiographySection client:visible {...homepage.biography} />
+      <BiographySection client:load {...homepage.biography} />
       <ContactSection
-        client:visible
+        client:load
         serviceOptions={homepage.sections.map((section) => section.title)}
       />
     </main>

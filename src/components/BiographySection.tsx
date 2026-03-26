@@ -1,7 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
 
-import ResponsiveImage from "./ResponsiveImage";
-
 interface BiographySectionProps {
 	title: string;
 	image: string;
@@ -43,10 +41,9 @@ export default function BiographySection({
 				<div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
 					<motion.div className="order-2 lg:order-1" {...leftMotion}>
 						<div className="aspect-3/4 overflow-hidden">
-							<ResponsiveImage
+							<img
 								src={image}
 								alt={imageAlt}
-								sizes="(max-width: 1023px) 100vw, 50vw"
 								className="h-full w-full object-cover"
 							/>
 						</div>

@@ -3,7 +3,6 @@ import { type ComponentProps } from "react";
 
 import { getSectionHref } from "../lib/content-links";
 import type { Photoshoot } from "../types/content";
-import ResponsiveImage from "./ResponsiveImage";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -84,11 +83,11 @@ export default function PhotoshootGalleryPage({
 						key={`${image}-${imageIndex}`}
 						{...figureProps(imageIndex)}
 					>
-						<ResponsiveImage
+						<img
 							src={image}
 							alt={`${photoshoot.title} ${imageIndex + 1}`}
 							loading={imageIndex < 3 ? "eager" : "lazy"}
-							sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
+							decoding="async"
 							className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 						/>
 

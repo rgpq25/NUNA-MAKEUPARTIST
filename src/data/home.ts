@@ -93,21 +93,21 @@ const fallbackSectionEntries = [
 		title: "Social",
 		description:
 			"Glamour moderno para eventos inolvidables. Looks vibrantes y contemporaneos que capturan la energia de cada celebracion.",
-		images: repeatImages(socialImages, 6),
+		images: repeatImages(socialImages, 16),
 	},
 	{
 		slug: "editorial",
 		title: "Editorial",
 		description:
 			"Alta moda y fotografia editorial. Creaciones audaces que trascienden las tendencias y definen nuevos estandares de belleza.",
-		images: repeatImages(editorialImages, 6),
+		images: repeatImages(editorialImages, 16),
 	},
 	{
 		slug: "brand-work",
 		title: "Brand Work",
 		description:
 			"Colaboraciones de lujo con marcas premium. Campanas profesionales que comunican sofisticacion y excelencia.",
-		images: repeatImages(brandImages, 6),
+		images: repeatImages(brandImages, 16),
 	},
 ];
 
