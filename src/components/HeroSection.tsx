@@ -1,12 +1,14 @@
 import { motion, useReducedMotion } from "motion/react";
 
+import type { OptimizedImageData } from "../types/images";
+
 interface HeroSectionProps {
 	brandTitle: string;
 	brandSubtitle: string;
 	headline: string;
 	description: string;
 	location: string;
-	image: string;
+	image: OptimizedImageData;
 	imageAlt: string;
 }
 
@@ -52,9 +54,15 @@ export default function HeroSection({
 					>
 						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
 							<img
-								src={image}
+								src={image.src}
+								srcSet={image.srcSet}
+								sizes={image.sizes}
+								width={image.width}
+								height={image.height}
 								alt={imageAlt}
 								loading="eager"
+								decoding="sync"
+								fetchPriority="high"
 								className="h-full w-full object-cover object-center"
 							/>
 						</div>

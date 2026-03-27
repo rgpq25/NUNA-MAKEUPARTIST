@@ -5,6 +5,7 @@ import type {
 	SectionPreview,
 	SectionPageContent,
 } from "../types/content";
+import type { ImageSource } from "../types/images";
 import img1600 from "../assets/IMG_1600.webp";
 import img2166 from "../assets/IMG_2166.webp";
 import img2177 from "../assets/IMG_2177.webp";
@@ -20,10 +21,10 @@ import img9320 from "../assets/IMG_9320.webp";
 import img9751 from "../assets/IMG_9751.webp";
 
 const bridalImages = [
-	img1600.src,
-	img2177.src,
-	img2178.src,
-	img9751.src,
+	img1600,
+	img2177,
+	img2178,
+	img9751,
 	"https://images.unsplash.com/photo-1525258946800-98cfd641d0de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 	"https://images.unsplash.com/photo-1519741497674-611481863552?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 	"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
@@ -46,10 +47,10 @@ const socialImages = [
 ];
 
 const editorialImages = [
-	img6515.src,
-	img6510.src,
-	img2677.src,
-	img9300.src,
+	img6515,
+	img6510,
+	img2677,
+	img9300,
 	"https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 	"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 	"https://images.unsplash.com/photo-1509631179647-0177331693ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
@@ -59,10 +60,10 @@ const editorialImages = [
 ];
 
 const brandImages = [
-	img2225.src,
-	img2228.src,
-	img9284.src,
-	img9320.src,
+	img2225,
+	img2228,
+	img9284,
+	img9320,
 	"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 	"https://images.unsplash.com/photo-1521572267360-ee0c2909d518?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 	"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
@@ -71,7 +72,7 @@ const brandImages = [
 	"https://images.unsplash.com/photo-1512436991641-6745cdb1723f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
 ];
 
-const repeatImages = (images: string[], count: number, start = 0) =>
+const repeatImages = (images: ImageSource[], count: number, start = 0) =>
 	Array.from(
 		{ length: count },
 		(_, index) => images[(start + index) % images.length],
@@ -81,7 +82,7 @@ const buildPhotoshoot = (
 	slug: string,
 	title: string,
 	description: string,
-	imagePool: string[],
+	imagePool: ImageSource[],
 	mainIndex: number,
 	start = 0,
 	imageCount = 12,
@@ -379,12 +380,12 @@ export const fallbackHomepageContent: HomePageContent = {
 		description:
 			"Especializada en crear belleza que trasciende tendencias. Desde bodas intimas hasta campanas de alta moda, cada trabajo refleja sofisticacion, tecnica impecable y una vision artistica unica.",
 		location: "Basada en Madrid · Disponible internacionalmente",
-		image: img2166.src,
+		image: img2166,
 		imageAlt: "NUNA Makeup Artist",
 	},
 	biography: {
 		title: "Biografía",
-		image: img9320.src,
+		image: img9320,
 		imageAlt: "NUNA - Makeup Artist",
 		paragraphs: [
 			"Con mas de una decada de experiencia en la industria de la belleza, me especializo en crear maquillaje que realza la belleza natural y cuenta historias unicas a traves del arte.",

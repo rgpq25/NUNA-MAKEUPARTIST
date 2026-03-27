@@ -1,8 +1,10 @@
 import { motion, useReducedMotion } from "motion/react";
 
+import type { OptimizedImageData } from "../types/images";
+
 interface BiographySectionProps {
 	title: string;
-	image: string;
+	image: OptimizedImageData;
 	imageAlt: string;
 	paragraphs: string[];
 	certificationsTitle: string;
@@ -42,10 +44,15 @@ export default function BiographySection({
 					<motion.div className="order-2 lg:order-1" {...leftMotion}>
 						<div className="aspect-3/4 overflow-hidden">
 							<img
-								src={image}
+								src={image.src}
+								srcSet={image.srcSet}
+								sizes={image.sizes}
+								width={image.width}
+								height={image.height}
 								alt={imageAlt}
 								className="h-full w-full object-cover"
 								loading="lazy"
+								decoding="async"
 							/>
 						</div>
 					</motion.div>

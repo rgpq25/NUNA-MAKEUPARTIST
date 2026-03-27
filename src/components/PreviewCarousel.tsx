@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+
+import type { OptimizedImageData } from "../types/images";
 import CTAButton from "./CTAButton";
-import Image from "astro/components/Image.astro";
 
 interface PreviewCarouselProps {
 	title: string;
 	description: string;
-	images: string[];
+	images: OptimizedImageData[];
 	href: string;
 	reversed?: boolean;
 }
@@ -21,12 +22,12 @@ export default function PreviewCarousel({
 	href,
 	reversed = false,
 }: PreviewCarouselProps) {
-	// const [mounted, setMounted] = useState(false);
+	const [mounted, setMounted] = useState(false);
 	const shouldReduceMotion = useReducedMotion();
 
-	// useEffect(() => {
-	// 	setMounted(true);
-	// }, []);
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	const textMotion = shouldReduceMotion
 		? {}
@@ -72,13 +73,18 @@ export default function PreviewCarousel({
 	const staticGallery = (
 		<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
 			{images.map((img, index) => (
-				<div key={index} className="overflow-hidden">
+				<div key={`${img.src}-${index}`} className="overflow-hidden">
 					<div className="aspect-3/4 overflow-hidden">
 						<img
-							src={img}
+							src={img.src}
+							srcSet={img.srcSet}
+							sizes={img.sizes}
+							width={img.width}
+							height={img.height}
 							alt={`${title} ${index + 1}`}
 							className="h-full w-full object-cover"
 							loading="lazy"
+							decoding="async"
 						/>
 					</div>
 				</div>
@@ -105,21 +111,26 @@ export default function PreviewCarousel({
 						</CTAButton>
 					</motion.div>
 
-					{/* <motion.div
+					<motion.div
 						className={`lg:col-span-8 ${reversed ? "lg:order-1" : ""}`}
 						{...carouselMotion}
 					>
 						<div className="preview-carousel">
 							{mounted ? (
-								<Slider {...settings} >
+								<Slider {...settings}>
 									{images.map((img, index) => (
-										<div key={index} className="px-2">
+										<div key={`${img.src}-${index}`} className="px-2">
 											<div className="aspect-3/4 overflow-hidden">
 												<img
-													src={img}
+													src={img.src}
+													srcSet={img.srcSet}
+													sizes={img.sizes}
+													width={img.width}
+													height={img.height}
 													alt={`${title} ${index + 1}`}
 													className="h-full w-full object-cover"
 													loading="lazy"
+													decoding="async"
 												/>
 											</div>
 										</div>
@@ -129,7 +140,7 @@ export default function PreviewCarousel({
 								staticGallery
 							)}
 						</div>
-					</motion.div> */}
+					</motion.div>
 				</div>
 			</div>
 		</section>

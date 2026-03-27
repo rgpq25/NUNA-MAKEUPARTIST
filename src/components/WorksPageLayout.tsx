@@ -10,12 +10,7 @@ interface WorksPageLayoutProps {
 	innerClassName?: string;
 	containerClassName?: string;
 	headerClassName?: string;
-	bleedContentClassName?: string;
 	childrenClassName?: string;
-}
-
-function joinClassNames(...classNames: Array<string | undefined>) {
-	return classNames.filter(Boolean).join(" ");
 }
 
 export default function WorksPageLayout({
@@ -27,7 +22,6 @@ export default function WorksPageLayout({
 	innerClassName,
 	containerClassName,
 	headerClassName,
-	bleedContentClassName,
 	childrenClassName,
 }: WorksPageLayoutProps) {
 	const defaultContainerClassName = "mx-auto w-full max-w-7xl px-6 md:px-10";
@@ -65,7 +59,7 @@ export default function WorksPageLayout({
 				) : null}
 
 				{bleedContent ? (
-					<div className={cn("w-full", bleedContentClassName)}>
+					<div className={cn("w-full relative min-h-0")}>
 						{bleedContent}
 					</div>
 				) : null}

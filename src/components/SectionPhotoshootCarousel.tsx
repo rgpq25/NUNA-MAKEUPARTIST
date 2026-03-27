@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getPhotoshootHref } from "../lib/content-links";
-import type { Photoshoot } from "../types/content";
+import type { OptimizedImageData } from "../types/images";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -26,7 +26,11 @@ interface SectionPhotoshootCarouselProps {
 	sectionDescription: string;
 	sectionSlug: string;
 	sectionTitle: string;
-	photoshoots: Photoshoot[];
+	photoshoots: Array<{
+		slug: string;
+		title: string;
+		mainImage: OptimizedImageData;
+	}>;
 }
 
 export default function SectionPhotoshootCarousel({
@@ -303,8 +307,7 @@ export default function SectionPhotoshootCarousel({
 		<WorksPageLayout
 			className="section-photoshoot-carousel bg-[#f7f1e9]"
 			overlayClassName="bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.16),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.8),_rgba(247,241,233,0.96))]"
-			innerClassName="grid min-h-dvh grid-rows-[auto_minmax(0,1fr)_auto] gap-2 md:gap-6"
-			bleedContentClassName="relative min-h-0"
+			innerClassName="flex flex-col gap-2 md:gap-6 [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:min-h-0 [&>*:nth-child(2)]:flex-1"
 			header={
 				<WorksPageHeader
 					backHref={`/#${sectionSlug}`}
@@ -316,11 +319,11 @@ export default function SectionPhotoshootCarousel({
 			bleedContent={
 				<div
 					ref={carouselAreaRef}
-					className="relative min-h-120 w-full h-full"
+					className="relative flex min-h-120 w-full flex-1 flex-col"
 				>
 					<div
 						ref={emblaRef}
-						className="section-photoshoot-viewport h-full min-h-0 overflow-hidden"
+						className="section-photoshoot-viewport min-h-0 flex-1 overflow-hidden"
 						style={viewportStyle}
 					>
 						<div className="section-photoshoot-track flex h-full items-center gap-3 sm:gap-4 lg:gap-0">
@@ -341,9 +344,15 @@ export default function SectionPhotoshootCarousel({
 										{...buildSlideRevealMotion(index)}
 									>
 										<img
-											src={photoshoot.mainImage}
+											src={photoshoot.mainImage.src}
+											srcSet={photoshoot.mainImage.srcSet}
+											sizes={photoshoot.mainImage.sizes}
+											width={photoshoot.mainImage.width}
+											height={photoshoot.mainImage.height}
 											alt={photoshoot.title}
 											draggable={false}
+											loading="lazy"
+											decoding="async"
 											className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 										/>
 										<div

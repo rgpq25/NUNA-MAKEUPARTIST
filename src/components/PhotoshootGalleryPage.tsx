@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { type ComponentProps } from "react";
 
 import { getSectionHref } from "../lib/content-links";
-import type { Photoshoot } from "../types/content";
+import type { OptimizedImageData } from "../types/images";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -11,7 +11,11 @@ const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 interface PhotoshootGalleryPageProps {
 	sectionSlug: string;
 	sectionTitle: string;
-	photoshoot: Photoshoot;
+	photoshoot: {
+		title: string;
+		description: string;
+		images: OptimizedImageData[];
+	};
 }
 
 export default function PhotoshootGalleryPage({
@@ -20,19 +24,6 @@ export default function PhotoshootGalleryPage({
 	photoshoot,
 }: PhotoshootGalleryPageProps) {
 	const shouldReduceMotion = useReducedMotion();
-
-	const buildRevealMotion = (delay: number, y = 24) =>
-		shouldReduceMotion
-			? {}
-			: {
-					initial: { opacity: 0, y },
-					animate: { opacity: 1, y: 0 },
-					transition: {
-						duration: 0.82,
-						delay,
-						ease: REVEAL_EASE,
-					},
-				};
 
 	const buildGalleryItemMotion = (index: number) =>
 		shouldReduceMotion
@@ -80,11 +71,15 @@ export default function PhotoshootGalleryPage({
 			<div className="columns-1 gap-4 md:columns-2 md:gap-5 lg:columns-3 lg:gap-6">
 				{photoshoot.images.map((image, imageIndex) => (
 					<motion.figure
-						key={`${image}-${imageIndex}`}
+						key={`${image.src}-${imageIndex}`}
 						{...figureProps(imageIndex)}
 					>
 						<img
-							src={image}
+							src={image.src}
+							srcSet={image.srcSet}
+							sizes={image.sizes}
+							width={image.width}
+							height={image.height}
 							alt={`${photoshoot.title} ${imageIndex + 1}`}
 							loading={imageIndex < 6 ? "eager" : "lazy"}
 							decoding="async"

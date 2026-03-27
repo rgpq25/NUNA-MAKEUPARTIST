@@ -1,3 +1,5 @@
+import type { ImageSource } from "./images";
+
 export interface NavLink {
   label: string;
   href: string;
@@ -7,7 +9,7 @@ export interface SectionPreview {
   slug: string;
   title: string;
   description: string;
-  images: string[];
+  images: ImageSource[];
   href: string;
 }
 
@@ -15,8 +17,8 @@ export interface Photoshoot {
   slug: string;
   title: string;
   description: string;
-  mainImage: string;
-  images: string[];
+  mainImage: ImageSource;
+  images: ImageSource[];
 }
 
 export interface SectionPageContent {
@@ -41,13 +43,13 @@ export interface HeroContent {
   headline: string;
   description: string;
   location: string;
-  image: string;
+  image: ImageSource;
   imageAlt: string;
 }
 
 export interface BiographyContent {
   title: string;
-  image: string;
+  image: ImageSource;
   imageAlt: string;
   paragraphs: string[];
   certificationsTitle: string;

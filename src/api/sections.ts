@@ -1,7 +1,7 @@
 import { fallbackSectionPages } from "../data/home";
 import type { Photoshoot, SectionPageContent } from "../types/content";
 import type { PayloadDocsResponse, PayloadSection } from "../types/payload";
-import { fetchPayloadJSON } from "./client";
+import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
 
 async function fetchSectionPayload(): Promise<PayloadSection[] | null> {
 	try {
@@ -30,8 +30,10 @@ export async function fetchSectionPages(): Promise<
 				slug: photoshoot.slug,
 				title: photoshoot.title,
 				description: photoshoot.description,
-				mainImage: photoshoot.mainImage.url,
-				images: photoshoot.images.map((image) => image.url),
+				mainImage: resolvePayloadAssetURL(photoshoot.mainImage.url),
+				images: photoshoot.images.map((image) =>
+					resolvePayloadAssetURL(image.url),
+				),
 			}),
 		);
 

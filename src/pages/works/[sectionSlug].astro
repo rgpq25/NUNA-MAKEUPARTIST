@@ -1,6 +1,7 @@
 ---
 import SectionPhotoshootCarousel from "../../components/SectionPhotoshootCarousel";
 import { getSectionPages } from "../../api/sections";
+import { optimizeImage } from "../../lib/images";
 import type { SectionPageContent } from "../../types/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
@@ -14,6 +15,16 @@ export async function getStaticPaths() {
 }
 
 const { section } = Astro.props as { section: SectionPageContent };
+const photoshoots = await Promise.all(
+  section.photoshoots.map(async (photoshoot) => ({
+    slug: photoshoot.slug,
+    title: photoshoot.title,
+    mainImage: await optimizeImage(photoshoot.mainImage, {
+      widths: [720, 960, 1280],
+      sizes: "(max-width: 639px) 78vw, (max-width: 1023px) 62vw, 40vw",
+    }),
+  })),
+);
 ---
 
 <BaseLayout
@@ -26,7 +37,7 @@ const { section } = Astro.props as { section: SectionPageContent };
       sectionSlug={section.slug}
       sectionTitle={section.title}
       sectionDescription={section.description}
-      photoshoots={section.photoshoots}
+      photoshoots={photoshoots}
     />
   </main>
 </BaseLayout>

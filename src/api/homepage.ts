@@ -6,7 +6,7 @@ import type {
 	PayloadHomepage,
 	PayloadSectionPreview,
 } from "../types/payload";
-import { fetchPayloadJSON } from "./client";
+import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
 
 async function fetchHomepage(): Promise<PayloadHomepage | null> {
 	try {
@@ -39,8 +39,6 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 		fetchHomepage(),
 		fetchSectionPreviews(),
 	]);
-
-	console.log(JSON.stringify(homepagePayload, null, 2));
 
 	if (!homepagePayload || !sectionPreviewsPayload) {
 		return null;
@@ -91,7 +89,9 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			slug: section.slug,
 			title: section.title,
 			description: section.mainDescription,
-			images: section.mainImages.map((image) => image.url),
+			images: section.mainImages.map((image) =>
+				resolvePayloadAssetURL(image.url),
+			),
 			href: getSectionHref(section.slug),
 		};
 	});
@@ -128,7 +128,7 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			headline: heroHeadline,
 			description: heroDescription,
 			location: heroLocation,
-			image: heroImage.url,
+			image: resolvePayloadAssetURL(heroImage.url),
 			imageAlt: brandingTitle,
 		},
 		biography: {
@@ -136,7 +136,7 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			paragraphs: biographyParagraphs,
 			certificationsTitle: biographyCertificationsTitle,
 			certifications: biographyCertifications,
-			image: biographyImage.url,
+			image: resolvePayloadAssetURL(biographyImage.url),
 			imageAlt: biographyTitle,
 		},
 		navigation,

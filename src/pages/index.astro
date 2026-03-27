@@ -5,9 +5,29 @@ import HeroSection from "../components/HeroSection";
 import Navigation from "../components/Navigation";
 import PreviewCarousel from "../components/PreviewCarousel";
 import { getHomepageContent } from "../api/homepage";
+import { optimizeImage, optimizeImages } from "../lib/images";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const homepage = await getHomepageContent();
+const [heroImage, biographyImage, sections] = await Promise.all([
+  optimizeImage(homepage.hero.image, {
+    widths: [640, 960, 1280, 1600],
+    sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw",
+  }),
+  optimizeImage(homepage.biography.image, {
+    widths: [480, 720, 960, 1280],
+    sizes: "(max-width: 1023px) 100vw, 50vw",
+  }),
+  Promise.all(
+    homepage.sections.map(async (section) => ({
+      ...section,
+      images: await optimizeImages(section.images, {
+        widths: [480, 720, 960],
+        sizes: "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 28vw",
+      }),
+    })),
+  ),
+]);
 ---
 
 <BaseLayout
@@ -30,12 +50,12 @@ const homepage = await getHomepageContent();
         headline={homepage.hero.headline}
         description={homepage.hero.description}
         location={homepage.hero.location}
-        image={homepage.hero.image}
+        image={heroImage}
         imageAlt={homepage.hero.imageAlt}
       />
 
       {
-        homepage.sections.map((section, index) => (
+        sections.map((section, index) => (
           <div
             id={section.slug}
             class={`${index % 2 === 0 ? "bg-[#f5f2ed]" : "bg-[#faf8f5]"}`}
@@ -46,10 +66,10 @@ const homepage = await getHomepageContent();
         ))
       }
 
-      <BiographySection client:load {...homepage.biography} />
+      <BiographySection client:load {...homepage.biography} image={biographyImage} />
       <ContactSection
         client:load
-        serviceOptions={homepage.sections.map((section) => section.title)}
+        serviceOptions={sections.map((section) => section.title)}
       />
     </main>
   </div>
