@@ -41,7 +41,7 @@ export default function HeroSection({
 		<section
 			className="bg-[#faf8f5] px-5 md:px-10 lg:px-16"
 			style={{
-				marginTop: "calc(var(--site-nav-height, 88px)",
+				marginTop: "calc(var(--site-nav-height, 88px))",
 			}}
 		>
 			<div className="mx-auto max-w-7xl py-5 md:py-10">
