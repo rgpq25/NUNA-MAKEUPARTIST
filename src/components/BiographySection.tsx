@@ -45,6 +45,7 @@ export default function BiographySection({
 								src={image}
 								alt={imageAlt}
 								className="h-full w-full object-cover"
+								loading="lazy"
 							/>
 						</div>
 					</motion.div>

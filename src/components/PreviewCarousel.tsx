@@ -1,9 +1,10 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import CTAButton from "./CTAButton";
+import Image from "astro/components/Image.astro";
 
 interface PreviewCarouselProps {
 	title: string;
@@ -20,12 +21,12 @@ export default function PreviewCarousel({
 	href,
 	reversed = false,
 }: PreviewCarouselProps) {
-	const [mounted, setMounted] = useState(false);
+	// const [mounted, setMounted] = useState(false);
 	const shouldReduceMotion = useReducedMotion();
 
-	useEffect(() => {
-		setMounted(true);
-	}, []);
+	// useEffect(() => {
+	// 	setMounted(true);
+	// }, []);
 
 	const textMotion = shouldReduceMotion
 		? {}
@@ -77,6 +78,7 @@ export default function PreviewCarousel({
 							src={img}
 							alt={`${title} ${index + 1}`}
 							className="h-full w-full object-cover"
+							loading="lazy"
 						/>
 					</div>
 				</div>
@@ -103,7 +105,7 @@ export default function PreviewCarousel({
 						</CTAButton>
 					</motion.div>
 
-					<motion.div
+					{/* <motion.div
 						className={`lg:col-span-8 ${reversed ? "lg:order-1" : ""}`}
 						{...carouselMotion}
 					>
@@ -117,6 +119,7 @@ export default function PreviewCarousel({
 													src={img}
 													alt={`${title} ${index + 1}`}
 													className="h-full w-full object-cover"
+													loading="lazy"
 												/>
 											</div>
 										</div>
@@ -126,7 +129,7 @@ export default function PreviewCarousel({
 								staticGallery
 							)}
 						</div>
-					</motion.div>
+					</motion.div> */}
 				</div>
 			</div>
 		</section>

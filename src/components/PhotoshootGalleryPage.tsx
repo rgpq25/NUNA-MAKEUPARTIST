@@ -86,7 +86,7 @@ export default function PhotoshootGalleryPage({
 						<img
 							src={image}
 							alt={`${photoshoot.title} ${imageIndex + 1}`}
-							loading={imageIndex < 3 ? "eager" : "lazy"}
+							loading={imageIndex < 6 ? "eager" : "lazy"}
 							decoding="async"
 							className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 						/>

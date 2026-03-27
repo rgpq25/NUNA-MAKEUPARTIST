@@ -55,8 +55,6 @@ export default function HeroSection({
 								src={image}
 								alt={imageAlt}
 								loading="eager"
-								decoding="async"
-								sizes="(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw"
 								className="h-full w-full object-cover object-center"
 							/>
 						</div>
