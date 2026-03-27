@@ -41,18 +41,12 @@ export default function HeroSection({
 		<section
 			className="bg-[#faf8f5] px-5 md:px-10 lg:px-16"
 			style={{
-				// paddingTop:
-				// 	"calc(var(--site-nav-height, 88px) + clamp(1.5rem, 3vw, 6rem))",
-				// paddingBottom: "clamp(1.5rem, 3vw, 6rem)",
-				marginTop: 'calc(var(--site-nav-height, 88px)'
+				marginTop: "calc(var(--site-nav-height, 88px)",
 			}}
 		>
 			<div className="mx-auto max-w-7xl py-5 md:py-10">
-				<div className="overflow-hidden  grid grid-cols-1 items-start gap-6 sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:max-h-192 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-center">
-					<motion.div
-						className="lg:h-full"
-						{...leftMotion}
-					>
+				<div className="overflow-hidden flex flex-col items-start gap-6 sm:gap-8 md:gap-10 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:min-h-160 lg:max-h-192 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
+					<motion.div className="w-full lg:h-full lg:min-w-0 lg:flex-[1.08]" {...leftMotion}>
 						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
 							<img
 								src={image.src}
@@ -63,14 +57,13 @@ export default function HeroSection({
 								alt={imageAlt}
 								loading="eager"
 								decoding="sync"
-								fetchPriority="high"
 								className="h-full w-full object-cover object-center"
 							/>
 						</div>
 					</motion.div>
 
 					<motion.div
-						className="flex flex-col justify-center gap-3 self-center lg:gap-4"
+						className="flex w-full flex-col justify-center gap-3 self-center lg:min-w-0 lg:flex-[0.92] lg:gap-4"
 						{...rightMotion}
 					>
 						<div className="space-y-2">
