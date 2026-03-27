@@ -41,13 +41,14 @@ export default function HeroSection({
 		<section
 			className="bg-[#faf8f5] px-5 md:px-10 lg:px-16"
 			style={{
-				paddingTop:
-					"calc(var(--site-nav-height, 88px) + clamp(1.5rem, 3vw, 6rem))",
-				paddingBottom: "clamp(1.5rem, 3vw, 6rem)",
+				// paddingTop:
+				// 	"calc(var(--site-nav-height, 88px) + clamp(1.5rem, 3vw, 6rem))",
+				// paddingBottom: "clamp(1.5rem, 3vw, 6rem)",
+				marginTop: 'calc(var(--site-nav-height, 88px)'
 			}}
 		>
-			<div className="mx-auto max-w-7xl">
-				<div className="grid grid-cols-1 items-start gap-6 sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20 lg:h-[calc(100svh-var(--site-nav-height,88px)-4.5rem)] lg:max-h-192 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-center">
+			<div className="mx-auto max-w-7xl py-5 md:py-10">
+				<div className="overflow-hidden  grid grid-cols-1 items-start gap-6 sm:gap-8 md:gap-10 lg:gap-14 xl:gap-20 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:max-h-192 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-center">
 					<motion.div
 						className="lg:h-full"
 						{...leftMotion}
