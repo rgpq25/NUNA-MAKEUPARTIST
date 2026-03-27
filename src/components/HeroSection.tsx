@@ -46,7 +46,10 @@ export default function HeroSection({
 		>
 			<div className="mx-auto max-w-7xl py-5 md:py-10">
 				<div className="overflow-hidden flex flex-col items-start gap-6 sm:gap-8 md:gap-10 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:min-h-160 lg:max-h-192 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
-					<motion.div className="w-full lg:h-full lg:min-w-0 lg:flex-[1.08]" {...leftMotion}>
+					<motion.div
+						className="w-full lg:h-full lg:min-w-0 lg:flex-[1.08]"
+						// {...leftMotion}
+					>
 						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
 							<img
 								src={image.src}
@@ -64,7 +67,7 @@ export default function HeroSection({
 
 					<motion.div
 						className="flex w-full flex-col justify-center gap-3 self-center lg:min-w-0 lg:flex-[0.92] lg:gap-4"
-						{...rightMotion}
+						// {...rightMotion}
 					>
 						<div className="space-y-2">
 							<p className="font-['Montserrat'] text-[0.7rem] font-medium tracking-[0.3em] text-[#2a2a2a]/55 uppercase sm:text-[0.78rem]">
