@@ -1,7 +1,3 @@
-.preview-carousel .slick-dots {
-  bottom: -40px;
-}
-
 .section-photoshoot-viewport {
   cursor: grab;
   overflow: hidden;
@@ -61,50 +57,3 @@
   }
 }
 
-.preview-carousel .slick-dots li button::before {
-  color: #c9a96e;
-  opacity: 0.3;
-  font-size: 8px;
-}
-
-.preview-carousel .slick-dots li.slick-active button::before {
-  color: #c9a96e;
-  opacity: 1;
-}
-
-.preview-carousel .slick-prev,
-.preview-carousel .slick-next {
-  width: 40px;
-  height: 40px;
-  z-index: 10;
-}
-
-.preview-carousel .slick-prev {
-  left: -40px;
-}
-
-.preview-carousel .slick-next {
-  right: -40px;
-}
-
-.preview-carousel .slick-prev::before,
-.preview-carousel .slick-next::before {
-  color: #c9a96e;
-  font-size: 24px;
-  opacity: 0.5;
-}
-
-.preview-carousel .slick-prev:hover::before,
-.preview-carousel .slick-next:hover::before {
-  opacity: 1;
-}
-
-@media (max-width: 768px) {
-  .preview-carousel .slick-prev {
-    left: -30px;
-  }
-
-  .preview-carousel .slick-next {
-    right: -30px;
-  }
-}
