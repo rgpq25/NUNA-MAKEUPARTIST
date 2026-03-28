@@ -1,6 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { NavLink } from "../types/content";
 
 interface NavigationProps {
@@ -16,7 +16,6 @@ export default function Navigation({
 }: NavigationProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const shouldReduceMotion = useReducedMotion();
-	const navRef = useRef<HTMLElement | null>(null);
 	const leftLinks = links.slice(0, 2);
 	const rightLinks = links.slice(2, 4);
 	const motionProps = shouldReduceMotion
@@ -35,37 +34,12 @@ export default function Navigation({
 				transition: { duration: 0.2 },
 			};
 
-	useEffect(() => {
-		const navElement = navRef.current;
-
-		if (!navElement) {
-			return;
-		}
-
-		const updateNavigationHeight = () => {
-			document.documentElement.style.setProperty(
-				"--site-nav-height",
-				`${navElement.getBoundingClientRect().height}px`,
-			);
-		};
-
-		const resizeObserver = new ResizeObserver(updateNavigationHeight);
-
-		resizeObserver.observe(navElement);
-		updateNavigationHeight();
-
-		return () => {
-			resizeObserver.disconnect();
-		};
-	}, [isMenuOpen]);
-
 	return (
 		<motion.nav
-			ref={navRef}
-			className="fixed top-0 left-0 right-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5]/95 px-6 py-4 backdrop-blur-sm md:px-16 md:py-5"
+			className="sticky top-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5]/95 px-6 backdrop-blur-sm md:px-16"
 			{...motionProps}
 		>
-			<div className="container relative mx-auto max-w-7xl">
+			<div className="container relative mx-auto max-w-7xl py-4 md:py-5">
 				<div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 md:grid-cols-[1fr_auto_1fr]">
 					<div className="hidden items-center gap-10 md:flex overflow-hidden">
 						{leftLinks.map((link) => (
