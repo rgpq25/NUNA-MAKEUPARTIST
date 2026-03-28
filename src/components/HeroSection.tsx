@@ -25,16 +25,16 @@ export default function HeroSection({
 	const leftMotion = shouldReduceMotion
 		? {}
 		: {
-				initial: { opacity: 0, x: -40 },
+				initial: { opacity: 0, x: -20 },
 				animate: { opacity: 1, x: 0 },
-				transition: { duration: 1, delay: 0.5 },
+				transition: { duration: 0.2 },
 			};
 	const rightMotion = shouldReduceMotion
 		? {}
 		: {
-				initial: { opacity: 0, x: 40 },
+				initial: { opacity: 0, x: 20 },
 				animate: { opacity: 1, x: 0 },
-				transition: { duration: 1, delay: 0.3 },
+				transition: { duration: 0.2 },
 			};
 
 	return (

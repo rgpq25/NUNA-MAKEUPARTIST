@@ -25,7 +25,7 @@ export default function BiographySection({
 		: {
 				initial: { opacity: 0, x: -40 },
 				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.8 },
+				transition: { duration: 0.4, delay: 0.2 },
 				viewport: { once: true },
 			};
 	const rightMotion = shouldReduceMotion
@@ -33,7 +33,7 @@ export default function BiographySection({
 		: {
 				initial: { opacity: 0, x: 40 },
 				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.8, delay: 0.2 },
+				transition: { duration: 0.4, delay: 0.2 },
 				viewport: { once: true },
 			};
 

@@ -36,7 +36,7 @@ export default function ContactSection({
 		: {
 				initial: { opacity: 0, y: -20 },
 				whileInView: { opacity: 1, y: 0 },
-				transition: { duration: 0.8 },
+				transition: { duration: 0.4 },
 				viewport: { once: true },
 			};
 	const bodyMotion = shouldReduceMotion
@@ -44,7 +44,7 @@ export default function ContactSection({
 		: {
 				initial: { opacity: 0, y: 20 },
 				whileInView: { opacity: 1, y: 0 },
-				transition: { duration: 0.8, delay: 0.2 },
+				transition: { duration: 0.4, delay: 0.2 },
 				viewport: { once: true },
 			};
 	const leftMotion = shouldReduceMotion
@@ -52,7 +52,7 @@ export default function ContactSection({
 		: {
 				initial: { opacity: 0, x: -40 },
 				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.8, delay: 0.3 },
+				transition: { duration: 0.4, delay: 0.3 },
 				viewport: { once: true },
 			};
 	const rightMotion = shouldReduceMotion
@@ -60,7 +60,7 @@ export default function ContactSection({
 		: {
 				initial: { opacity: 0, x: 40 },
 				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.8, delay: 0.4 },
+				transition: { duration: 0.4, delay: 0.4 },
 				viewport: { once: true },
 			};
 
