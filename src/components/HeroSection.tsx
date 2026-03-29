@@ -40,6 +40,7 @@ export default function HeroSection({
 	return (
 		<section className="bg-[#faf8f5] px-5 md:px-10 lg:px-16">
 			<div className="mx-auto max-w-7xl py-5 md:py-10">
+				{"Should remove motion? "} {shouldReduceMotion}
 				<div className="overflow-hidden flex flex-col items-start gap-6 sm:gap-8 md:gap-10 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:min-h-160 lg:max-h-192 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
 					<motion.div
 						className="w-full lg:h-full lg:min-w-0 lg:flex-[1.08]"
