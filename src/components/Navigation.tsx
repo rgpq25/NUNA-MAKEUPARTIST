@@ -32,7 +32,7 @@ export default function Navigation({
 
 	return (
 		<motion.nav
-			className="sticky top-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5]/95 px-6 backdrop-blur-sm md:px-16"
+			className="sticky top-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5] px-6 md:px-16"
 			{...motionProps}
 		>
 			<div className="container relative mx-auto max-w-7xl py-4 md:py-5">
@@ -93,7 +93,7 @@ export default function Navigation({
 				<AnimatePresence>
 					{isMenuOpen ? (
 						<motion.div
-							className="absolute inset-x-0 top-full overflow-hidden pt-4 md:hidden -mx-6 shadow-md"
+							className="absolute inset-x-0 top-full overflow-hidden md:hidden -mx-6 shadow-md"
 							{...drawerMotion}
 						>
 							<div className="border-t border-[#2a2a2a]/10 bg-[#faf8f5] p-6">
