@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { type ComponentProps } from "react";
 
 import { getSectionHref } from "../lib/content-links";
@@ -23,21 +23,18 @@ export default function PhotoshootGalleryPage({
 	sectionTitle,
 	photoshoot,
 }: PhotoshootGalleryPageProps) {
-	const shouldReduceMotion = useReducedMotion();
-
-	const buildGalleryItemMotion = (index: number) =>
-		shouldReduceMotion
-			? {}
-			: {
-					initial: { opacity: 0, y: 34, scale: 0.985 },
-					whileInView: { opacity: 1, y: 0, scale: 1 },
-					transition: {
-						duration: 0.86,
-						delay: Math.min(index, 5) * 0.08,
-						ease: REVEAL_EASE,
-					},
-					viewport: { once: true, amount: 0.2 },
-				};
+	const buildGalleryItemMotion = (index: number) => {
+		return {
+			initial: { opacity: 0, y: 34, scale: 0.985 },
+			whileInView: { opacity: 1, y: 0, scale: 1 },
+			transition: {
+				duration: 0.86,
+				delay: Math.min(index, 5) * 0.08,
+				ease: REVEAL_EASE,
+			},
+			viewport: { once: true, amount: 0.2 },
+		};
+	};
 
 	const figureProps = (
 		index: number,
