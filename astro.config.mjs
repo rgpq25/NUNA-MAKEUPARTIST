@@ -5,7 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
 
 const env = loadEnv(process.env.NODE_ENV ?? "development", process.cwd(), "");
-const allowedPreviewHosts = ["localhost", "127.0.0.1", ".up.railway.app"];
 const remotePatterns = [
   {
     protocol: "https",
@@ -29,10 +28,6 @@ if (env.PAYLOAD_API_URL) {
   }
 }
 
-if (process.env.RAILWAY_PUBLIC_DOMAIN) {
-  allowedPreviewHosts.push(process.env.RAILWAY_PUBLIC_DOMAIN);
-}
-
 export default defineConfig({
   integrations: [react()],
   image: {
@@ -40,8 +35,11 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: true,
+    },
     preview: {
-      allowedHosts: allowedPreviewHosts,
+      allowedHosts: true,
     },
   },
 });
