@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 
 import useEmblaCarousel from "embla-carousel-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -39,7 +39,6 @@ export default function SectionPhotoshootCarousel({
 	sectionTitle,
 	photoshoots,
 }: SectionPhotoshootCarouselProps) {
-	const shouldReduceMotion = useReducedMotion();
 	const carouselAreaRef = useRef<HTMLDivElement | null>(null);
 	const slideRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 	const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -52,7 +51,7 @@ export default function SectionPhotoshootCarousel({
 		align: "center",
 		containScroll: false,
 		dragFree: false,
-		duration: shouldReduceMotion ? 0 : 25,
+		duration: 25,
 		loop: false,
 		skipSnaps: false,
 	});
@@ -131,37 +130,29 @@ export default function SectionPhotoshootCarousel({
 		});
 	}, [emblaApi]);
 
-	const buildRevealMotion = useCallback(
-		(delay: number, y = 24) =>
-			shouldReduceMotion
-				? {}
-				: {
-						initial: { opacity: 0, y },
-						animate: { opacity: 1, y: 0 },
-						transition: {
-							duration: 0.82,
-							delay,
-							ease: REVEAL_EASE,
-						},
-					},
-		[shouldReduceMotion],
-	);
+	const buildRevealMotion = useCallback((delay: number, y = 24) => {
+		return {
+			initial: { opacity: 0, y },
+			animate: { opacity: 1, y: 0 },
+			transition: {
+				duration: 0.82,
+				delay,
+				ease: REVEAL_EASE,
+			},
+		};
+	}, []);
 
-	const buildSlideRevealMotion = useCallback(
-		(index: number) =>
-			shouldReduceMotion
-				? {}
-				: {
-						initial: { opacity: 0, y: 24 },
-						animate: { opacity: 1, y: 0 },
-						transition: {
-							duration: 0.78,
-							delay: 0.18 + Math.min(index, 4) * 0.08,
-							ease: REVEAL_EASE,
-						},
-					},
-		[shouldReduceMotion],
-	);
+	const buildSlideRevealMotion = useCallback((index: number) => {
+		return {
+			initial: { opacity: 0, y: 24 },
+			animate: { opacity: 1, y: 0 },
+			transition: {
+				duration: 0.78,
+				delay: 0.18 + Math.min(index, 4) * 0.08,
+				ease: REVEAL_EASE,
+			},
+		};
+	}, []);
 
 	const clearAutoScroll = useCallback(() => {
 		if (autoScrollTimeoutRef.current !== null) {
@@ -173,7 +164,7 @@ export default function SectionPhotoshootCarousel({
 	const scheduleAutoScroll = useCallback(() => {
 		clearAutoScroll();
 
-		if (!emblaApi || shouldReduceMotion || photoshoots.length < 2) {
+		if (!emblaApi || photoshoots.length < 2) {
 			return;
 		}
 
@@ -189,7 +180,7 @@ export default function SectionPhotoshootCarousel({
 
 			emblaApi.scrollTo(0);
 		}, AUTO_SCROLL_INTERVAL_MS);
-	}, [clearAutoScroll, emblaApi, photoshoots.length, shouldReduceMotion]);
+	}, [clearAutoScroll, emblaApi, photoshoots.length]);
 
 	useEffect(() => {
 		if (!emblaApi) {

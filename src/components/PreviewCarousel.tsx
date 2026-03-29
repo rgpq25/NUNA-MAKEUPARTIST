@@ -1,6 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { OptimizedImageData } from "../types/images";
@@ -23,7 +23,6 @@ export default function PreviewCarousel({
 	href,
 	reversed = false,
 }: PreviewCarouselProps) {
-	const shouldReduceMotion = useReducedMotion();
 	const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
 		null,
 	);
@@ -34,7 +33,7 @@ export default function PreviewCarousel({
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		align: "start",
 		dragFree: false,
-		duration: shouldReduceMotion ? 25 : 25,
+		duration: 25,
 		loop: images.length > 1,
 		skipSnaps: false,
 		slidesToScroll: 1,
@@ -74,14 +73,14 @@ export default function PreviewCarousel({
 	const scheduleAutoScroll = useCallback(() => {
 		clearAutoScroll();
 
-		if (!emblaApi || shouldReduceMotion || images.length < 2) {
+		if (!emblaApi || images.length < 2) {
 			return;
 		}
 
 		autoScrollTimeoutRef.current = setTimeout(() => {
 			emblaApi.scrollNext();
 		}, AUTO_SCROLL_INTERVAL_MS);
-	}, [clearAutoScroll, emblaApi, images.length, shouldReduceMotion]);
+	}, [clearAutoScroll, emblaApi, images.length]);
 
 	useEffect(() => {
 		if (!emblaApi) {
