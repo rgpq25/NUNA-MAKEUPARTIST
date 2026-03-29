@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
 import type { OptimizedImageData } from "../types/images";
 
@@ -19,7 +19,6 @@ export default function BiographySection({
 	certificationsTitle,
 	certifications,
 }: BiographySectionProps) {
-	const shouldReduceMotion = useReducedMotion();
 	const leftMotion = {
 		initial: { opacity: 0, x: -40 },
 		whileInView: { opacity: 1, x: 0 },

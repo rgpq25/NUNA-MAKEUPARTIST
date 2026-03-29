@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
 function InstagramIcon() {
 	return (
@@ -27,7 +27,6 @@ interface ContactSectionProps {
 export default function ContactSection({
 	serviceOptions,
 }: ContactSectionProps) {
-	const shouldReduceMotion = useReducedMotion();
 	const availableServices = serviceOptions.length
 		? serviceOptions
 		: ["Bridal", "Social", "Editorial", "Brand Work"];

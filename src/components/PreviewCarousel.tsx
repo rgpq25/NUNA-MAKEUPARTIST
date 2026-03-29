@@ -34,7 +34,7 @@ export default function PreviewCarousel({
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		align: "start",
 		dragFree: false,
-		duration: shouldReduceMotion ? 0 : 25,
+		duration: shouldReduceMotion ? 25 : 25,
 		loop: images.length > 1,
 		skipSnaps: false,
 		slidesToScroll: 1,

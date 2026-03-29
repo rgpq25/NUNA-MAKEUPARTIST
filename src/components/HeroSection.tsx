@@ -24,8 +24,8 @@ export default function HeroSection({
 	const shouldReduceMotion = useReducedMotion();
 	const leftMotion = shouldReduceMotion
 		? {
-				initial: { opacity: 0 },
-				animate: { opacity: 1 },
+				initial: { opacity: 0, y: -20 },
+				animate: { opacity: 1, y: 0 },
 				transition: { duration: 0.2 },
 			}
 		: {
@@ -35,8 +35,8 @@ export default function HeroSection({
 			};
 	const rightMotion = shouldReduceMotion
 		? {
-				initial: { opacity: 0 },
-				animate: { opacity: 1 },
+				initial: { opacity: 0, y: -20 },
+				animate: { opacity: 1, y: 0 },
 				transition: { duration: 0.2 },
 			}
 		: {
@@ -48,12 +48,12 @@ export default function HeroSection({
 	return (
 		<section className="bg-[#faf8f5] px-5 md:px-10 lg:px-16">
 			<div className="mx-auto max-w-7xl py-5 md:py-10">
-				<div className="overflow-hidden flex flex-col items-start gap-6 sm:gap-8 md:gap-10 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:min-h-160 lg:max-h-192 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
+				<div className="flex flex-col items-start gap-6 sm:gap-8 md:gap-10 lg:h-[calc(100dvh-var(--site-nav-height,88px)-4.5rem)] lg:min-h-160 lg:max-h-192 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
 					<motion.div
 						className="w-full lg:h-full lg:min-w-0 lg:flex-[1.08]"
 						{...leftMotion}
 					>
-						<div className="aspect-4/5 overflow-hidden bg-[#efe7dc] shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
+						<div className="aspect-4/5 bg-[#efe7dc] xl:shadow-[0_24px_70px_rgba(42,42,42,0.08)] sm:aspect-5/6 lg:h-full lg:aspect-auto lg:max-h-192">
 							<img
 								src={image.src}
 								srcSet={image.srcSet}
