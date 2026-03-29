@@ -34,7 +34,7 @@ const [heroImage, biographyImage, sections] = await Promise.all([
   title={homepage.seo.title}
   description={homepage.seo.description}
 >
-  <div id="top" class="w-full overflow-x-hidden">
+  <div id="top" class="w-full">
     <Navigation
       client:load
       brandTitle={homepage.branding.title}
@@ -42,7 +42,7 @@ const [heroImage, biographyImage, sections] = await Promise.all([
       links={homepage.navigation}
     />
 
-    <main>
+    <main class="overflow-x-hidden">
       <HeroSection
         client:load
         brandTitle={homepage.branding.title}
