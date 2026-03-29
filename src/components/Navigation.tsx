@@ -18,21 +18,17 @@ export default function Navigation({
 	const shouldReduceMotion = useReducedMotion();
 	const leftLinks = links.slice(0, 2);
 	const rightLinks = links.slice(2, 4);
-	const motionProps = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, y: -20 },
-				animate: { opacity: 1, y: 0 },
-				transition: { duration: 0.2 },
-			};
-	const drawerMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, y: -12 },
-				animate: { opacity: 1, y: 0 },
-				exit: { opacity: 0, y: -12 },
-				transition: { duration: 0.2 },
-			};
+	const motionProps = {
+		initial: { opacity: 0, y: shouldReduceMotion ? -20 : undefined },
+		animate: { opacity: 1, y: shouldReduceMotion ? 0 : undefined },
+		transition: { duration: 0.2 },
+	};
+	const drawerMotion = {
+		initial: { opacity: 0, y: -12 },
+		animate: { opacity: 1, y: 0 },
+		exit: { opacity: 0, y: -12 },
+		transition: { duration: 0.2 },
+	};
 
 	return (
 		<motion.nav

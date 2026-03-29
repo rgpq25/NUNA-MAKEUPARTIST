@@ -20,22 +20,18 @@ export default function BiographySection({
 	certifications,
 }: BiographySectionProps) {
 	const shouldReduceMotion = useReducedMotion();
-	const leftMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, x: -40 },
-				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.4, delay: 0.2 },
-				viewport: { once: true },
-			};
-	const rightMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, x: 40 },
-				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.4, delay: 0.2 },
-				viewport: { once: true },
-			};
+	const leftMotion = {
+		initial: { opacity: 0, x: -40 },
+		whileInView: { opacity: 1, x: 0 },
+		transition: { duration: 0.4, delay: 0.2 },
+		viewport: { once: true },
+	};
+	const rightMotion = {
+		initial: { opacity: 0, x: 40 },
+		whileInView: { opacity: 1, x: 0 },
+		transition: { duration: 0.4, delay: 0.2 },
+		viewport: { once: true },
+	};
 
 	return (
 		<section className="bg-[#f5f2ed] px-8 md:px-16 py-14 md:py-24 lg:py-32">

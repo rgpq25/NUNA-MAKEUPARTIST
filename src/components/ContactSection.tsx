@@ -31,38 +31,30 @@ export default function ContactSection({
 	const availableServices = serviceOptions.length
 		? serviceOptions
 		: ["Bridal", "Social", "Editorial", "Brand Work"];
-	const titleMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, y: -20 },
-				whileInView: { opacity: 1, y: 0 },
-				transition: { duration: 0.4 },
-				viewport: { once: true },
-			};
-	const bodyMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, y: 20 },
-				whileInView: { opacity: 1, y: 0 },
-				transition: { duration: 0.4, delay: 0.2 },
-				viewport: { once: true },
-			};
-	const leftMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, x: -40 },
-				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.4, delay: 0.3 },
-				viewport: { once: true },
-			};
-	const rightMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, x: 40 },
-				whileInView: { opacity: 1, x: 0 },
-				transition: { duration: 0.4, delay: 0.4 },
-				viewport: { once: true },
-			};
+	const titleMotion = {
+		initial: { opacity: 0, y: -20 },
+		whileInView: { opacity: 1, y: 0 },
+		transition: { duration: 0.4 },
+		viewport: { once: true },
+	};
+	const bodyMotion = {
+		initial: { opacity: 0, y: 20 },
+		whileInView: { opacity: 1, y: 0 },
+		transition: { duration: 0.4, delay: 0.2 },
+		viewport: { once: true },
+	};
+	const leftMotion = {
+		initial: { opacity: 0, x: -40 },
+		whileInView: { opacity: 1, x: 0 },
+		transition: { duration: 0.4, delay: 0.3 },
+		viewport: { once: true },
+	};
+	const rightMotion = {
+		initial: { opacity: 0, x: 40 },
+		whileInView: { opacity: 1, x: 0 },
+		transition: { duration: 0.4, delay: 0.4 },
+		viewport: { once: true },
+	};
 
 	return (
 		<section

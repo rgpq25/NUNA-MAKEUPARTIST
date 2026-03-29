@@ -40,22 +40,18 @@ export default function PreviewCarousel({
 		slidesToScroll: 1,
 	});
 
-	const textMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, y: 40 },
-				whileInView: { opacity: 1, y: 0 },
-				transition: { duration: 0.4, delay: 0.2 },
-				viewport: { once: true },
-			};
-	const carouselMotion = shouldReduceMotion
-		? {}
-		: {
-				initial: { opacity: 0, y: 40 },
-				whileInView: { opacity: 1, y: 0 },
-				transition: { duration: 0.4, delay: 0.2 },
-				viewport: { once: true },
-			};
+	const textMotion = {
+		initial: { opacity: 0, y: 40 },
+		whileInView: { opacity: 1, y: 0 },
+		transition: { duration: 0.4, delay: 0.2 },
+		viewport: { once: true },
+	};
+	const carouselMotion = {
+		initial: { opacity: 0, y: 40 },
+		whileInView: { opacity: 1, y: 0 },
+		transition: { duration: 0.4, delay: 0.2 },
+		viewport: { once: true },
+	};
 
 	const clearAutoScroll = useCallback(() => {
 		if (autoScrollTimeoutRef.current !== null) {
@@ -110,12 +106,7 @@ export default function PreviewCarousel({
 				.off("select", updateEmblaState)
 				.off("settle", scheduleAutoScroll);
 		};
-	}, [
-		clearAutoScroll,
-		emblaApi,
-		scheduleAutoScroll,
-		updateEmblaState,
-	]);
+	}, [clearAutoScroll, emblaApi, scheduleAutoScroll, updateEmblaState]);
 
 	const scrollPrev = useCallback(() => {
 		clearAutoScroll();
@@ -198,7 +189,10 @@ export default function PreviewCarousel({
 										className="absolute top-1/2 -left-7.5 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center text-[#c9a96e]/50 transition hover:text-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-30 md:-left-10"
 										aria-label="Previous slide"
 									>
-										<ChevronLeft className="h-6 w-6" strokeWidth={1.75} />
+										<ChevronLeft
+											className="h-6 w-6"
+											strokeWidth={1.75}
+										/>
 									</button>
 
 									<button
@@ -208,23 +202,35 @@ export default function PreviewCarousel({
 										className="absolute top-1/2 -right-7.5 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center text-[#c9a96e]/50 transition hover:text-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-30 md:-right-10"
 										aria-label="Next slide"
 									>
-										<ChevronRight className="h-6 w-6" strokeWidth={1.75} />
+										<ChevronRight
+											className="h-6 w-6"
+											strokeWidth={1.75}
+										/>
 									</button>
 
 									<div className="absolute -bottom-9 md:-bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-2">
 										{scrollSnaps.map((_, index) => {
-											const isActive = index === selectedIndex;
+											const isActive =
+												index === selectedIndex;
 
 											return (
 												<button
 													key={`${title}-dot-${index}`}
 													type="button"
-													onClick={() => scrollTo(index)}
+													onClick={() =>
+														scrollTo(index)
+													}
 													className={`h-2 w-2 rounded-full bg-[#c9a96e] transition-opacity ${
-														isActive ? "opacity-100" : "opacity-30 hover:opacity-60"
+														isActive
+															? "opacity-100"
+															: "opacity-30 hover:opacity-60"
 													}`}
 													aria-label={`Go to slide ${index + 1}`}
-													aria-current={isActive ? "true" : undefined}
+													aria-current={
+														isActive
+															? "true"
+															: undefined
+													}
 												/>
 											);
 										})}
