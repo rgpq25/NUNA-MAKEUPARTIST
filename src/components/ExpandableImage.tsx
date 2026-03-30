@@ -423,7 +423,7 @@ export default function ExpandableImage({
 										<>
 											<div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,rgba(18,13,9,0)_0%,rgba(18,13,9,0.18)_42%,rgba(18,13,9,0.78)_100%)]" />
 											<motion.div
-												className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 text-white md:p-6 lg:p-7"
+												className="absolute inset-x-0 bottom-0 z-10 flex select-text flex-col gap-2 p-4 text-white md:p-6 lg:p-7"
 												initial={false}
 												animate={{
 													opacity: isVisible ? 1 : 0,
