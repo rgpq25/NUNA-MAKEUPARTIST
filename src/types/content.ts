@@ -1,4 +1,4 @@
-import type { ImageAsset, ImageSource } from "./images";
+import type { ImageAsset } from "./images";
 
 export interface NavLink {
   label: string;
@@ -17,7 +17,7 @@ export interface Photoshoot {
   slug: string;
   title: string;
   description: string;
-  mainImage: ImageSource;
+  mainImage: ImageAsset;
   images: ImageAsset[];
 }
 
@@ -43,13 +43,13 @@ export interface HeroContent {
   headline: string;
   description: string;
   location: string;
-  image: ImageSource;
+  image: ImageAsset;
   imageAlt: string;
 }
 
 export interface BiographyContent {
   title: string;
-  image: ImageSource;
+  image: ImageAsset;
   imageAlt: string;
   paragraphs: string[];
   certificationsTitle: string;

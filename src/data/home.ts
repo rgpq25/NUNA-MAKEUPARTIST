@@ -5,7 +5,7 @@ import type {
 	SectionPreview,
 	SectionPageContent,
 } from "../types/content";
-import type { ImageAsset, ImageSource } from "../types/images";
+import type { ImageAsset } from "../types/images";
 import img1600 from "../assets/IMG_1600.webp";
 import img2166 from "../assets/IMG_2166.webp";
 import img2177 from "../assets/IMG_2177.webp";
@@ -46,14 +46,14 @@ const editorialImages = [img6515, img6510, img2677, img9300];
 
 const brandImages = [img2225, img2228, img9284, img9320];
 
-const repeatImages = (images: ImageSource[], count: number, start = 0) =>
+const repeatImages = (images: ImageAsset["src"][], count: number, start = 0) =>
 	Array.from(
 		{ length: count },
 		(_, index) => images[(start + index) % images.length],
 	);
 
 const buildImageAssets = (
-	images: ImageSource[],
+	images: ImageAsset["src"][],
 	prefix: string,
 	description: string,
 	count: number,
@@ -69,7 +69,7 @@ const buildPhotoshoot = (
 	slug: string,
 	title: string,
 	description: string,
-	imagePool: ImageSource[],
+	imagePool: ImageAsset["src"][],
 	mainIndex: number,
 	start = 0,
 	imageCount = 12,
@@ -77,7 +77,11 @@ const buildPhotoshoot = (
 	slug,
 	title,
 	description,
-	mainImage: imagePool[mainIndex % imagePool.length],
+	mainImage: {
+		src: imagePool[mainIndex % imagePool.length],
+		title,
+		description,
+	},
 	images: buildImageAssets(
 		imagePool,
 		title,
@@ -393,12 +397,21 @@ export const fallbackHomepageContent: HomePageContent = {
 		description:
 			"Especializada en crear belleza que trasciende tendencias. Desde bodas intimas hasta campanas de alta moda, cada trabajo refleja sofisticacion, tecnica impecable y una vision artistica unica.",
 		location: "Basada en Madrid · Disponible internacionalmente",
-		image: img2166,
+		image: {
+			src: img2166,
+			title: "NUNA Makeup Artist",
+			description:
+				"Retrato editorial principal de NUNA Makeup Artist.",
+		},
 		imageAlt: "NUNA Makeup Artist",
 	},
 	biography: {
 		title: "Biografía",
-		image: img9320,
+		image: {
+			src: img9320,
+			title: "Biografía",
+			description: "Retrato de NUNA Makeup Artist para la sección de biografía.",
+		},
 		imageAlt: "NUNA - Makeup Artist",
 		paragraphs: [
 			"Con mas de una decada de experiencia en la industria de la belleza, me especializo en crear maquillaje que realza la belleza natural y cuenta historias unicas a traves del arte.",

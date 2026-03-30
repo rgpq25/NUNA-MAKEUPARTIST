@@ -32,7 +32,11 @@ export async function fetchSectionPages(): Promise<
 				slug: photoshoot.slug,
 				title: photoshoot.title,
 				description: photoshoot.description,
-				mainImage: resolvePayloadAssetURL(photoshoot.mainImage.url),
+				mainImage: {
+					src: resolvePayloadAssetURL(photoshoot.mainImage.url),
+					title: photoshoot.mainImage.title,
+					description: photoshoot.mainImage.description ?? undefined,
+				},
 				images: photoshoot.images.map((image) => ({
 					src: resolvePayloadAssetURL(image.url),
 					title: image.title,

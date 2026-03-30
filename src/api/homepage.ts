@@ -130,7 +130,11 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			headline: heroHeadline,
 			description: heroDescription,
 			location: heroLocation,
-			image: resolvePayloadAssetURL(heroImage.url),
+			image: {
+				src: resolvePayloadAssetURL(heroImage.url),
+				title: heroImage.title,
+				description: heroImage.description ?? undefined,
+			},
 			imageAlt: brandingTitle,
 		},
 		biography: {
@@ -138,7 +142,11 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			paragraphs: biographyParagraphs,
 			certificationsTitle: biographyCertificationsTitle,
 			certifications: biographyCertifications,
-			image: resolvePayloadAssetURL(biographyImage.url),
+			image: {
+				src: resolvePayloadAssetURL(biographyImage.url),
+				title: biographyImage.title,
+				description: biographyImage.description ?? undefined,
+			},
 			imageAlt: biographyTitle,
 		},
 		navigation,

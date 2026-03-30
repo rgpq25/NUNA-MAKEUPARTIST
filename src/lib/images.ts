@@ -1,6 +1,6 @@
 import { getImage } from "astro:assets";
 
-import type { OptimizedImageData, ImageSource } from "../types/images";
+import type { ImageAsset, OptimizedImageAsset } from "../types/images";
 
 interface OptimizeImageOptions {
 	format?: "avif" | "jpeg" | "jpg" | "png" | "webp";
@@ -11,20 +11,22 @@ interface OptimizeImageOptions {
 }
 
 export async function optimizeImage(
-	src: ImageSource,
+	imageAsset: ImageAsset,
 	options: OptimizeImageOptions = {},
-): Promise<OptimizedImageData> {
+): Promise<OptimizedImageAsset> {
 	const image = await getImage({
-		src,
+		src: imageAsset.src,
 		format: options.format ?? "webp",
 		quality: options.quality ?? "mid",
-		inferSize: typeof src === "string",
+		inferSize: typeof imageAsset.src === "string",
 		width: options.width,
 		widths: options.widths,
 		sizes: options.sizes,
 	});
 
 	return {
+		title: imageAsset.title,
+		description: imageAsset.description,
 		src: image.src,
 		srcSet: image.srcSet?.attribute,
 		sizes:
@@ -37,10 +39,10 @@ export async function optimizeImage(
 }
 
 export async function optimizeImages(
-	sources: ImageSource[],
+	imageAssets: ImageAsset[],
 	options: OptimizeImageOptions = {},
-): Promise<OptimizedImageData[]> {
+): Promise<OptimizedImageAsset[]> {
 	return Promise.all(
-		sources.map((source) => optimizeImage(source, options)),
+		imageAssets.map((imageAsset) => optimizeImage(imageAsset, options)),
 	);
 }

@@ -3,7 +3,6 @@ import SectionPhotoshootCarousel from "../../components/SectionPhotoshootCarouse
 import { getSectionPages } from "../../api/sections";
 import { optimizeImage } from "../../lib/images";
 import type { SectionPageContent } from "../../types/content";
-import type { OptimizedImageAsset } from "../../types/images";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -20,14 +19,10 @@ const photoshoots = await Promise.all(
   section.photoshoots.map(async (photoshoot) => ({
     slug: photoshoot.slug,
     title: photoshoot.title,
-    mainImage: {
-      ...(await optimizeImage(photoshoot.mainImage, {
-        widths: [720, 960, 1280],
-        sizes: "(max-width: 639px) 78vw, (max-width: 1023px) 62vw, 40vw",
-      })),
-      title: photoshoot.title,
-      description: photoshoot.description,
-    } satisfies OptimizedImageAsset,
+    mainImage: await optimizeImage(photoshoot.mainImage, {
+      widths: [720, 960, 1280],
+      sizes: "(max-width: 639px) 78vw, (max-width: 1023px) 62vw, 40vw",
+    }),
   })),
 );
 ---
