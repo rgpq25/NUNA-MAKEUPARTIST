@@ -386,7 +386,7 @@ export default function ExpandableImage({
 							<div
 								className={cn(
 									"pointer-events-none fixed inset-0",
-									isClosingBehindNav ? "z-40" : "z-[81]",
+									isClosingBehindNav ? "z-40" : "z-81",
 								)}
 							>
 								<motion.div
@@ -421,7 +421,7 @@ export default function ExpandableImage({
 
 									{isClosing ? null : (
 										<>
-											<div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,rgba(18,13,9,0)_0%,rgba(18,13,9,0.18)_42%,rgba(18,13,9,0.78)_100%)]" />
+											<div className="pointer-events-none absolute inset-x-0 -bottom-px h-[calc(50%+2px)] bg-[linear-gradient(180deg,rgba(18,13,9,0)_0%,rgba(18,13,9,0.18)_42%,rgba(18,13,9,0.78)_100%)]" />
 											<motion.div
 												className="absolute inset-x-0 bottom-0 z-10 flex select-text flex-col gap-2 p-4 text-white md:p-6 lg:p-7"
 												initial={false}
@@ -442,7 +442,7 @@ export default function ExpandableImage({
 												}
 											>
 												<p className="font-['Montserrat'] text-[0.68rem] tracking-[0.28em] text-white/72 uppercase">
-													Image preview
+													Imagen
 												</p>
 												<h3 className="max-w-[24rem] font-['Cormorant_Garamond'] text-[2rem] leading-[0.95] md:text-[2.4rem] lg:text-[2.85rem]">
 													{title}
