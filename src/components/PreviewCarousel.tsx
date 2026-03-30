@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { OptimizedImageData } from "../types/images";
 import CTAButton from "./CTAButton";
+import ExpandableImage from "./ExpandableImage";
 
 interface PreviewCarouselProps {
 	title: string;
@@ -125,6 +126,11 @@ export default function PreviewCarousel({
 		[clearAutoScroll, emblaApi],
 	);
 
+	const buildImageTitle = (index: number) =>
+		`${title} ${String(index + 1).padStart(2, "0")}`;
+	const buildImageDescription = () =>
+		"Una mirada cercana a esta imagen dentro de la coleccion.";
+
 	return (
 		<section className="px-8 md:px-16 pt-12 pb-16 md:pt-20 md:pb-20">
 			<div className="mx-auto max-w-7xl">
@@ -161,14 +167,14 @@ export default function PreviewCarousel({
 											className="min-w-0 shrink-0 basis-full px-2 sm:basis-1/2 lg:basis-1/3"
 										>
 											<div className="aspect-3/4 overflow-hidden">
-												<img
-													src={img.src}
-													srcSet={img.srcSet}
-													sizes={img.sizes}
-													width={img.width}
-													height={img.height}
+												<ExpandableImage
+													image={img}
 													alt={`${title} ${index + 1}`}
-													className="h-full w-full object-cover"
+													title={buildImageTitle(index)}
+													description={buildImageDescription()}
+													triggerClassName="h-full w-full"
+													frameClassName="h-full w-full"
+													imageClassName="h-full w-full object-cover"
 													draggable={false}
 													loading="lazy"
 													decoding="async"

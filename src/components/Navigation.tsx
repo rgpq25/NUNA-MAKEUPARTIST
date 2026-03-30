@@ -32,7 +32,7 @@ export default function Navigation({
 
 	return (
 		<motion.nav
-			className="sticky top-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5] px-6 md:px-16"
+			className="fixed inset-x-0 top-0 z-50 border-b border-[#2a2a2a]/10 bg-[#faf8f5] px-6 md:px-16"
 			{...motionProps}
 		>
 			<div className="container relative mx-auto max-w-7xl py-4 md:py-5">
