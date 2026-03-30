@@ -31,6 +31,7 @@ export default function PreviewCarousel({
 	const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 	const [prevDisabled, setPrevDisabled] = useState(images.length < 2);
 	const [nextDisabled, setNextDisabled] = useState(images.length < 2);
+	const [isImageExpanded, setIsImageExpanded] = useState(false);
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		align: "start",
 		dragFree: false,
@@ -74,14 +75,23 @@ export default function PreviewCarousel({
 	const scheduleAutoScroll = useCallback(() => {
 		clearAutoScroll();
 
-		if (!emblaApi || images.length < 2) {
+		if (!emblaApi || images.length < 2 || isImageExpanded) {
 			return;
 		}
 
 		autoScrollTimeoutRef.current = setTimeout(() => {
 			emblaApi.scrollNext();
 		}, AUTO_SCROLL_INTERVAL_MS);
-	}, [clearAutoScroll, emblaApi, images.length]);
+	}, [clearAutoScroll, emblaApi, images.length, isImageExpanded]);
+
+	useEffect(() => {
+		if (isImageExpanded) {
+			clearAutoScroll();
+			return;
+		}
+
+		scheduleAutoScroll();
+	}, [clearAutoScroll, isImageExpanded, scheduleAutoScroll]);
 
 	useEffect(() => {
 		if (!emblaApi) {
@@ -106,7 +116,13 @@ export default function PreviewCarousel({
 				.off("select", updateEmblaState)
 				.off("settle", scheduleAutoScroll);
 		};
-	}, [clearAutoScroll, emblaApi, scheduleAutoScroll, updateEmblaState]);
+	}, [
+		clearAutoScroll,
+		emblaApi,
+		isImageExpanded,
+		scheduleAutoScroll,
+		updateEmblaState,
+	]);
 
 	const scrollPrev = useCallback(() => {
 		clearAutoScroll();
@@ -157,7 +173,11 @@ export default function PreviewCarousel({
 						<div
 							className="relative"
 							onMouseEnter={clearAutoScroll}
-							onMouseLeave={scheduleAutoScroll}
+							onMouseLeave={() => {
+								if (!isImageExpanded) {
+									scheduleAutoScroll();
+								}
+							}}
 						>
 							<div ref={emblaRef} className="overflow-hidden">
 								<div className="-mx-2 flex touch-pan-y">
@@ -171,8 +191,9 @@ export default function PreviewCarousel({
 													image={img}
 													alt={`${title} ${index + 1}`}
 													title={buildImageTitle(index)}
-													description={buildImageDescription()}
-													triggerClassName="h-full w-full"
+												description={buildImageDescription()}
+												onOpenChange={setIsImageExpanded}
+												triggerClassName="h-full w-full"
 													frameClassName="h-full w-full"
 													imageClassName="h-full w-full object-cover"
 													draggable={false}

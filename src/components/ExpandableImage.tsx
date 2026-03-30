@@ -36,6 +36,7 @@ interface ExpandableImageProps {
 	alt: string;
 	title: string;
 	description?: string;
+	onOpenChange?: (isOpen: boolean) => void;
 	triggerClassName?: string;
 	frameClassName?: string;
 	imageClassName?: string;
@@ -82,6 +83,7 @@ export default function ExpandableImage({
 	alt,
 	title,
 	description,
+	onOpenChange,
 	triggerClassName,
 	frameClassName,
 	imageClassName,
@@ -193,6 +195,7 @@ export default function ExpandableImage({
 		setIsClosing(false);
 		setIsMounted(true);
 		setIsVisible(false);
+		onOpenChange?.(true);
 
 		animationFrameRef.current = requestAnimationFrame(() => {
 			setIsVisible(true);
@@ -214,6 +217,7 @@ export default function ExpandableImage({
 			() => {
 				setIsMounted(false);
 				setIsClosing(false);
+				onOpenChange?.(false);
 				closeTimeoutRef.current = null;
 			},
 			shouldReduceMotion ? 10 : CLOSE_DURATION_MS,
