@@ -59,12 +59,10 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 
 	const {
 		title: biographyTitle,
+		content: biographyContent,
 		certificationsTitle: biographyCertificationsTitle,
 		image: biographyImage,
 	} = homepagePayload.biography;
-	const biographyParagraphs = homepagePayload.biography.paragraphs.map(
-		(item) => item.text,
-	);
 	const biographyCertifications =
 		homepagePayload.biography.certifications.map((item) => item.title);
 
@@ -108,8 +106,8 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 		!heroLocation ||
 		!heroImage ||
 		!biographyTitle ||
+		!biographyContent ||
 		!biographyImage ||
-		!biographyParagraphs ||
 		!biographyCertificationsTitle ||
 		!biographyCertifications ||
 		!navigation
@@ -139,7 +137,7 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 		},
 		biography: {
 			title: biographyTitle,
-			paragraphs: biographyParagraphs,
+			content: biographyContent,
 			certificationsTitle: biographyCertificationsTitle,
 			certifications: biographyCertifications,
 			image: {

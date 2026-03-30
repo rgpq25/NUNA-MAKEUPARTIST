@@ -1,3 +1,5 @@
+import type { LexicalRichText } from "./richtext";
+
 export type PayloadID = number | string;
 
 export interface PayloadMedia {
@@ -55,7 +57,7 @@ export interface PayloadHomepage {
 	};
 	biography: {
 		title: string;
-		paragraphs: Array<{ text: string }>;
+		content: LexicalRichText;
 		certificationsTitle: string;
 		certifications: Array<{ title: string }>;
 		image?: PayloadMedia;

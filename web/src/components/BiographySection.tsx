@@ -1,12 +1,14 @@
 import { motion } from "motion/react";
 
+import LexicalRichText from "./LexicalRichText";
 import type { OptimizedImageAsset } from "../types/images";
+import type { LexicalRichText as LexicalRichTextContent } from "../types/richtext";
 
 interface BiographySectionProps {
 	title: string;
 	image: OptimizedImageAsset;
 	imageAlt: string;
-	paragraphs: string[];
+	content: LexicalRichTextContent;
 	certificationsTitle: string;
 	certifications: string[];
 }
@@ -15,7 +17,7 @@ export default function BiographySection({
 	title,
 	image,
 	imageAlt,
-	paragraphs,
+	content,
 	certificationsTitle,
 	certifications,
 }: BiographySectionProps) {
@@ -59,16 +61,10 @@ export default function BiographySection({
 						<h2 className="font-['Cormorant_Garamond'] text-5xl sm:text-6xl md:text-7xl tracking-wide text-[#2a2a2a]">
 							{title}
 						</h2>
-						<div className="mt-3.5 space-y-2 md:space-y-6">
-							{paragraphs.map((paragraph, idx) => (
-								<p
-									key={idx}
-									className="font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70"
-								>
-									{paragraph}
-								</p>
-							))}
-						</div>
+						<LexicalRichText
+							content={content}
+							className="mt-3.5 space-y-2 md:space-y-6"
+						/>
 
 						{certifications.length > 0 && (
 							<div className="mt-5 border-t border-[#2a2a2a]/10 pt-5">

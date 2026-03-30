@@ -1,4 +1,5 @@
 import type { ImageAsset } from "./images";
+import type { LexicalRichText } from "./richtext";
 
 export interface NavLink {
   label: string;
@@ -51,7 +52,7 @@ export interface BiographyContent {
   title: string;
   image: ImageAsset;
   imageAlt: string;
-  paragraphs: string[];
+  content: LexicalRichText;
   certificationsTitle: string;
   certifications: string[];
 }

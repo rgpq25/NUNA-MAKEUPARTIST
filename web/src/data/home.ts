@@ -6,6 +6,7 @@ import type {
 	SectionPageContent,
 } from "../types/content";
 import type { ImageAsset } from "../types/images";
+import { createLexicalParagraphs } from "../types/richtext";
 import img1600 from "../assets/IMG_1600.webp";
 import img2166 from "../assets/IMG_2166.webp";
 import img2177 from "../assets/IMG_2177.webp";
@@ -413,11 +414,11 @@ export const fallbackHomepageContent: HomePageContent = {
 			description: "Retrato de NUNA Makeup Artist para la sección de biografía.",
 		},
 		imageAlt: "NUNA - Makeup Artist",
-		paragraphs: [
+		content: createLexicalParagraphs([
 			"Con mas de una decada de experiencia en la industria de la belleza, me especializo en crear maquillaje que realza la belleza natural y cuenta historias unicas a traves del arte.",
 			"Mi trabajo abarca desde novias que buscan elegancia atemporal hasta colaboraciones editoriales de alta moda con las principales revistas y marcas de lujo internacionales.",
 			"Formada en las mejores academias de maquillaje profesional, mi filosofia se centra en la personalizacion: cada rostro es un lienzo unico que merece un enfoque artistico y personalizado.",
-		],
+		]),
 		certificationsTitle: "Certificaciones",
 		certifications: [
 			"Maquillaje Profesional Avanzado",
