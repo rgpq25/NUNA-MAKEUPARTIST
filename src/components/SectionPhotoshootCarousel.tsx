@@ -1,10 +1,8 @@
-import type { CSSProperties } from "react";
-
 import useEmblaCarousel from "embla-carousel-react";
-import { motion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "motion/react";
+import type { CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getPhotoshootHref } from "../lib/content-links";
 import type { OptimizedImageData } from "../types/images";
 import WorksPageHeader from "./WorksPageHeader";

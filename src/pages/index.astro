@@ -1,12 +1,12 @@
 ---
+import { getHomepageContent } from "../api/homepage";
 import BiographySection from "../components/BiographySection";
 import ContactSection from "../components/ContactSection";
 import HeroSection from "../components/HeroSection";
 import Navigation from "../components/Navigation";
 import PreviewCarousel from "../components/PreviewCarousel";
-import { getHomepageContent } from "../api/homepage";
-import { optimizeImage, optimizeImages } from "../lib/images";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { optimizeImage, optimizeImages } from "../lib/images";
 
 const homepage = await getHomepageContent();
 const [heroImage, biographyImage, sections] = await Promise.all([
@@ -33,7 +33,7 @@ const [heroImage, biographyImage, sections] = await Promise.all([
 <BaseLayout
   title={homepage.seo.title}
   description={homepage.seo.description}
-  backgroundColor="#FAF8F5"
+  background="#FAF8F5"
 >
   <div id="top" class="w-full">
     <Navigation
