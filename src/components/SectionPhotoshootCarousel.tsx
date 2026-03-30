@@ -296,9 +296,7 @@ export default function SectionPhotoshootCarousel({
 
 	return (
 		<WorksPageLayout
-			className="section-photoshoot-carousel bg-[#f7f1e9]"
-			overlayClassName="bg-[radial-gradient(circle_at_top,_rgba(201,169,110,0.16),_transparent_40%),linear-gradient(180deg,_rgba(255,255,255,0.8),_rgba(247,241,233,0.96))]"
-			innerClassName="flex flex-col gap-2 md:gap-6 [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:min-h-0 [&>*:nth-child(2)]:flex-1"
+			className="flex flex-col gap-2 md:gap-6 [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:min-h-0 [&>*:nth-child(2)]:flex-1"
 			header={
 				<WorksPageHeader
 					backHref={`/#${sectionSlug}`}

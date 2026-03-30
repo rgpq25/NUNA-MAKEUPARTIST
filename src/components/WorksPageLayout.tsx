@@ -5,9 +5,8 @@ interface WorksPageLayoutProps {
 	header?: ReactNode;
 	bleedContent?: ReactNode;
 	children?: ReactNode;
-	className?: string;
 	overlayClassName?: string;
-	innerClassName?: string;
+	className?: string;
 	containerClassName?: string;
 	headerClassName?: string;
 	childrenClassName?: string;
@@ -18,8 +17,6 @@ export default function WorksPageLayout({
 	bleedContent,
 	children,
 	className,
-	overlayClassName,
-	innerClassName,
 	containerClassName,
 	headerClassName,
 	childrenClassName,
@@ -29,53 +26,39 @@ export default function WorksPageLayout({
 	return (
 		<section
 			className={cn(
-				"relative overflow-hidden bg-[#faf8f5] text-[#2a2a2a]",
+				"relative overflow-hidden min-h-dvh py-8 md:py-10",
 				className,
 			)}
 		>
-			<div
-				className={cn(
-					"pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(201,169,110,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.84),rgba(250,248,245,0.98))]",
-					overlayClassName,
-				)}
-			/>
+			{header ? (
+				<div
+					className={cn(
+						defaultContainerClassName,
+						containerClassName,
+						headerClassName,
+					)}
+				>
+					{header}
+				</div>
+			) : null}
 
-			<div
-				className={cn(
-					"relative min-h-dvh py-8 md:py-10",
-					innerClassName,
-				)}
-			>
-				{header ? (
-					<div
-						className={cn(
-							defaultContainerClassName,
-							containerClassName,
-							headerClassName,
-						)}
-					>
-						{header}
-					</div>
-				) : null}
+			{bleedContent ? (
+				<div className={cn("w-full relative min-h-0")}>
+					{bleedContent}
+				</div>
+			) : null}
 
-				{bleedContent ? (
-					<div className={cn("w-full relative min-h-0")}>
-						{bleedContent}
-					</div>
-				) : null}
-
-				{children ? (
-					<div
-						className={cn(
-							defaultContainerClassName,
-							containerClassName,
-							childrenClassName,
-						)}
-					>
-						{children}
-					</div>
-				) : null}
-			</div>
+			{children ? (
+				<div
+					className={cn(
+						defaultContainerClassName,
+						containerClassName,
+						childrenClassName,
+					)}
+				>
+					{children}
+				</div>
+			) : null}
 		</section>
 	);
 }
