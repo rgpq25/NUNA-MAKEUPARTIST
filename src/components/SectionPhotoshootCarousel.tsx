@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import type { CSSProperties } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getPhotoshootHref } from "../lib/content-links";
-import type { OptimizedImageData } from "../types/images";
+import type { OptimizedImageAsset } from "../types/images";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
 
@@ -27,7 +27,7 @@ interface SectionPhotoshootCarouselProps {
 	photoshoots: Array<{
 		slug: string;
 		title: string;
-		mainImage: OptimizedImageData;
+		mainImage: OptimizedImageAsset;
 	}>;
 }
 

@@ -10,7 +10,7 @@ import {
 import { createPortal } from "react-dom";
 
 import { cn } from "../lib/utils";
-import type { OptimizedImageData } from "../types/images";
+import type { OptimizedImageAsset } from "../types/images";
 
 const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 const DRAG_THRESHOLD_PX = 10;
@@ -33,10 +33,8 @@ interface ViewportSize {
 }
 
 interface ExpandableImageProps {
-	image: OptimizedImageData;
+	image: OptimizedImageAsset;
 	alt: string;
-	title: string;
-	description?: string;
 	onOpenChange?: (isOpen: boolean) => void;
 	triggerClassName?: string;
 	frameClassName?: string;
@@ -54,7 +52,7 @@ const getViewportSize = (): ViewportSize => ({
 
 const getTargetRect = (
 	viewport: ViewportSize,
-	image: OptimizedImageData,
+	image: OptimizedImageAsset,
 ): Rect => {
 	const padding =
 		viewport.width >= 768
@@ -82,8 +80,6 @@ const getTargetRect = (
 export default function ExpandableImage({
 	image,
 	alt,
-	title,
-	description,
 	onOpenChange,
 	triggerClassName,
 	frameClassName,
@@ -323,7 +319,7 @@ export default function ExpandableImage({
 				onPointerUp={clearPointerTracking}
 				onClick={handleTriggerClick}
 				aria-expanded={isMounted}
-				aria-label={`Open image: ${title}`}
+				aria-label={`Open image: ${image.title}`}
 			>
 				<div
 					className={cn(
@@ -356,9 +352,9 @@ export default function ExpandableImage({
 							<div
 								className="fixed inset-0 z-80"
 								role="dialog"
-								aria-modal="true"
-								aria-label={title}
-							>
+									aria-modal="true"
+									aria-label={image.title}
+								>
 								<motion.div
 									className="absolute inset-0 bg-[#120d09]/82 backdrop-blur-[3px]"
 									initial={false}
@@ -372,7 +368,7 @@ export default function ExpandableImage({
 									type="button"
 									onClick={closeImage}
 									className="absolute right-4 top-4 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/14 bg-white/10 text-white transition-colors duration-300 hover:bg-white/16 md:right-6 md:top-6"
-									aria-label={`Close image: ${title}`}
+									aria-label={`Close image: ${image.title}`}
 									initial={false}
 									animate={{
 										opacity: isVisible && !isClosing ? 1 : 0,
@@ -441,17 +437,17 @@ export default function ExpandableImage({
 														  }
 												}
 											>
-												<p className="font-['Montserrat'] text-[0.68rem] tracking-[0.28em] text-white/72 uppercase">
-													Imagen
+											<p className="font-['Montserrat'] text-[0.68rem] tracking-[0.28em] text-white/72 uppercase">
+												Imagen
+											</p>
+											<h3 className="max-w-xl font-['Cormorant_Garamond'] text-[2rem] leading-[0.95] md:text-[2.4rem] lg:text-[2.85rem]">
+												{image.title}
+											</h3>
+											{image.description ? (
+												<p className=" max-w-xl font-['Montserrat'] text-sm leading-relaxed text-white/82 md:text-[0.96rem]">
+													{image.description}
 												</p>
-												<h3 className="max-w-[24rem] font-['Cormorant_Garamond'] text-[2rem] leading-[0.95] md:text-[2.4rem] lg:text-[2.85rem]">
-													{title}
-												</h3>
-												{description ? (
-													<p className="max-w-lg font-['Montserrat'] text-sm leading-relaxed text-white/82 md:text-[0.96rem]">
-														{description}
-													</p>
-												) : null}
+											) : null}
 											</motion.div>
 										</>
 									)}

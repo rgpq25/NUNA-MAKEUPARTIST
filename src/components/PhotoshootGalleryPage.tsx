@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { type ComponentProps } from "react";
 
 import { getSectionHref } from "../lib/content-links";
-import type { OptimizedImageData } from "../types/images";
+import type { OptimizedImageAsset } from "../types/images";
 import ExpandableImage from "./ExpandableImage";
 import WorksPageHeader from "./WorksPageHeader";
 import WorksPageLayout from "./WorksPageLayout";
@@ -15,7 +15,7 @@ interface PhotoshootGalleryPageProps {
 	photoshoot: {
 		title: string;
 		description: string;
-		images: OptimizedImageData[];
+		images: OptimizedImageAsset[];
 	};
 }
 
@@ -42,13 +42,8 @@ export default function PhotoshootGalleryPage({
 	): ComponentProps<typeof motion.figure> => ({
 		className:
 			"group relative mb-3 md:mb-4 lg:mb-5 inline-block w-full break-inside-avoid overflow-hidden bg-[#efe6da]",
-			...buildGalleryItemMotion(index),
-		});
-
-	const buildImageTitle = (index: number) =>
-		`${photoshoot.title} ${String(index + 1).padStart(2, "0")}`;
-	const buildImageDescription = () =>
-		"Una mirada cercana a esta imagen dentro de la sesion.";
+		...buildGalleryItemMotion(index),
+	});
 
 	return (
 		<WorksPageLayout
@@ -79,15 +74,11 @@ export default function PhotoshootGalleryPage({
 					>
 						<ExpandableImage
 							image={image}
-							alt={`${photoshoot.title} ${imageIndex + 1}`}
-							title={buildImageTitle(imageIndex)}
-							description={buildImageDescription()}
+							alt={image.title}
 							imageClassName="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
 							loading={imageIndex < 6 ? "eager" : "lazy"}
 							decoding="async"
 						/>
-
-						{/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(250,248,245,0.06),rgba(18,13,9,0.14))]" /> */}
 
 						<div className="pointer-events-none absolute left-4 top-4 border border-white/45 bg-white/12 px-3 py-2 font-['Montserrat'] text-[0.62rem] tracking-[0.24em] text-white uppercase backdrop-blur-sm">
 							{String(imageIndex + 1).padStart(2, "0")}

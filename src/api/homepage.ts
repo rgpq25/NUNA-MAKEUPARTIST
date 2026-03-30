@@ -25,7 +25,7 @@ export async function fetchSectionPreviews(): Promise<
 		const response = await fetchPayloadJSON<
 			PayloadDocsResponse<PayloadSectionPreview>
 		>(
-			"/api/sections?limit=100&sort=createdAt&select[slug]=true&select[title]=true&select[mainDescription]=true&select[mainImages]=true&populate[mainImages][url]=true&populate[mainImages][filename]=true",
+			"/api/sections?limit=100&sort=createdAt&select[slug]=true&select[title]=true&select[mainDescription]=true&select[mainImages]=true&populate[mainImages][url]=true&populate[mainImages][title]=true&populate[mainImages][description]=true&populate[mainImages][filename]=true",
 		);
 
 		return response?.docs.length ? response.docs : null;
@@ -89,9 +89,11 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			slug: section.slug,
 			title: section.title,
 			description: section.mainDescription,
-			images: section.mainImages.map((image) =>
-				resolvePayloadAssetURL(image.url),
-			),
+			images: section.mainImages.map((image) => ({
+				src: resolvePayloadAssetURL(image.url),
+				title: image.title,
+				description: image.description ?? undefined,
+			})),
 			href: getSectionHref(section.slug),
 		};
 	});

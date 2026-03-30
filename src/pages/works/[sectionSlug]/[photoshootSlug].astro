@@ -1,8 +1,9 @@
 ---
 import PhotoshootGalleryPage from "../../../components/PhotoshootGalleryPage";
 import { getPhotoshootPages } from "../../../api/photoshoots";
-import { optimizeImages } from "../../../lib/images";
+import { optimizeImage } from "../../../lib/images";
 import type { Photoshoot, SectionPageContent } from "../../../types/content";
+import type { OptimizedImageAsset } from "../../../types/images";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -35,10 +36,18 @@ const { section, photoshoot } = Astro.props as {
 const optimizedPhotoshoot = {
 	title: photoshoot.title,
 	description: photoshoot.description,
-	images: await optimizeImages(photoshoot.images, {
-		widths: [480, 720, 960, 1200],
-		sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw",
-	}),
+	images: await Promise.all(
+		photoshoot.images.map(
+			async (image): Promise<OptimizedImageAsset> => ({
+				...(await optimizeImage(image.src, {
+					widths: [480, 720, 960, 1200],
+					sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw",
+				})),
+				title: image.title,
+				description: image.description,
+			}),
+		),
+	),
 };
 ---
 

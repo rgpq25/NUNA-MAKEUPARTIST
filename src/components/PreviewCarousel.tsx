@@ -3,14 +3,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { OptimizedImageData } from "../types/images";
+import type { OptimizedImageAsset } from "../types/images";
 import CTAButton from "./CTAButton";
 import ExpandableImage from "./ExpandableImage";
 
 interface PreviewCarouselProps {
 	title: string;
 	description: string;
-	images: OptimizedImageData[];
+	images: OptimizedImageAsset[];
 	href: string;
 	reversed?: boolean;
 }
@@ -142,11 +142,6 @@ export default function PreviewCarousel({
 		[clearAutoScroll, emblaApi],
 	);
 
-	const buildImageTitle = (index: number) =>
-		`${title} ${String(index + 1).padStart(2, "0")}`;
-	const buildImageDescription = () =>
-		"Una mirada cercana a esta imagen dentro de la coleccion.";
-
 	return (
 		<section className="px-8 md:px-16 pt-12 pb-16 md:pt-20 md:pb-20">
 			<div className="mx-auto max-w-7xl">
@@ -189,11 +184,9 @@ export default function PreviewCarousel({
 											<div className="aspect-3/4 overflow-hidden">
 												<ExpandableImage
 													image={img}
-													alt={`${title} ${index + 1}`}
-													title={buildImageTitle(index)}
-												description={buildImageDescription()}
-												onOpenChange={setIsImageExpanded}
-												triggerClassName="h-full w-full"
+													alt={img.title}
+													onOpenChange={setIsImageExpanded}
+													triggerClassName="h-full w-full"
 													frameClassName="h-full w-full"
 													imageClassName="h-full w-full object-cover"
 													draggable={false}

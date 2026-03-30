@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 
-import type { OptimizedImageData } from "../types/images";
+import type { OptimizedImageAsset } from "../types/images";
 
 interface HeroSectionProps {
 	brandTitle: string;
@@ -8,7 +8,7 @@ interface HeroSectionProps {
 	headline: string;
 	description: string;
 	location: string;
-	image: OptimizedImageData;
+	image: OptimizedImageAsset;
 	imageAlt: string;
 }
 

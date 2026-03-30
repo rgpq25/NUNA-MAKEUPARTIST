@@ -5,7 +5,7 @@ import type {
 	SectionPreview,
 	SectionPageContent,
 } from "../types/content";
-import type { ImageSource } from "../types/images";
+import type { ImageAsset, ImageSource } from "../types/images";
 import img1600 from "../assets/IMG_1600.webp";
 import img2166 from "../assets/IMG_2166.webp";
 import img2177 from "../assets/IMG_2177.webp";
@@ -52,6 +52,19 @@ const repeatImages = (images: ImageSource[], count: number, start = 0) =>
 		(_, index) => images[(start + index) % images.length],
 	);
 
+const buildImageAssets = (
+	images: ImageSource[],
+	prefix: string,
+	description: string,
+	count: number,
+	start = 0,
+): ImageAsset[] =>
+	repeatImages(images, count, start).map((image, index) => ({
+		src: image,
+		title: `${prefix} ${String(index + 1).padStart(2, "0")}`,
+		description,
+	}));
+
 const buildPhotoshoot = (
 	slug: string,
 	title: string,
@@ -65,7 +78,13 @@ const buildPhotoshoot = (
 	title,
 	description,
 	mainImage: imagePool[mainIndex % imagePool.length],
-	images: repeatImages(imagePool, imageCount, start),
+	images: buildImageAssets(
+		imagePool,
+		title,
+		`${description} Detalle de maquillaje y fotografia de la sesion.`,
+		imageCount,
+		start,
+	),
 });
 
 const fallbackSectionEntries = [
@@ -74,28 +93,48 @@ const fallbackSectionEntries = [
 		title: "Bridal",
 		description:
 			"Elegancia atemporal para el dia mas especial. Maquillaje nupcial que realza tu belleza natural con un toque de sofisticacion y romance.",
-		images: repeatImages(bridalImages, 10),
+		images: buildImageAssets(
+			bridalImages,
+			"Bridal",
+			"Seleccion curada de looks nupciales con acabados luminosos y elegantes.",
+			10,
+		),
 	},
 	{
 		slug: "social",
 		title: "Social",
 		description:
 			"Glamour moderno para eventos inolvidables. Looks vibrantes y contemporaneos que capturan la energia de cada celebracion.",
-		images: repeatImages(socialImages, 16),
+		images: buildImageAssets(
+			socialImages,
+			"Social",
+			"Looks sociales con brillo, definicion y presencia para eventos especiales.",
+			16,
+		),
 	},
 	{
 		slug: "editorial",
 		title: "Editorial",
 		description:
 			"Alta moda y fotografia editorial. Creaciones audaces que trascienden las tendencias y definen nuevos estandares de belleza.",
-		images: repeatImages(editorialImages, 16),
+		images: buildImageAssets(
+			editorialImages,
+			"Editorial",
+			"Imagenes editoriales con direccion creativa, textura y composicion refinada.",
+			16,
+		),
 	},
 	{
 		slug: "brand-work",
 		title: "Brand Work",
 		description:
 			"Colaboraciones de lujo con marcas premium. Campanas profesionales que comunican sofisticacion y excelencia.",
-		images: repeatImages(brandImages, 16),
+		images: buildImageAssets(
+			brandImages,
+			"Brand Work",
+			"Campanas de marca con acabados pulidos y lenguaje visual premium.",
+			16,
+		),
 	},
 ];
 

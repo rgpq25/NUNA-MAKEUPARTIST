@@ -1,10 +1,10 @@
 import { motion } from "motion/react";
 
-import type { OptimizedImageData } from "../types/images";
+import type { OptimizedImageAsset } from "../types/images";
 
 interface BiographySectionProps {
 	title: string;
-	image: OptimizedImageData;
+	image: OptimizedImageAsset;
 	imageAlt: string;
 	paragraphs: string[];
 	certificationsTitle: string;

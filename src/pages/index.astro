@@ -6,25 +6,39 @@ import HeroSection from "../components/HeroSection";
 import Navigation from "../components/Navigation";
 import PreviewCarousel from "../components/PreviewCarousel";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { optimizeImage, optimizeImages } from "../lib/images";
+import { optimizeImage } from "../lib/images";
+import type { OptimizedImageAsset } from "../types/images";
 
 const homepage = await getHomepageContent();
 const [heroImage, biographyImage, sections] = await Promise.all([
-  optimizeImage(homepage.hero.image, {
-    widths: [640, 960, 1280, 1600],
-    sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw",
-  }),
-  optimizeImage(homepage.biography.image, {
-    widths: [480, 720, 960, 1280],
-    sizes: "(max-width: 1023px) 100vw, 50vw",
-  }),
+  (async (): Promise<OptimizedImageAsset> => ({
+    ...(await optimizeImage(homepage.hero.image, {
+      widths: [640, 960, 1280, 1600],
+      sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw",
+    })),
+    title: homepage.branding.title,
+    description: homepage.hero.description,
+  }))(),
+  (async (): Promise<OptimizedImageAsset> => ({
+    ...(await optimizeImage(homepage.biography.image, {
+      widths: [480, 720, 960, 1280],
+      sizes: "(max-width: 1023px) 100vw, 50vw",
+    })),
+    title: homepage.biography.title,
+  }))(),
   Promise.all(
     homepage.sections.map(async (section) => ({
       ...section,
-      images: await optimizeImages(section.images, {
-        widths: [480, 720, 960],
-        sizes: "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 28vw",
-      }),
+      images: (await Promise.all(
+        section.images.map(async (image): Promise<OptimizedImageAsset> => ({
+          ...(await optimizeImage(image.src, {
+            widths: [480, 720, 960],
+            sizes: "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 28vw",
+          })),
+          title: image.title,
+          description: image.description,
+        })),
+      )),
     })),
   ),
 ]);

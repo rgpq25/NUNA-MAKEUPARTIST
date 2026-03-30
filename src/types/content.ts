@@ -1,4 +1,4 @@
-import type { ImageSource } from "./images";
+import type { ImageAsset, ImageSource } from "./images";
 
 export interface NavLink {
   label: string;
@@ -9,7 +9,7 @@ export interface SectionPreview {
   slug: string;
   title: string;
   description: string;
-  images: ImageSource[];
+  images: ImageAsset[];
   href: string;
 }
 
@@ -18,7 +18,7 @@ export interface Photoshoot {
   title: string;
   description: string;
   mainImage: ImageSource;
-  images: ImageSource[];
+  images: ImageAsset[];
 }
 
 export interface SectionPageContent {

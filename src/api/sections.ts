@@ -7,7 +7,9 @@ async function fetchSectionPayload(): Promise<PayloadSection[] | null> {
 	try {
 		const response = await fetchPayloadJSON<
 			PayloadDocsResponse<PayloadSection>
-		>("/api/sections?depth=3&limit=100&sort=createdAt");
+		>(
+			"/api/sections?depth=2&limit=100&sort=createdAt",
+		);
 
 		return response?.docs.length ? response.docs : null;
 	} catch {
@@ -31,9 +33,11 @@ export async function fetchSectionPages(): Promise<
 				title: photoshoot.title,
 				description: photoshoot.description,
 				mainImage: resolvePayloadAssetURL(photoshoot.mainImage.url),
-				images: photoshoot.images.map((image) =>
-					resolvePayloadAssetURL(image.url),
-				),
+				images: photoshoot.images.map((image) => ({
+					src: resolvePayloadAssetURL(image.url),
+					title: image.title,
+					description: image.description ?? undefined,
+				})),
 			}),
 		);
 
