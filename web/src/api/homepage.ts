@@ -17,6 +17,10 @@ async function fetchHomepage(): Promise<PayloadHomepage | null> {
 export async function fetchFeaturedSectionIDs(): Promise<string[] | null> {
 	const homepagePayload = await fetchHomepage();
 
+	if (!homepagePayload) {
+		return null;
+	}
+
 	if (homepagePayload.featuredSections.length === 0) {
 		return null;
 	}
