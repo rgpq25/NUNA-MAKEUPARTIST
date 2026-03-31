@@ -1,7 +1,7 @@
 import { fallbackHomepageContent } from "../data/home";
 import { getSectionHref } from "../lib/content-links";
 import type { HomePageContent, NavLink } from "../types/content";
-import type { PayloadHomepage, PayloadSectionPreview } from "../types/payload";
+import type { PayloadHomepage } from "../types/payload";
 import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
 
 export async function fetchHomepage(): Promise<PayloadHomepage | null> {
@@ -17,7 +17,7 @@ export async function fetchHomepage(): Promise<PayloadHomepage | null> {
 async function fetchHomepageContent(): Promise<HomePageContent | null> {
 	const homepagePayload = await fetchHomepage();
 
-	if (!homepagePayload) {
+	if (!homepagePayload || Object.keys(homepagePayload).length === 0) {
 		return null;
 	}
 

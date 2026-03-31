@@ -1,3 +1,5 @@
+import { isLoggedIn } from "@/access/isLoggedIn";
+import { isLoggedInOrPublished } from "@/access/isLoggedInOrPublished";
 import {
 	AlignFeature,
 	BlockquoteFeature,
@@ -106,7 +108,8 @@ function validateFeaturedSections(value: unknown[] | null | undefined) {
 export const Homepage: GlobalConfig = {
 	slug: "homepage",
 	access: {
-		read: () => true,
+		read: isLoggedInOrPublished,
+		update: isLoggedIn,
 	},
 	admin: {
 		description:

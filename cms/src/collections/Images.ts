@@ -1,9 +1,14 @@
+import { isLoggedIn } from "@/access/isLoggedIn";
+import { isLoggedInOrHomepageLinkedImage } from "@/access/isLoggedInOrHomepageLinked";
 import type { CollectionConfig } from "payload";
 
 export const Images: CollectionConfig = {
 	slug: "images",
 	access: {
-		read: () => true,
+		create: isLoggedIn,
+		read: isLoggedInOrHomepageLinkedImage,
+		update: isLoggedIn,
+		delete: isLoggedIn,
 	},
 	admin: {
 		useAsTitle: "title",
