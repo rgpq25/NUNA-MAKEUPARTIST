@@ -22,6 +22,10 @@ type NavItem = {
 	section?: number | string | { id?: number | string } | null;
 };
 
+type FeaturedSection = {
+	section?: number | string | { id?: number | string } | null;
+};
+
 function getRelationID(value: NavItem["section"]) {
 	if (typeof value === "string" || typeof value === "number") {
 		return String(value);
@@ -68,6 +72,32 @@ function validateNavigationItems(value: unknown[] | null | undefined) {
 
 	if (contactCount > 1) {
 		return "Contact can only appear once in the navigation.";
+	}
+
+	return true;
+}
+
+function validateFeaturedSections(value: unknown[] | null | undefined) {
+	const items = value as FeaturedSection[] | null | undefined;
+
+	if (!items?.length) {
+		return true;
+	}
+
+	const seenSections = new Set<string>();
+
+	for (const item of items) {
+		const sectionID = getRelationID(item?.section);
+
+		if (!sectionID) {
+			return "Each featured item needs a selected section.";
+		}
+
+		if (seenSections.has(sectionID)) {
+			return "Each section can only appear once in featured sections.";
+		}
+
+		seenSections.add(sectionID);
 	}
 
 	return true;
@@ -150,6 +180,24 @@ export const Homepage: GlobalConfig = {
 					name: "image",
 					type: "relationship",
 					relationTo: "images",
+					required: true,
+				},
+			],
+		},
+		{
+			name: "featuredSections",
+			type: "array",
+			validate: (value) =>
+				validateFeaturedSections(value as unknown[] | null | undefined),
+			admin: {
+				description:
+					"Choose which sections appear on the homepage. Drag to control display order.",
+			},
+			fields: [
+				{
+					name: "section",
+					type: "relationship",
+					relationTo: "sections",
 					required: true,
 				},
 			],

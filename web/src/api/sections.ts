@@ -2,14 +2,28 @@ import { fallbackSectionPages } from "../data/home";
 import type { Photoshoot, SectionPageContent } from "../types/content";
 import type { PayloadDocsResponse, PayloadSection } from "../types/payload";
 import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
+import { fetchFeaturedSectionIDs } from "./homepage";
 
-async function fetchSectionPayload(): Promise<PayloadSection[] | null> {
+async function fetchFeaturedSectionsPayload(
+	sectionIDs: string[],
+): Promise<PayloadSection[] | null> {
+	if (!sectionIDs.length) {
+		return null;
+	}
+
+	const queryParams = new URLSearchParams({
+		depth: "2",
+		limit: String(sectionIDs.length),
+	});
+
+	sectionIDs.forEach((sectionID, index) => {
+		queryParams.append(`where[id][in][${index}]`, sectionID);
+	});
+
 	try {
 		const response = await fetchPayloadJSON<
 			PayloadDocsResponse<PayloadSection>
-		>(
-			"/api/sections?depth=2&limit=100&sort=createdAt",
-		);
+		>(`/api/sections?${queryParams.toString()}`);
 
 		return response?.docs.length ? response.docs : null;
 	} catch {
@@ -17,45 +31,60 @@ async function fetchSectionPayload(): Promise<PayloadSection[] | null> {
 	}
 }
 
-export async function fetchSectionPages(): Promise<
+async function fetchFeaturedSectionPages(): Promise<
 	SectionPageContent[] | null
 > {
-	const sectionPayload = await fetchSectionPayload();
+	const featuredSectionIDs = await fetchFeaturedSectionIDs();
+
+	if (!featuredSectionIDs) {
+		return null;
+	}
+
+	const sectionPayload =
+		await fetchFeaturedSectionsPayload(featuredSectionIDs);
 
 	if (!sectionPayload) {
 		return null;
 	}
 
-	const sections: SectionPageContent[] = sectionPayload.map((section) => {
-		const photoshoots: Photoshoot[] = section.photoshoots.map(
-			(photoshoot) => ({
-				slug: photoshoot.slug,
-				title: photoshoot.title,
-				description: photoshoot.description,
-				mainImage: {
-					src: resolvePayloadAssetURL(photoshoot.mainImage.url),
-					title: photoshoot.mainImage.title,
-					description: photoshoot.mainImage.description ?? undefined,
-				},
-				images: photoshoot.images.map((image) => ({
-					src: resolvePayloadAssetURL(image.url),
-					title: image.title,
-					description: image.description ?? undefined,
-				})),
-			}),
-		);
+	const sectionsByID = new Map(
+		sectionPayload.map((section) => [String(section.id), section]),
+	);
 
-		return {
-			slug: section.slug,
-			title: section.title,
-			description: section.mainDescription,
-			photoshoots,
-		};
-	});
+	const sections: SectionPageContent[] = featuredSectionIDs
+		.map((sectionID) => sectionsByID.get(sectionID))
+		.filter((section): section is PayloadSection => Boolean(section))
+		.map((section) => {
+			const photoshoots: Photoshoot[] = section.photoshoots.map(
+				(photoshoot) => ({
+					slug: photoshoot.slug,
+					title: photoshoot.title,
+					description: photoshoot.description,
+					mainImage: {
+						src: resolvePayloadAssetURL(photoshoot.mainImage.url),
+						title: photoshoot.mainImage.title,
+						description:
+							photoshoot.mainImage.description ?? undefined,
+					},
+					images: photoshoot.images.map((image) => ({
+						src: resolvePayloadAssetURL(image.url),
+						title: image.title,
+						description: image.description ?? undefined,
+					})),
+				}),
+			);
+
+			return {
+				slug: section.slug,
+				title: section.title,
+				description: section.mainDescription,
+				photoshoots,
+			};
+		});
 
 	return sections.length ? sections : null;
 }
 
-export async function getSectionPages(): Promise<SectionPageContent[]> {
-	return (await fetchSectionPages()) ?? fallbackSectionPages;
+export async function getFeaturedSectionPages(): Promise<SectionPageContent[]> {
+	return (await fetchFeaturedSectionPages()) ?? fallbackSectionPages;
 }

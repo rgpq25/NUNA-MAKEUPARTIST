@@ -1,9 +1,9 @@
 import { getPhotoshootHref } from "../lib/content-links";
 import type { PhotoshootPage } from "../types/content";
-import { getSectionPages } from "./sections";
+import { getFeaturedSectionPages } from "./sections";
 
 export async function getPhotoshootPages(): Promise<PhotoshootPage[]> {
-  const sections = await getSectionPages();
+  const sections = await getFeaturedSectionPages();
 
   return sections.flatMap((section) =>
     section.photoshoots.map((photoshoot) => ({

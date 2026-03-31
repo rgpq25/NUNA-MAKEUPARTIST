@@ -62,6 +62,9 @@ export interface PayloadHomepage {
 		certifications: Array<{ title: string }>;
 		image?: PayloadMedia;
 	};
+	featuredSections: Array<{
+		section: PayloadSectionPreview;
+	}>;
 	navigation: {
 		items: Array<{
 			type: "section" | "contact";

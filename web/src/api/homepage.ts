@@ -1,46 +1,37 @@
 import { fallbackHomepageContent } from "../data/home";
 import { getSectionHref } from "../lib/content-links";
 import type { HomePageContent, NavLink } from "../types/content";
-import type {
-	PayloadDocsResponse,
-	PayloadHomepage,
-	PayloadSectionPreview,
-} from "../types/payload";
+import type { PayloadHomepage, PayloadSectionPreview } from "../types/payload";
 import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
 
 async function fetchHomepage(): Promise<PayloadHomepage | null> {
 	try {
 		return await fetchPayloadJSON<PayloadHomepage>(
-			"/api/globals/homepage?depth=1&populate[sections][slug]=true&populate[sections][title]=true",
+			"/api/globals/homepage?depth=2",
 		);
 	} catch {
 		return null;
 	}
 }
 
-export async function fetchSectionPreviews(): Promise<
-	PayloadSectionPreview[] | null
-> {
-	try {
-		const response = await fetchPayloadJSON<
-			PayloadDocsResponse<PayloadSectionPreview>
-		>(
-			"/api/sections?limit=100&sort=createdAt&select[slug]=true&select[title]=true&select[mainDescription]=true&select[mainImages]=true&populate[mainImages][url]=true&populate[mainImages][title]=true&populate[mainImages][description]=true&populate[mainImages][filename]=true",
-		);
+export async function fetchFeaturedSectionIDs(): Promise<string[] | null> {
+	const homepagePayload = await fetchHomepage();
 
-		return response?.docs.length ? response.docs : null;
-	} catch {
+	if (homepagePayload.featuredSections.length === 0) {
 		return null;
 	}
+
+	const sectionIDs = homepagePayload.featuredSections.map((item) =>
+		String(item.section.id),
+	);
+
+	return sectionIDs.length > 0 ? sectionIDs : null;
 }
 
 async function fetchHomepageContent(): Promise<HomePageContent | null> {
-	const [homepagePayload, sectionPreviewsPayload] = await Promise.all([
-		fetchHomepage(),
-		fetchSectionPreviews(),
-	]);
+	const homepagePayload = await fetchHomepage();
 
-	if (!homepagePayload || !sectionPreviewsPayload) {
+	if (!homepagePayload) {
 		return null;
 	}
 
@@ -82,19 +73,21 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 		},
 	);
 
-	const sectionPreviews = sectionPreviewsPayload.map((section) => {
-		return {
-			slug: section.slug,
-			title: section.title,
-			description: section.mainDescription,
-			images: section.mainImages.map((image) => ({
-				src: resolvePayloadAssetURL(image.url),
-				title: image.title,
-				description: image.description ?? undefined,
-			})),
-			href: getSectionHref(section.slug),
-		};
-	});
+	const sectionPreviews = homepagePayload.featuredSections
+		.map((item) => item.section)
+		.map((section) => {
+			return {
+				slug: section.slug,
+				title: section.title,
+				description: section.mainDescription,
+				images: section.mainImages.map((image) => ({
+					src: resolvePayloadAssetURL(image.url),
+					title: image.title,
+					description: image.description ?? undefined,
+				})),
+				href: getSectionHref(section.slug),
+			};
+		});
 
 	if (
 		!seoTitle ||
