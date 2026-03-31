@@ -2,7 +2,7 @@ import { fallbackSectionPages } from "../data/home";
 import type { Photoshoot, SectionPageContent } from "../types/content";
 import type { PayloadDocsResponse, PayloadSection } from "../types/payload";
 import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
-import { fetchFeaturedSectionIDs } from "./homepage";
+import { fetchHomepage } from "./homepage";
 
 async function fetchFeaturedSectionsPayload(
 	sectionIDs: string[],
@@ -34,7 +34,17 @@ async function fetchFeaturedSectionsPayload(
 async function fetchFeaturedSectionPages(): Promise<
 	SectionPageContent[] | null
 > {
-	const featuredSectionIDs = await fetchFeaturedSectionIDs();
+	const homepagePayload = await fetchHomepage();
+
+	if (!homepagePayload || homepagePayload.featuredSections.length === 0) {
+		return null;
+	}
+
+	const sectionIDs = homepagePayload.featuredSections.map((item) =>
+		String(item.section.id),
+	);
+
+	const featuredSectionIDs = sectionIDs.length > 0 ? sectionIDs : null;
 
 	if (!featuredSectionIDs) {
 		return null;

@@ -4,7 +4,7 @@ import type { HomePageContent, NavLink } from "../types/content";
 import type { PayloadHomepage, PayloadSectionPreview } from "../types/payload";
 import { fetchPayloadJSON, resolvePayloadAssetURL } from "./client";
 
-async function fetchHomepage(): Promise<PayloadHomepage | null> {
+export async function fetchHomepage(): Promise<PayloadHomepage | null> {
 	try {
 		return await fetchPayloadJSON<PayloadHomepage>(
 			"/api/globals/homepage?depth=2",
@@ -12,24 +12,6 @@ async function fetchHomepage(): Promise<PayloadHomepage | null> {
 	} catch {
 		return null;
 	}
-}
-
-export async function fetchFeaturedSectionIDs(): Promise<string[] | null> {
-	const homepagePayload = await fetchHomepage();
-
-	if (!homepagePayload) {
-		return null;
-	}
-
-	if (homepagePayload.featuredSections.length === 0) {
-		return null;
-	}
-
-	const sectionIDs = homepagePayload.featuredSections.map((item) =>
-		String(item.section.id),
-	);
-
-	return sectionIDs.length > 0 ? sectionIDs : null;
 }
 
 async function fetchHomepageContent(): Promise<HomePageContent | null> {
@@ -144,7 +126,7 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 			},
 			imageAlt: biographyTitle,
 		},
-		navigation,
+		navigation: navigation,
 		sections: sectionPreviews,
 	};
 }
