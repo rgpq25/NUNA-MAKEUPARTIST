@@ -11,7 +11,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types"
   },
   "dependencies": {
-    "@payloadcms/db-sqlite": "^3.79.0",
+    "@payloadcms/db-postgres": "^3.79.0",
     "@payloadcms/next": "^3.79.0",
     "@payloadcms/richtext-lexical": "^3.79.0",
     "cross-env": "^7.0.3",
