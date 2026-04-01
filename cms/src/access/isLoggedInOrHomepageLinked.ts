@@ -1,4 +1,4 @@
-import type { Homepage, Photoshoot, Section } from "@/payload-types";
+import type { Homepage } from "@/payload-types";
 import type { Access, PayloadRequest, Where } from "payload";
 
 type HomepageLinkedIDs = {
@@ -26,94 +26,81 @@ function addRelationID(ids: Set<number>, value: number | { id: number }) {
 	if (id !== null) ids.add(id);
 }
 
-function isPopulatedSection(
-	value: number | Section | null | undefined,
-): value is Section {
-	return typeof value === "object" && value !== null;
-}
-
-function isPopulatedPhotoshoot(
-	value: number | Photoshoot | null | undefined,
-): value is Photoshoot {
-	return typeof value === "object" && value !== null;
-}
-
 async function getHomepageLinkedIDs(
 	req: PayloadRequest,
 ): Promise<HomepageLinkedIDs> {
-	const homepageLinkedIDsPromise = (async () => {
-		try {
-			const homepage = (await req.payload.findGlobal({
-				slug: "homepage",
-				depth: 3,
-				draft: false,
-				overrideAccess: true,
-				req,
-				select: {
-					_status: true,
-					hero: {
-						image: true,
-					},
-					biography: {
-						image: true,
-					},
-					featuredSections: {
-						section: true,
-					},
+	try {
+		const homepage = (await req.payload.findGlobal({
+			slug: "homepage",
+			depth: 3,
+			draft: false,
+			overrideAccess: true,
+			req,
+			select: {
+				_status: true,
+				hero: {
+					image: true,
 				},
-			})) as Pick<
-				Homepage,
-				"_status" | "biography" | "featuredSections" | "hero"
-			>;
+				biography: {
+					image: true,
+				},
+				featuredSections: {
+					section: true,
+				},
+			},
+		})) as Pick<
+			Homepage,
+			"_status" | "biography" | "featuredSections" | "hero"
+		>;
 
-			if (homepage._status !== "published") {
-				return emptyHomepageLinkedIDs;
+		if (homepage._status !== "published") {
+			return emptyHomepageLinkedIDs;
+		}
+
+		const imageIDs = new Set<number>();
+		const sectionIDs = new Set<number>();
+		const photoshootIDs = new Set<number>();
+
+		addRelationID(imageIDs, homepage.hero.image);
+		addRelationID(imageIDs, homepage.biography.image);
+
+		for (const featuredSection of homepage.featuredSections ?? []) {
+			addRelationID(sectionIDs, featuredSection.section);
+
+			if (
+				featuredSection.section === null ||
+				typeof featuredSection.section !== "object"
+			) {
+				continue;
 			}
 
-			const sectionIDs = new Set<number>();
-			const photoshootIDs = new Set<number>();
-			const imageIDs = new Set<number>();
+			for (const image of featuredSection.section.mainImages) {
+				addRelationID(imageIDs, image);
+			}
 
-			addRelationID(imageIDs, homepage.hero.image);
-			addRelationID(imageIDs, homepage.biography.image);
+			for (const photoshoot of featuredSection.section.photoshoots) {
+				addRelationID(photoshootIDs, photoshoot);
 
-			for (const featuredSection of homepage.featuredSections ?? []) {
-				addRelationID(sectionIDs, featuredSection.section);
-
-				if (!isPopulatedSection(featuredSection.section)) {
+				if (photoshoot === null || typeof photoshoot !== "object") {
 					continue;
 				}
 
-				for (const image of featuredSection.section.mainImages) {
+				addRelationID(imageIDs, photoshoot.mainImage);
+
+				for (const image of photoshoot.images ?? []) {
 					addRelationID(imageIDs, image);
 				}
-
-				for (const photoshoot of featuredSection.section.photoshoots) {
-					addRelationID(photoshootIDs, photoshoot);
-
-					if (!isPopulatedPhotoshoot(photoshoot)) {
-						continue;
-					}
-
-					addRelationID(imageIDs, photoshoot.mainImage);
-
-					for (const image of photoshoot.images ?? []) {
-						addRelationID(imageIDs, image);
-					}
-				}
 			}
-
-			return {
-				imageIDs: [...imageIDs],
-				photoshootIDs: [...photoshootIDs],
-				sectionIDs: [...sectionIDs],
-			};
-		} catch {
-			return emptyHomepageLinkedIDs;
 		}
-	})();
 
-	return homepageLinkedIDsPromise;
+		return {
+			imageIDs: [...imageIDs],
+			photoshootIDs: [...photoshootIDs],
+			sectionIDs: [...sectionIDs],
+		};
+	} catch {
+		return emptyHomepageLinkedIDs;
+	}
 }
 
 function createIDReadConstraint(ids: number[]): Where | false {
