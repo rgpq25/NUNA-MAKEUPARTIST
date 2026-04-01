@@ -127,13 +127,24 @@ export default function ExpandableImage({
 
 		const bodyStyle = document.body.style;
 		const documentStyle = document.documentElement.style;
+		const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 		const previousBodyOverflow = bodyStyle.overflow;
+		const previousBodyPaddingRight = bodyStyle.paddingRight;
 		const previousBodyTouchAction = bodyStyle.touchAction;
 		const previousDocumentOverflow = documentStyle.overflow;
+		const previousScrollbarCompensation = documentStyle.getPropertyValue(
+			"--scrollbar-compensation",
+		);
 
 		bodyStyle.overflow = "hidden";
+		bodyStyle.paddingRight =
+			scrollbarWidth > 0 ? `${scrollbarWidth}px` : previousBodyPaddingRight;
 		bodyStyle.touchAction = "none";
 		documentStyle.overflow = "hidden";
+		documentStyle.setProperty(
+			"--scrollbar-compensation",
+			scrollbarWidth > 0 ? `${scrollbarWidth}px` : "0px",
+		);
 		closeButtonRef.current?.focus();
 
 		const handleResize = () => {
@@ -163,8 +174,17 @@ export default function ExpandableImage({
 			window.removeEventListener("resize", handleResize);
 			window.removeEventListener("keydown", handleKeyDown);
 			bodyStyle.overflow = previousBodyOverflow;
+			bodyStyle.paddingRight = previousBodyPaddingRight;
 			bodyStyle.touchAction = previousBodyTouchAction;
 			documentStyle.overflow = previousDocumentOverflow;
+			if (previousScrollbarCompensation) {
+				documentStyle.setProperty(
+					"--scrollbar-compensation",
+					previousScrollbarCompensation,
+				);
+			} else {
+				documentStyle.removeProperty("--scrollbar-compensation");
+			}
 			triggerRef.current?.focus();
 		};
 	}, [isMounted]);
