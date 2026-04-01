@@ -8,7 +8,7 @@ import SectionPhotoshootCarousel from "../../components/SectionPhotoshootCarouse
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { optimizeImage } from "../../lib/images";
 
-export const prerender = import.meta.env.PROD;
+export const prerender = import.meta.env.PROD; // Environment variable set by Astro
 
 export async function getStaticPaths() {
 	const sections = await getFeaturedSectionPages();

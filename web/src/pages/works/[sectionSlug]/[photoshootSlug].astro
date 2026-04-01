@@ -8,7 +8,7 @@ import PhotoshootGalleryPage from "../../../components/PhotoshootGalleryPage";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { optimizeImages } from "../../../lib/images";
 
-export const prerender = import.meta.env.PROD;
+export const prerender = import.meta.env.PROD; // Environment variable set by Astro
 
 export async function getStaticPaths() {
 	const pages = await getPhotoshootSlugs();
