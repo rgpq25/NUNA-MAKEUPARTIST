@@ -1,7 +1,8 @@
 ---
+import { getHomepageSeo } from "../../../api/homepage";
 import {
-getPhotoshootPageBySlug,
-getPhotoshootSlugs,
+	getPhotoshootPageBySlug,
+	getPhotoshootSlugs,
 } from "../../../api/photoshoots";
 import PhotoshootGalleryPage from "../../../components/PhotoshootGalleryPage";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
@@ -26,6 +27,7 @@ if (!sectionSlug || !photoshootSlug) {
 	return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
+const seo = await getHomepageSeo();
 const page = await getPhotoshootPageBySlug(sectionSlug, photoshootSlug);
 
 if (!page) {
@@ -44,7 +46,7 @@ const optimizedPhotoshoot = {
 ---
 
 <BaseLayout
-	title={`NUNA Makeup Artist | ${photoshoot.title}`}
+	title={`${seo.title} | ${photoshoot.title}`}
 	description={photoshoot.description || section.description}
 	background="#faf8f5"
 >

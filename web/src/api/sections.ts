@@ -1,4 +1,3 @@
-import { fallbackSectionPages } from "../data/home";
 import type { Photoshoot, SectionPageContent } from "../types/content";
 import type {
 	PayloadDocsResponse,
@@ -39,16 +38,16 @@ export async function getFeaturedSectionPages(): Promise<SectionPageContent[]> {
 		>("/api/globals/homepage?depth=2&select[featuredSections]=true");
 
 		if (!homepagePayload || homepagePayload.featuredSections.length === 0) {
-			return fallbackSectionPages;
+			return [];
 		}
 
 		const sections: SectionPageContent[] = homepagePayload.featuredSections
 			.map((item) => item.section)
 			.map(mapPayloadSection);
 
-		return sections.length ? sections : fallbackSectionPages;
-	} catch (error) {
-		return fallbackSectionPages;
+		return sections;
+	} catch {
+		return [];
 	}
 }
 
@@ -74,12 +73,6 @@ export async function getSectionPageBySlug(
 
 		return mapPayloadSection(section);
 	} catch {
-		const section = fallbackSectionPages.find(
-			(section) => section.slug === sectionSlug,
-		);
-
-		if (!section) return null;
-
-		return section;
+		return null;
 	}
 }

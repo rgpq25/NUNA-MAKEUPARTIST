@@ -2,29 +2,25 @@
 import "../styles/index.css";
 
 interface Props {
-  title?: string;
-  description?: string;
-  background?: string;
+	title: string;
+	description: string;
+	background?: string;
 }
 
-const {
-  title = "NUNA Makeup Artist",
-  description = "Maquillaje editorial y novias con un enfoque atemporal.",
-  background = "#faf8f5",
-} = Astro.props;
+const { title, description, background = "#faf8f5" } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-  </head>
-  <body style={{ background }}>
-    <slot />
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body style={{ background }}>
+		<slot />
+	</body>
 </html>

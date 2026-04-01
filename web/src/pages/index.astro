@@ -1,5 +1,6 @@
 ---
-import { getHomepageContent } from "../api/homepage";
+import { getHomepageContent, getHomepageSeo } from "../api/homepage";
+import underConstructionImage from "../assets/IMG_9757.webp";
 import BiographySection from "../components/BiographySection";
 import ContactSection from "../components/ContactSection";
 import HeroSection from "../components/HeroSection";
@@ -8,70 +9,134 @@ import PreviewCarousel from "../components/PreviewCarousel";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { optimizeImage, optimizeImages } from "../lib/images";
 
+const seo = await getHomepageSeo();
 const homepage = await getHomepageContent();
-const [heroImage, biographyImage, sections] = await Promise.all([
-  optimizeImage(homepage.hero.image, {
-    widths: [640, 960, 1280, 1600],
-    sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw",
-  }),
-  optimizeImage(homepage.biography.image, {
-    widths: [480, 720, 960, 1280],
-    sizes: "(max-width: 1023px) 100vw, 50vw",
-  }),
-  Promise.all(
-    homepage.sections.map(async (section) => ({
-      ...section,
-      images: await optimizeImages(section.images, {
-        widths: [480, 720, 960],
-        sizes: "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 28vw",
-      }),
-    })),
-  ),
-]);
+
+const underConstructionVisual = !homepage
+	? await optimizeImage(
+			{
+				src: underConstructionImage,
+				title: "Pagina en construcción",
+				description:
+					"Imagen editorial para el estado temporal de la pagina.",
+			},
+			{
+				widths: [640, 960, 1280],
+				sizes: "(max-width: 1023px) 100vw, 42vw",
+			},
+		)
+	: null;
+
+const [heroImage, biographyImage, sections] = homepage
+	? await Promise.all([
+			optimizeImage(homepage.hero.image, {
+				widths: [640, 960, 1280, 1600],
+				sizes: "(max-width: 767px) 100vw, (max-width: 1279px) 52vw, 46vw",
+			}),
+			optimizeImage(homepage.biography.image, {
+				widths: [480, 720, 960, 1280],
+				sizes: "(max-width: 1023px) 100vw, 50vw",
+			}),
+			Promise.all(
+				homepage.sections.map(async (section) => ({
+					...section,
+					images: await optimizeImages(section.images, {
+						widths: [480, 720, 960],
+						sizes: "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 28vw",
+					}),
+				})),
+			),
+		])
+	: [null, null, []];
 ---
 
 <BaseLayout
-  title={homepage.seo.title}
-  description={homepage.seo.description}
-  background="#FAF8F5"
+	title={seo.title}
+	description={seo.description}
+	background="#FAF8F5"
 >
-  <div id="top" class="w-full">
-    <Navigation
-      client:load
-      brandTitle={homepage.branding.title}
-      brandSubtitle={homepage.branding.subtitle}
-      links={homepage.navigation}
-    />
+	{
+		homepage ? (
+			<div id="top" class="w-full">
+				<Navigation
+					client:load
+					brandTitle={homepage.branding.title}
+					brandSubtitle={homepage.branding.subtitle}
+					links={homepage.navigation}
+				/>
 
-    <main class="overflow-x-hidden pt-(--site-nav-height)">
-      <HeroSection
-        client:load
-        brandTitle={homepage.branding.title}
-        brandSubtitle={homepage.branding.subtitle}
-        headline={homepage.hero.headline}
-        description={homepage.hero.description}
-        location={homepage.hero.location}
-        image={heroImage}
-        imageAlt={homepage.hero.imageAlt}
-      />
+				<main class="overflow-x-hidden pt-(--site-nav-height)">
+					<HeroSection
+						client:load
+						brandTitle={homepage.branding.title}
+						brandSubtitle={homepage.branding.subtitle}
+						headline={homepage.hero.headline}
+						description={homepage.hero.description}
+						location={homepage.hero.location}
+						image={heroImage!}
+						imageAlt={homepage.hero.imageAlt}
+					/>
 
-      {
-        sections.map((section, index) => (
-          <div
-            id={section.slug}
-            class={`${index % 2 === 0 ? "bg-[#f5f2ed]" : "bg-[#faf8f5]"}`}
-            style="scroll-margin-top: calc(var(--site-nav-height, 88px) + 1.5rem);"
-          >
-            <PreviewCarousel client:load {...section} reversed={index % 2 === 1} />
-          </div>
-        ))
-      }
+					{sections.map((section, index) => (
+						<div
+							id={section.slug}
+							class={`${index % 2 === 0 ? "bg-[#f5f2ed]" : "bg-[#faf8f5]"}`}
+							style="scroll-margin-top: calc(var(--site-nav-height, 88px) + 1.5rem);"
+						>
+							<PreviewCarousel
+								client:load
+								{...section}
+								reversed={index % 2 === 1}
+							/>
+						</div>
+					))}
 
-      <BiographySection client:load {...homepage.biography} image={biographyImage} />
-      <ContactSection
-        client:load
-        serviceOptions={sections.map((section) => section.title)}
-      />
-    </main>
-  </div>
+					<BiographySection
+						client:load
+						{...homepage.biography}
+						image={biographyImage!}
+					/>
+					<ContactSection
+						client:load
+						serviceOptions={sections.map(
+							(section) => section.title,
+						)}
+					/>
+				</main>
+			</div>
+		) : (
+			<main class="min-h-screen flex items-center justify-center overflow-hidden px-5 py-10 md:px-10 lg:px-16">
+				<section class="m-auto overflow-hidden flex flex-col md:flex-row lg:h-[calc(100dvh-5rem)] lg:min-h-160 lg:max-h-192 gap-5 md:gap-8 lg:gap-14 p-6 md:p-10 lg:p-14 rounded-2xl items-center border border-[#2a2a2a]/10 bg-white/70 shadow-[0_24px_80px_rgba(42,42,42,0.08)] backdrop-blur-sm">
+					<div class="flex flex-col gap-4 lg:max-w-xl">
+						<p class="font-['Montserrat'] text-[0.75rem] font-medium tracking-[0.32em] text-[#2a2a2a]/55 uppercase">
+							NUNA Makeup Artist
+						</p>
+						<h1 class="font-['Cormorant_Garamond'] text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[0.9] text-[#2a2a2a]">
+							Esta pagina esta en construcción
+						</h1>
+						<p class="max-w-2xl font-['Montserrat'] text-sm md:leading-7 text-[#2a2a2a]/72 md:text-base">
+							Estamos preparando una experiencia nueva con el
+							contenido completo. Vuelve pronto para descubrir el
+							portafolio y los servicios.
+						</p>
+					</div>
+
+					<div class="relative overflow-hidden h-full rounded-2xl lg:min-w-90">
+						<div class="absolute -inset-4 rounded-2xl bg-[#c9a96e]/12 blur-2xl" />
+						<div class="w-full h-full relative overflow-hidden rounded-2xl border border-white/60 bg-[#efe7dc] shadow-[0_20px_60px_rgba(42,42,42,0.1)]">
+							<img
+								src={underConstructionVisual.src}
+								srcset={underConstructionVisual.srcSet}
+								sizes={underConstructionVisual.sizes}
+								width={underConstructionVisual.width}
+								height={underConstructionVisual.height}
+								alt="Retrato editorial"
+								class="h-full w-full object-cover object-center"
+							/>
+						</div>
+					</div>
+				</section>
+			</main>
+		)
+	}
 </BaseLayout>

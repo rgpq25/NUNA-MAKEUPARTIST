@@ -1,4 +1,3 @@
-import { fallbackHomepageContent } from "../data/home";
 import { getSectionHref } from "../lib/content-links";
 import type { HomePageContent, NavLink } from "../types/content";
 import type { PayloadHomepage } from "../types/payload";
@@ -14,7 +13,25 @@ export async function fetchHomepage(): Promise<PayloadHomepage | null> {
 	}
 }
 
-async function fetchHomepageContent(): Promise<HomePageContent | null> {
+export async function getHomepageSeo(): Promise<HomePageContent["seo"]> {
+	try {
+		const response = await fetchPayloadJSON<Pick<PayloadHomepage, "seo">>(
+			"/api/globals/homepage?select[seo]=true",
+		);
+
+		return {
+			title: response.seo.title,
+			description: response.seo.description,
+		};
+	} catch {
+		return {
+			title: "Makeup Artist",
+			description: "Sitio temporalmente en construcción.",
+		};
+	}
+}
+
+export async function getHomepageContent(): Promise<HomePageContent | null> {
 	const homepagePayload = await fetchHomepage();
 
 	if (!homepagePayload || Object.keys(homepagePayload).length === 0) {
@@ -129,8 +146,4 @@ async function fetchHomepageContent(): Promise<HomePageContent | null> {
 		navigation: navigation,
 		sections: sectionPreviews,
 	};
-}
-
-export async function getHomepageContent(): Promise<HomePageContent> {
-	return (await fetchHomepageContent()) ?? fallbackHomepageContent;
 }

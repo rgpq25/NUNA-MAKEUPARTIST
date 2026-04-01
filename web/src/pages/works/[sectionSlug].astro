@@ -1,7 +1,8 @@
 ---
+import { getHomepageSeo } from "../../api/homepage";
 import {
-getFeaturedSectionPages,
-getSectionPageBySlug,
+	getFeaturedSectionPages,
+	getSectionPageBySlug,
 } from "../../api/sections";
 import SectionPhotoshootCarousel from "../../components/SectionPhotoshootCarousel";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -10,50 +11,51 @@ import { optimizeImage } from "../../lib/images";
 export const prerender = import.meta.env.PROD;
 
 export async function getStaticPaths() {
-  const sections = await getFeaturedSectionPages();
-  const sectionSlugs = sections.map((section) => section.slug);
+	const sections = await getFeaturedSectionPages();
+	const sectionSlugs = sections.map((section) => section.slug);
 
-  return sectionSlugs.map((sectionSlug) => ({
-    params: { sectionSlug },
-  }));
+	return sectionSlugs.map((sectionSlug) => ({
+		params: { sectionSlug },
+	}));
 }
 
 const { sectionSlug } = Astro.params;
 
 if (!sectionSlug) {
-  return new Response(null, { status: 404, statusText: "Not Found" });
+	return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
+const seo = await getHomepageSeo();
 const section = await getSectionPageBySlug(sectionSlug);
 
 if (!section) {
-  return new Response(null, { status: 404, statusText: "Not Found" });
+	return new Response(null, { status: 404, statusText: "Not Found" });
 }
 
 const photoshoots = await Promise.all(
-  section.photoshoots.map(async (photoshoot) => ({
-    slug: photoshoot.slug,
-    title: photoshoot.title,
-    mainImage: await optimizeImage(photoshoot.mainImage, {
-      widths: [720, 960, 1280],
-      sizes: "(max-width: 639px) 78vw, (max-width: 1023px) 62vw, 40vw",
-    }),
-  })),
+	section.photoshoots.map(async (photoshoot) => ({
+		slug: photoshoot.slug,
+		title: photoshoot.title,
+		mainImage: await optimizeImage(photoshoot.mainImage, {
+			widths: [720, 960, 1280],
+			sizes: "(max-width: 639px) 78vw, (max-width: 1023px) 62vw, 40vw",
+		}),
+	})),
 );
 ---
 
 <BaseLayout
-  title={`NUNA Makeup Artist | ${section.title}`}
-  description={section.description}
-  background="#faf8f5"
+	title={`${seo.title} | ${section.title}`}
+	description={section.description}
+	background="#faf8f5"
 >
-  <main>
-    <SectionPhotoshootCarousel
-      client:load
-      sectionSlug={section.slug}
-      sectionTitle={section.title}
-      sectionDescription={section.description}
-      photoshoots={photoshoots}
-    />
-  </main>
+	<main>
+		<SectionPhotoshootCarousel
+			client:load
+			sectionSlug={section.slug}
+			sectionTitle={section.title}
+			sectionDescription={section.description}
+			photoshoots={photoshoots}
+		/>
+	</main>
 </BaseLayout>
