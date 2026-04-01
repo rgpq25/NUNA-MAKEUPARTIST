@@ -1,37 +1,38 @@
 ---
+import {
+getPhotoshootPageBySlug,
+getPhotoshootSlugs,
+} from "../../../api/photoshoots";
 import PhotoshootGalleryPage from "../../../components/PhotoshootGalleryPage";
-import { getPhotoshootPages } from "../../../api/photoshoots";
-import { optimizeImages } from "../../../lib/images";
-import type { Photoshoot, SectionPageContent } from "../../../types/content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { optimizeImages } from "../../../lib/images";
+
+export const prerender = import.meta.env.PROD;
 
 export async function getStaticPaths() {
-	const pages = await getPhotoshootPages();
+	const pages = await getPhotoshootSlugs();
 
-	return pages.map(
-		({
-			section,
-			photoshoot,
-		}: {
-			section: SectionPageContent;
-			photoshoot: Photoshoot;
-		}) => ({
-			params: {
-				sectionSlug: section.slug,
-				photoshootSlug: photoshoot.slug,
-			},
-			props: {
-				section,
-				photoshoot,
-			},
-		}),
-	);
+	return pages.map(({ sectionSlug, photoshootSlug }) => ({
+		params: {
+			sectionSlug,
+			photoshootSlug,
+		},
+	}));
 }
 
-const { section, photoshoot } = Astro.props as {
-	section: SectionPageContent;
-	photoshoot: Photoshoot;
-};
+const { sectionSlug, photoshootSlug } = Astro.params;
+
+if (!sectionSlug || !photoshootSlug) {
+	return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const page = await getPhotoshootPageBySlug(sectionSlug, photoshootSlug);
+
+if (!page) {
+	return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const { section, photoshoot } = page;
 const optimizedPhotoshoot = {
 	title: photoshoot.title,
 	description: photoshoot.description,

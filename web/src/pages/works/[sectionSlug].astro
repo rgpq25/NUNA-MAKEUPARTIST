@@ -1,20 +1,35 @@
 ---
+import {
+getFeaturedSectionPages,
+getSectionPageBySlug,
+} from "../../api/sections";
 import SectionPhotoshootCarousel from "../../components/SectionPhotoshootCarousel";
-import { getFeaturedSectionPages } from "../../api/sections";
-import { optimizeImage } from "../../lib/images";
-import type { SectionPageContent } from "../../types/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { optimizeImage } from "../../lib/images";
+
+export const prerender = import.meta.env.PROD;
 
 export async function getStaticPaths() {
   const sections = await getFeaturedSectionPages();
+  const sectionSlugs = sections.map((section) => section.slug);
 
-  return sections.map((section: SectionPageContent) => ({
-    params: { sectionSlug: section.slug },
-    props: { section },
+  return sectionSlugs.map((sectionSlug) => ({
+    params: { sectionSlug },
   }));
 }
 
-const { section } = Astro.props as { section: SectionPageContent };
+const { sectionSlug } = Astro.params;
+
+if (!sectionSlug) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const section = await getSectionPageBySlug(sectionSlug);
+
+if (!section) {
+  return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
 const photoshoots = await Promise.all(
   section.photoshoots.map(async (photoshoot) => ({
     slug: photoshoot.slug,

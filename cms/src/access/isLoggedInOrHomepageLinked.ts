@@ -103,11 +103,7 @@ async function getHomepageLinkedIDs(
 	}
 }
 
-function createIDReadConstraint(ids: number[]): Where | false {
-	if (!ids.length) {
-		return false;
-	}
-
+function createIDReadConstraint(ids: number[]): Where {
 	return {
 		id: {
 			in: ids,
