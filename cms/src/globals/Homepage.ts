@@ -17,7 +17,7 @@ import {
 	UnorderedListFeature,
 	lexicalEditor,
 } from "@payloadcms/richtext-lexical";
-import type { GlobalConfig } from "payload";
+import type { GlobalConfig, Where } from "payload";
 
 type NavItem = {
 	type?: "contact" | "section";
@@ -26,6 +26,10 @@ type NavItem = {
 
 type FeaturedSection = {
 	section?: number | string | { id?: number | string } | null;
+};
+
+type HomepageData = {
+	featuredSections?: FeaturedSection[] | null;
 };
 
 function getRelationID(value: NavItem["section"]) {
@@ -43,7 +47,34 @@ function getRelationID(value: NavItem["section"]) {
 	return "";
 }
 
-function validateNavigationItems(value: unknown[] | null | undefined) {
+function getFeaturedSectionIDs(data?: HomepageData | null): string[] {
+	if (!data?.featuredSections?.length) {
+		return [];
+	}
+
+	return data.featuredSections
+		.map((item) => getRelationID(item?.section))
+		.filter((sectionID) => sectionID.length > 0);
+}
+
+function getFeaturedSectionFilter(data?: HomepageData | null): Where | false {
+	const featuredSectionIDs = getFeaturedSectionIDs(data);
+
+	if (!featuredSectionIDs.length) {
+		return false;
+	}
+
+	return {
+		id: {
+			in: featuredSectionIDs,
+		},
+	};
+}
+
+function validateNavigationItems(
+	value: unknown[] | null | undefined,
+	data?: HomepageData | null,
+) {
 	const items = value as NavItem[] | null | undefined;
 
 	if (!items?.length) {
@@ -51,6 +82,7 @@ function validateNavigationItems(value: unknown[] | null | undefined) {
 	}
 
 	const seenSections = new Set<string>();
+	const featuredSectionIDs = new Set(getFeaturedSectionIDs(data));
 	let contactCount = 0;
 
 	for (const item of items) {
@@ -67,6 +99,10 @@ function validateNavigationItems(value: unknown[] | null | undefined) {
 
 		if (seenSections.has(sectionID)) {
 			return "Each section can only appear once in the navigation.";
+		}
+
+		if (!featuredSectionIDs.has(sectionID)) {
+			return "Navigation sections must already be selected in featured sections.";
 		}
 
 		seenSections.add(sectionID);
@@ -273,9 +309,10 @@ export const Homepage: GlobalConfig = {
 					type: "array",
 					minRows: 1,
 					maxRows: 4,
-					validate: (value) =>
+					validate: (value, { data }) =>
 						validateNavigationItems(
 							value as unknown[] | null | undefined,
+							data as HomepageData | null | undefined,
 						),
 					admin: {
 						description:
@@ -302,6 +339,10 @@ export const Homepage: GlobalConfig = {
 							name: "section",
 							type: "relationship",
 							relationTo: "sections",
+							filterOptions: ({ data }) =>
+								getFeaturedSectionFilter(
+									data as HomepageData | null | undefined,
+								),
 							admin: {
 								condition: (
 									_: unknown,
