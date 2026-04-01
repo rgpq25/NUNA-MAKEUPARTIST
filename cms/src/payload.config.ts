@@ -1,4 +1,5 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,6 +21,20 @@ function getEnv(name: string): string {
 	return value;
 }
 
+function getNumberEnv(name: string): number {
+	const value = Number(getEnv(name));
+
+	if (Number.isNaN(value)) {
+		throw new Error(`Environment variable ${name} must be a number`);
+	}
+
+	return value;
+}
+
+function getBooleanEnv(name: string): boolean {
+	return getEnv(name).toLowerCase() === "true";
+}
+
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const frontendURL = getEnv("FRONTEND_URL");
@@ -34,6 +49,19 @@ export default buildConfig({
 	collections: [Users, Images, Photoshoots, Sections],
 	globals: [Homepage],
 	editor: lexicalEditor(),
+	email: nodemailerAdapter({
+		defaultFromAddress: getEnv("EMAIL_FROM_ADDRESS"),
+		defaultFromName: getEnv("EMAIL_FROM_NAME"),
+		transportOptions: {
+			host: getEnv("SMTP_HOST"),
+			port: getNumberEnv("SMTP_PORT"),
+			secure: getBooleanEnv("SMTP_SECURE"),
+			auth: {
+				user: getEnv("SMTP_USER"),
+				pass: getEnv("SMTP_PASS"),
+			},
+		},
+	}),
 	secret: getEnv("PAYLOAD_SECRET"),
 	serverURL: getEnv("NEXT_PUBLIC_SERVER_URL"),
 	cors: [frontendURL],
