@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "ci": "npm run migrate && npm run build",
+    "ci": "npm run generate:importmap && npm run migrate && npm run build",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production payload migrate:create",
     "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=production payload migrate:status",
