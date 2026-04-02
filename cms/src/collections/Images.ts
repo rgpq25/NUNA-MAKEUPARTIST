@@ -2,6 +2,8 @@ import { isLoggedIn } from "@/access/isLoggedIn";
 import { isLoggedInOrHomepageLinkedImage } from "@/access/isLoggedInOrHomepageLinked";
 import type { CollectionConfig } from "payload";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const Images: CollectionConfig = {
 	slug: "images",
 	access: {
@@ -15,7 +17,7 @@ export const Images: CollectionConfig = {
 		defaultColumns: ["title", "uid", "updatedAt"],
 	},
 	upload: {
-		staticDir: "media",
+		staticDir: isProduction ? undefined : "media",
 		mimeTypes: ["image/*"],
 	},
 	fields: [

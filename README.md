@@ -9,6 +9,48 @@ This repository is organized into two apps:
 
 Install dependencies separately in each app you want to run.
 
+## CMS Storage And Database Modes
+
+The CMS now uses different storage backends depending on the environment.
+
+### Local development
+
+- Database: SQLite at `cms/payload.db`
+- Uploaded images: local filesystem at `cms/media/`
+
+Notes:
+
+- You can run the CMS locally without Postgres or S3.
+- If `DATABASE_URL` is not set in development, Payload defaults to `file:./payload.db`.
+
+### Production
+
+- Database: Postgres via `DATABASE_URL`
+- Uploaded images: S3-compatible object storage via `@payloadcms/storage-s3`
+
+For Railway Buckets, set these variables on the `cms` service:
+
+```env
+S3_BUCKET=
+S3_ACCESS_KEY_ID=
+S3_SECRET_ACCESS_KEY=
+S3_REGION=
+S3_ENDPOINT=
+S3_FORCE_PATH_STYLE=false
+```
+
+Notes:
+
+- `S3_FORCE_PATH_STYLE=false` is the default for virtual-hosted style buckets.
+- Set `S3_FORCE_PATH_STYLE=true` only if Railway indicates your bucket requires path-style access.
+- Existing files already stored in local `cms/media/` are not automatically migrated to the bucket.
+
+### Frontend image behavior
+
+- The Astro frontend fetches image URLs from Payload using `PAYLOAD_API_URL`.
+- During build, Astro optimizes those images into the static output.
+- Content or image changes in Payload require a frontend rebuild to appear on the site.
+
 ## CMS Email Setup
 
 The Payload CMS uses `@payloadcms/email-nodemailer` with SMTP for auth emails such as account recovery.
