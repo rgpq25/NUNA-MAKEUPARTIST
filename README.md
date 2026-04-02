@@ -108,6 +108,45 @@ Fix it by:
 2. Updating `EMAIL_FROM_ADDRESS` to that verified sender.
 3. Restarting the CMS and testing again.
 
+## CMS Migrations
+
+Payload behaves differently in local development and production:
+
+- Local development uses SQLite at `cms/payload.db`.
+- Production uses Postgres via `DATABASE_URL`.
+- Local development can update schema automatically while working.
+- Production should run explicit Payload migrations before the app starts using the database.
+
+### CMS migration commands
+
+Run these from `cms/`:
+
+- `npm run migrate`: runs any migration files that have not yet been applied to the current database.
+- `npm run migrate:create`: generates a new migration file from your current Payload schema changes. It creates the file, but does not run it.
+- `npm run migrate:status`: shows which migrations have already been applied and which are still pending for the current database.
+- `npm run ci`: runs `npm run migrate` and then `npm run build`.
+
+### Recommended workflow
+
+1. Make your Payload schema changes locally.
+2. Run `npm run migrate:create` from `cms/`.
+3. Review and commit the generated migration file(s).
+4. In production, run `npm run migrate` before starting or deploying the CMS.
+
+### Railway deployment
+
+Recommended options:
+
+1. Set the Railway build command to `npm run ci`.
+2. Or set a Railway before-deploy command to `npm run migrate` and keep your normal build command.
+
+Important notes:
+
+- `npm run migrate` only applies migration files that already exist in the repo.
+- It does not generate schema changes automatically on Railway.
+- If there are no migration files yet, create the initial migration locally with `npm run migrate:create` and commit it before deploying.
+- These commands run with `NODE_ENV=production`, so the required production CMS environment variables must be available when they run.
+
 ## Type Checking
 
 - CMS: `cd cms && npx tsc -b`
