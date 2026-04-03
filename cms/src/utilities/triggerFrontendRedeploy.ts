@@ -27,7 +27,6 @@ export async function triggerFrontendRedeploy({
 	try {
 		const config = {
 			token: getStringEnv("RAILWAY_TOKEN"),
-			projectId: getStringEnv("RAILWAY_PROJECT_ID"),
 			environmentId: getStringEnv("RAILWAY_ENVIRONMENT_ID"),
 			serviceId: getStringEnv("RAILWAY_SERVICE_ID"),
 		};
@@ -43,15 +42,12 @@ export async function triggerFrontendRedeploy({
 				"Project-Access-Token": config.token,
 			},
 			body: JSON.stringify({
-				query: `mutation environmentTriggersDeploy($input: EnvironmentTriggersDeployInput!) {
-					environmentTriggersDeploy(input: $input)
+				query: `mutation DeployService($serviceId: String!, $environmentId: String!) {
+					serviceInstanceDeploy(serviceId: $serviceId, environmentId: $environmentId)
 				}`,
 				variables: {
-					input: {
-						projectId: config.projectId,
-						environmentId: config.environmentId,
-						serviceId: config.serviceId,
-					},
+					environmentId: config.environmentId,
+					serviceId: config.serviceId,
 				},
 			}),
 		});
