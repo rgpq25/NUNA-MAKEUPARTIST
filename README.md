@@ -155,7 +155,7 @@ Set these variables on the `cms` service:
 
 - `RAILWAY_TOKEN`: Railway project-scoped token for the target Railway environment. The CMS sends it as the `Project-Access-Token` header when triggering a deploy.
 - `RAILWAY_ENVIRONMENT_ID`: Railway environment ID that contains the frontend service.
-- `RAILWAY_SERVICE_ID`: Railway service instance ID for the Astro frontend in that environment.
+- `RAILWAY_FRONTEND_SERVICE_ID`: Railway service instance ID for the Astro frontend in that environment.
 
 When these variables are present, the CMS triggers a frontend rebuild and redeploy when:
 

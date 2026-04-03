@@ -28,7 +28,7 @@ export async function triggerFrontendRedeploy({
 		const config = {
 			token: getStringEnv("RAILWAY_TOKEN"),
 			environmentId: getStringEnv("RAILWAY_ENVIRONMENT_ID"),
-			serviceId: getStringEnv("RAILWAY_SERVICE_ID"),
+			serviceId: getStringEnv("RAILWAY_FRONTEND_SERVICE_ID"),
 		};
 
 		if (!markRedeployTriggered(req)) {
