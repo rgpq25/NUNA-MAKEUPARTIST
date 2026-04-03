@@ -1,5 +1,6 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { motion } from "motion/react";
+import type { FormEvent } from "react";
 
 function InstagramIcon() {
 	return (
@@ -24,12 +25,16 @@ interface ContactSectionProps {
 	serviceOptions: string[];
 }
 
+const contactEmail =
+	import.meta.env.PUBLIC_CONTACT_EMAIL || "hola@nunamakeup.com";
+
 export default function ContactSection({
 	serviceOptions,
 }: ContactSectionProps) {
 	const availableServices = serviceOptions.length
 		? serviceOptions
 		: ["Bridal", "Social", "Editorial", "Brand Work"];
+	const defaultServiceOption = "Selecciona un servicio";
 	const titleMotion = {
 		initial: { opacity: 0, y: -20 },
 		whileInView: { opacity: 1, y: 0 },
@@ -54,6 +59,31 @@ export default function ContactSection({
 		transition: { duration: 0.4, delay: 0.4 },
 		viewport: { once: true },
 	};
+
+	function handleSubmit(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+
+		const formData = new FormData(event.currentTarget);
+		const name = String(formData.get("name") ?? "").trim();
+		const service = String(formData.get("service") ?? "").trim();
+		const message = String(formData.get("message") ?? "").trim();
+		const selectedService =
+			service && service !== defaultServiceOption
+				? service
+				: "Consulta general";
+		const subject = `Consulta desde la web - ${selectedService}`;
+		const body = [
+			"Hola NUNA,",
+			"",
+			`Nombre: ${name || "No indicado"}`,
+			`Servicio: ${selectedService}`,
+			"",
+			"Mensaje:",
+			message || "Sin mensaje.",
+		].join("\n");
+
+		window.location.href = `mailto:${encodeURIComponent(contactEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+	}
 
 	return (
 		<section
@@ -86,7 +116,7 @@ export default function ContactSection({
 
 							<div className="space-y-6">
 								<a
-									href="mailto:hola@nunamakeup.com"
+									href={`mailto:${contactEmail}`}
 									className="group flex items-start gap-4 text-[#2a2a2a] transition-colors duration-300 hover:text-[#c9a96e]"
 								>
 									<Mail
@@ -98,7 +128,7 @@ export default function ContactSection({
 											Email
 										</p>
 										<p className="font-['Montserrat'] text-sm">
-											hola@nunamakeup.com
+											{contactEmail}
 										</p>
 									</div>
 								</a>
@@ -176,7 +206,7 @@ export default function ContactSection({
 							Enviame un mensaje
 						</h3>
 
-						<form className="space-y-5">
+						<form className="space-y-5" onSubmit={handleSubmit}>
 							<div>
 								<label
 									htmlFor="name"
@@ -186,24 +216,10 @@ export default function ContactSection({
 								</label>
 								<input
 									id="name"
+									name="name"
 									type="text"
 									className="w-full border border-[#2a2a2a]/10 bg-[#faf8f5] px-4 py-3 font-['Montserrat'] text-sm transition-colors focus:border-[#c9a96e] focus:outline-none"
 									placeholder="Tu nombre completo"
-								/>
-							</div>
-
-							<div>
-								<label
-									htmlFor="email"
-									className="mb-2 block font-['Montserrat'] text-xs tracking-wide text-[#2a2a2a]/70 uppercase"
-								>
-									Email
-								</label>
-								<input
-									id="email"
-									type="email"
-									className="w-full border border-[#2a2a2a]/10 bg-[#faf8f5] px-4 py-3 font-['Montserrat'] text-sm transition-colors focus:border-[#c9a96e] focus:outline-none"
-									placeholder="tu@email.com"
 								/>
 							</div>
 
@@ -216,12 +232,15 @@ export default function ContactSection({
 								</label>
 								<select
 									id="service"
+									name="service"
 									className="w-full border border-[#2a2a2a]/10 bg-[#faf8f5] px-4 py-3 font-['Montserrat'] text-sm transition-colors focus:border-[#c9a96e] focus:outline-none"
-									defaultValue="Selecciona un servicio"
+									defaultValue={defaultServiceOption}
 								>
-									<option>Selecciona un servicio</option>
+									<option>{defaultServiceOption}</option>
 									{availableServices.map((service) => (
-										<option key={service}>{service}</option>
+										<option key={service} value={service}>
+											{service}
+										</option>
 									))}
 								</select>
 							</div>
@@ -235,6 +254,7 @@ export default function ContactSection({
 								</label>
 								<textarea
 									id="message"
+									name="message"
 									rows={5}
 									className="w-full resize-none border border-[#2a2a2a]/10 bg-[#faf8f5] px-4 py-3 font-['Montserrat'] text-sm transition-colors focus:border-[#c9a96e] focus:outline-none"
 									placeholder="Cuentame sobre tu evento o proyecto..."
