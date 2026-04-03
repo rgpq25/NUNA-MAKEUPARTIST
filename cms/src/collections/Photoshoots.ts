@@ -1,5 +1,9 @@
 import { isLoggedIn } from "@/access/isLoggedIn";
 import { isLoggedInOrHomepageLinkedPhotoshoot } from "@/access/isLoggedInOrHomepageLinked";
+import {
+	preventHomepagePhotoshootDelete,
+	redeployAfterPhotoshootChange,
+} from "@/utilities/homepageRedeployHooks";
 import type { CollectionConfig } from "payload";
 import { slugify } from "../utilities/slugify";
 
@@ -14,6 +18,10 @@ export const Photoshoots: CollectionConfig = {
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "slug", "updatedAt"],
+	},
+	hooks: {
+		afterChange: [redeployAfterPhotoshootChange],
+		beforeDelete: [preventHomepagePhotoshootDelete],
 	},
 	fields: [
 		{

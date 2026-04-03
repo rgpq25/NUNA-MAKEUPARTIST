@@ -1,5 +1,9 @@
 import { isLoggedIn } from "@/access/isLoggedIn";
 import { isLoggedInOrHomepageLinkedImage } from "@/access/isLoggedInOrHomepageLinked";
+import {
+	preventHomepageImageDelete,
+	redeployAfterImageChange,
+} from "@/utilities/homepageRedeployHooks";
 import type { CollectionConfig } from "payload";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -15,6 +19,10 @@ export const Images: CollectionConfig = {
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "uid", "updatedAt"],
+	},
+	hooks: {
+		afterChange: [redeployAfterImageChange],
+		beforeDelete: [preventHomepageImageDelete],
 	},
 	upload: {
 		staticDir: isProduction ? undefined : "media",

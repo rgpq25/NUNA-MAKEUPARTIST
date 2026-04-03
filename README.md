@@ -147,6 +147,28 @@ Important notes:
 - If there are no migration files yet, create the initial migration locally with `npm run migrate:create` and commit it before deploying.
 - These commands run with `NODE_ENV=production`, so the required production CMS environment variables must be available when they run.
 
+### Frontend redeploys from CMS publishes
+
+The CMS can trigger a Railway redeploy of the Astro frontend when publicly visible homepage content changes.
+
+Set these variables on the `cms` service:
+
+- `RAILWAY_TOKEN`: Railway project-scoped token for the target Railway environment. The CMS sends it as the `Project-Access-Token` header when triggering a deploy.
+- `RAILWAY_PROJECT_ID`: Railway project ID.
+- `RAILWAY_ENVIRONMENT_ID`: Railway environment ID that contains the frontend service.
+- `RAILWAY_SERVICE_ID`: Railway service ID for the Astro frontend.
+
+When these variables are present, the CMS triggers a frontend rebuild and redeploy when:
+
+- the `homepage` global is saved in a published state
+- a featured `section` linked from the published homepage changes
+- a `photoshoot` linked through a featured homepage section changes
+- an `image` used directly by the homepage or through linked sections or photoshoots changes
+
+Deletion is blocked for any `section`, `photoshoot`, or `image` that is still used by the published homepage. This prevents the published homepage from ending up with broken or null relationships.
+
+If the Railway variables are not set, the CMS skips the trigger and content editing still works normally.
+
 ## Type Checking
 
 - CMS: `cd cms && npx tsc -b`

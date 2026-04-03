@@ -18,6 +18,7 @@ import {
 	lexicalEditor,
 } from "@payloadcms/richtext-lexical";
 import type { GlobalConfig, Where } from "payload";
+import { redeployAfterHomepageChange } from "../utilities/homepageRedeployHooks";
 
 type NavItem = {
 	type?: "contact" | "section";
@@ -153,6 +154,9 @@ export const Homepage: GlobalConfig = {
 	},
 	versions: {
 		drafts: true,
+	},
+	hooks: {
+		afterChange: [redeployAfterHomepageChange],
 	},
 	fields: [
 		{

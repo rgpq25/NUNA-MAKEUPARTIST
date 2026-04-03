@@ -1,5 +1,9 @@
 import { isLoggedIn } from "@/access/isLoggedIn";
 import { isLoggedInOrHomepageLinkedSection } from "@/access/isLoggedInOrHomepageLinked";
+import {
+	preventHomepageSectionDelete,
+	redeployAfterSectionChange,
+} from "@/utilities/homepageRedeployHooks";
 import type { CollectionConfig } from "payload";
 import { slugify } from "../utilities/slugify";
 
@@ -82,4 +86,8 @@ export const Sections: CollectionConfig = {
 			minRows: 1,
 		},
 	],
+	hooks: {
+		afterChange: [redeployAfterSectionChange],
+		beforeDelete: [preventHomepageSectionDelete],
+	},
 };
