@@ -246,65 +246,6 @@ export const Homepage: GlobalConfig = {
 			],
 		},
 		{
-			name: "biography",
-			type: "group",
-			fields: [
-				{
-					name: "title",
-					type: "text",
-					required: true,
-					defaultValue: "Biografia",
-				},
-				{
-					name: "image",
-					type: "relationship",
-					relationTo: "images",
-					required: true,
-				},
-				{
-					name: "content",
-					type: "richText",
-					required: true,
-					editor: lexicalEditor({
-						features: () => [
-							BoldFeature(),
-							ItalicFeature(),
-							UnderlineFeature(),
-							StrikethroughFeature(),
-							ParagraphFeature(),
-							HeadingFeature(),
-							AlignFeature(),
-							UnorderedListFeature(),
-							OrderedListFeature(),
-							LinkFeature({
-								enabledCollections: [],
-							}),
-							BlockquoteFeature(),
-							HorizontalRuleFeature(),
-							InlineToolbarFeature(),
-							FixedToolbarFeature(),
-						],
-					}),
-				},
-				{
-					name: "certificationsTitle",
-					type: "text",
-					defaultValue: "Certificaciones",
-				},
-				{
-					name: "certifications",
-					type: "array",
-					fields: [
-						{
-							name: "title",
-							type: "text",
-							required: true,
-						},
-					],
-				},
-			],
-		},
-		{
 			name: "navigation",
 			type: "group",
 			fields: [
@@ -370,6 +311,145 @@ export const Homepage: GlobalConfig = {
 								}
 
 								return true;
+							},
+						},
+					],
+				},
+			],
+		},
+		{
+			name: "biography",
+			type: "group",
+			fields: [
+				{
+					name: "title",
+					type: "text",
+					required: true,
+					defaultValue: "Biografia",
+				},
+				{
+					name: "image",
+					type: "relationship",
+					relationTo: "images",
+					required: true,
+				},
+				{
+					name: "content",
+					type: "richText",
+					required: true,
+					editor: lexicalEditor({
+						features: () => [
+							BoldFeature(),
+							ItalicFeature(),
+							UnderlineFeature(),
+							StrikethroughFeature(),
+							ParagraphFeature(),
+							HeadingFeature(),
+							AlignFeature(),
+							UnorderedListFeature(),
+							OrderedListFeature(),
+							LinkFeature({
+								enabledCollections: [],
+							}),
+							BlockquoteFeature(),
+							HorizontalRuleFeature(),
+							InlineToolbarFeature(),
+							FixedToolbarFeature(),
+						],
+					}),
+				},
+				{
+					name: "certificationsTitle",
+					type: "text",
+					defaultValue: "Certificaciones",
+				},
+				{
+					name: "certifications",
+					type: "array",
+					fields: [
+						{
+							name: "title",
+							type: "text",
+							required: true,
+						},
+					],
+				},
+			],
+		},
+		{
+			name: "contact",
+			type: "group",
+			fields: [
+				{
+					name: "title",
+					type: "text",
+					required: true,
+					defaultValue: "Contacto",
+				},
+				{
+					name: "description",
+					type: "textarea",
+					required: true,
+					defaultValue:
+						"¿Lista para transformar tu visión en realidad? Contáctame para reservas, colaboraciones o consultas sobre servicios personalizados.",
+				},
+				{
+					name: "horario",
+					type: "textarea",
+					required: true,
+					defaultValue:
+						"Lunes - Sabado: 9:00 - 20:00\nDomingo: Consultar disponibilidad",
+				},
+				{
+					name: "socials",
+					type: "array",
+					admin: {
+						description:
+							"Add the contact links to show and drag to control display order.",
+					},
+					fields: [
+						{
+							name: "type",
+							type: "select",
+							required: true,
+							options: [
+								{
+									label: "Email",
+									value: "email",
+								},
+								{
+									label: "Telephone",
+									value: "telephone",
+								},
+								{
+									label: "Instagram",
+									value: "instagram",
+								},
+								{
+									label: "TikTok",
+									value: "tiktok",
+								},
+								{
+									label: "Facebook",
+									value: "facebook",
+								},
+								{
+									label: "Other",
+									value: "other",
+								},
+							],
+						},
+						{
+							name: "url",
+							type: "text",
+							required: true,
+						},
+						{
+							name: "label",
+							type: "text",
+							admin: {
+								description:
+									"Optional. If left empty, the URL/value will be shown.",
 							},
 						},
 					],

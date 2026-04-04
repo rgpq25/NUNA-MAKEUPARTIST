@@ -59,6 +59,14 @@ export async function getHomepageContent(): Promise<HomePageContent | null> {
 	} = homepagePayload.biography;
 	const biographyCertifications =
 		homepagePayload.biography.certifications.map((item) => item.title);
+		
+	const contactSocials = homepagePayload.contact.socials
+		.map((item) => ({
+			type: item.type,
+			url: item.url.trim(),
+			label: item.label?.trim() || undefined,
+		}))
+		.filter((item) => item.url.length > 0);
 
 	const navigation: NavLink[] = homepagePayload.navigation.items.map(
 		(item) => {
@@ -105,6 +113,9 @@ export async function getHomepageContent(): Promise<HomePageContent | null> {
 		!biographyContent ||
 		!biographyImage ||
 		!biographyCertificationsTitle ||
+		!homepagePayload.contact.title ||
+		!homepagePayload.contact.description ||
+		!homepagePayload.contact.horario ||
 		!biographyCertifications ||
 		!navigation
 	) {
@@ -142,6 +153,12 @@ export async function getHomepageContent(): Promise<HomePageContent | null> {
 				description: biographyImage.description ?? undefined,
 			},
 			imageAlt: biographyTitle,
+		},
+		contact: {
+			title: homepagePayload.contact.title,
+			description: homepagePayload.contact.description,
+			horario: homepagePayload.contact.horario,
+			socials: contactSocials,
 		},
 		navigation: navigation,
 		sections: sectionPreviews,

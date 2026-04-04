@@ -1,6 +1,7 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Globe, Mail, Phone } from "lucide-react";
 import { motion } from "motion/react";
 import type { FormEvent } from "react";
+import type { ContactContent, ContactItem } from "../types/content";
 
 function InstagramIcon() {
 	return (
@@ -21,19 +22,132 @@ function InstagramIcon() {
 	);
 }
 
+function TikTokIcon() {
+	return (
+		<svg
+			aria-hidden="true"
+			viewBox="0 0 24 24"
+			className="mt-1 h-5 w-5 transition-transform group-hover:scale-110"
+			fill="currentColor"
+		>
+			<path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.12v13.17a2.78 2.78 0 1 1-2.78-2.78c.23 0 .45.03.66.08V9.3a5.9 5.9 0 0 0-.66-.04A5.9 5.9 0 1 0 15.82 15V8.33a7.9 7.9 0 0 0 4.62 1.49V6.69h-.85Z" />
+		</svg>
+	);
+}
+
+function FacebookIcon() {
+	return (
+		<svg
+			aria-hidden="true"
+			viewBox="0 0 24 24"
+			className="mt-1 h-5 w-5 transition-transform group-hover:scale-110"
+			fill="currentColor"
+		>
+			<path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.6 1.6-1.6H16.7V4.8c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2V11H7.7v3h2.6v8h3.2Z" />
+		</svg>
+	);
+}
+
 interface ContactSectionProps {
+	contact: ContactContent;
 	serviceOptions: string[];
 }
 
 const contactEmail =
 	import.meta.env.PUBLIC_CONTACT_EMAIL || "hola@nunamakeup.com";
 
+function getContactItemIcon(type: ContactItem["type"]) {
+	switch (type) {
+		case "email":
+			return (
+				<Mail
+					size={20}
+					className="mt-1 transition-transform group-hover:scale-110"
+				/>
+			);
+		case "telephone":
+			return (
+				<Phone
+					size={20}
+					className="mt-1 transition-transform group-hover:scale-110"
+				/>
+			);
+		case "instagram":
+			return <InstagramIcon />;
+		case "tiktok":
+			return <TikTokIcon />;
+		case "facebook":
+			return <FacebookIcon />;
+		case "other":
+			return (
+				<Globe
+					size={20}
+					className="mt-1 transition-transform group-hover:scale-110"
+				/>
+			);
+		default:
+			return (
+				<Globe
+					size={20}
+					className="mt-1 transition-transform group-hover:scale-110"
+				/>
+			);
+	}
+}
+
+function getContactItemLabel(type: ContactItem["type"]) {
+	switch (type) {
+		case "email":
+			return "Email";
+		case "telephone":
+			return "Télefono";
+		case "instagram":
+			return "Instagram";
+		case "tiktok":
+			return "TikTok";
+		case "facebook":
+			return "Facebook";
+		case "other":
+			return "Link";
+		default:
+			return "Link";
+	}
+}
+
+function getContactItemHref(item: ContactItem) {
+	if (!item.url) {
+		return undefined;
+	}
+
+	switch (item.type) {
+		case "email":
+			return item.url.startsWith("mailto:")
+				? item.url
+				: `mailto:${item.url}`;
+		case "telephone":
+			return item.url.startsWith("tel:")
+				? item.url
+				: `tel:${item.url.replace(/\s+/g, "")}`;
+		default:
+			return item.url;
+	}
+}
+
+function shouldOpenInNewTab(type: ContactItem["type"]) {
+	return !["email", "telephone"].includes(type);
+}
+
 export default function ContactSection({
+	contact,
 	serviceOptions,
 }: ContactSectionProps) {
 	const availableServices = serviceOptions.length
 		? serviceOptions
-		: ["Bridal", "Social", "Editorial", "Brand Work"];
+		: [];
+	const horarioLines = contact.horario
+		.split("\n")
+		.map((line) => line.trim())
+		.filter((line) => line.length > 0);
 	const defaultServiceOption = "Selecciona un servicio";
 	const titleMotion = {
 		initial: { opacity: 0, y: -20 },
@@ -96,13 +210,11 @@ export default function ContactSection({
 						className="font-['Cormorant_Garamond'] text-6xl tracking-wider text-[#2a2a2a] md:text-8xl"
 						{...titleMotion}
 					>
-						Contacto
+						{contact.title}
 					</motion.h2>
 					<motion.div className="mx-auto" {...bodyMotion}>
 						<p className="mt-2 max-w-2xl font-['Montserrat'] text-base leading-relaxed text-[#2a2a2a]/70">
-							¿Lista para transformar tu vision en realidad?
-							Contáctame para reservas, colaboraciones o consultas
-							sobre servicios personalizados.
+							{contact.description}
 						</p>
 					</motion.div>
 				</div>
@@ -115,73 +227,58 @@ export default function ContactSection({
 							</h3>
 
 							<div className="space-y-6">
-								<a
-									href={`mailto:${contactEmail}`}
-									className="group flex items-start gap-4 text-[#2a2a2a] transition-colors duration-300 hover:text-[#c9a96e]"
-								>
-									<Mail
-										size={20}
-										className="mt-1 transition-transform group-hover:scale-110"
-									/>
-									<div>
-										<p className="mb-1 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
-											Email
-										</p>
-										<p className="font-['Montserrat'] text-sm">
-											{contactEmail}
-										</p>
-									</div>
-								</a>
+								{contact.socials.map((item) => {
+									const href = getContactItemHref(item);
+									const displayText =
+										item.label?.trim() || item.url;
+									const title = getContactItemLabel(
+										item.type,
+									);
+									const content = (
+										<>
+											{getContactItemIcon(item.type)}
+											<div>
+												<p className="mb-1 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
+													{title}
+												</p>
+												<p className="font-['Montserrat'] text-sm">
+													{displayText}
+												</p>
+											</div>
+										</>
+									);
 
-								<a
-									href="tel:+34612345678"
-									className="group flex items-start gap-4 text-[#2a2a2a] transition-colors duration-300 hover:text-[#c9a96e]"
-								>
-									<Phone
-										size={20}
-										className="mt-1 transition-transform group-hover:scale-110"
-									/>
-									<div>
-										<p className="mb-1 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
-											Telefono
-										</p>
-										<p className="font-['Montserrat'] text-sm">
-											+34 612 345 678
-										</p>
-									</div>
-								</a>
+									if (!href) {
+										return (
+											<div
+												key={`${item.type}-${item.url}`}
+												className="flex items-start gap-4 text-[#2a2a2a]"
+											>
+												{content}
+											</div>
+										);
+									}
 
-								<div className="flex items-start gap-4 text-[#2a2a2a]">
-									<MapPin size={20} className="mt-1" />
-									<div>
-										<p className="mb-1 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
-											Ubicacion
-										</p>
-										<p className="font-['Montserrat'] text-sm text-[#2a2a2a]/70">
-											Madrid, Espana
-										</p>
-										<p className="mt-1 font-['Montserrat'] text-xs text-[#2a2a2a]/50">
-											Disponible para viajar
-										</p>
-									</div>
-								</div>
-
-								<a
-									href="https://instagram.com/nunamakeupartist"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="group flex items-start gap-4 text-[#2a2a2a] transition-colors duration-300 hover:text-[#c9a96e]"
-								>
-									<InstagramIcon />
-									<div>
-										<p className="mb-1 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
-											Instagram
-										</p>
-										<p className="font-['Montserrat'] text-sm">
-											@nunamakeupartist
-										</p>
-									</div>
-								</a>
+									return (
+										<a
+											key={`${item.type}-${item.url}`}
+											href={href}
+											target={
+												shouldOpenInNewTab(item.type)
+													? "_blank"
+													: undefined
+											}
+											rel={
+												shouldOpenInNewTab(item.type)
+													? "noopener noreferrer"
+													: undefined
+											}
+											className="group flex items-start gap-4 text-[#2a2a2a] transition-colors duration-300 hover:text-[#c9a96e]"
+										>
+											{content}
+										</a>
+									);
+								})}
 							</div>
 						</div>
 
@@ -189,12 +286,14 @@ export default function ContactSection({
 							<p className="mb-3 font-['Montserrat'] text-xs tracking-widest text-[#2a2a2a]/50 uppercase">
 								Horario
 							</p>
-							<p className="font-['Montserrat'] text-sm text-[#2a2a2a]/70">
-								Lunes - Sabado: 9:00 - 20:00
-							</p>
-							<p className="font-['Montserrat'] text-sm text-[#2a2a2a]/70">
-								Domingo: Consultar disponibilidad
-							</p>
+							{horarioLines.map((line) => (
+								<p
+									key={line}
+									className="font-['Montserrat'] text-sm text-[#2a2a2a]/70"
+								>
+									{line}
+								</p>
+							))}
 						</div>
 					</motion.div>
 
@@ -203,7 +302,7 @@ export default function ContactSection({
 						{...rightMotion}
 					>
 						<h3 className="mb-6 font-['Cormorant_Garamond'] text-3xl text-[#2a2a2a]">
-							Enviame un mensaje
+							Envíame un mensaje
 						</h3>
 
 						<form className="space-y-5" onSubmit={handleSubmit}>

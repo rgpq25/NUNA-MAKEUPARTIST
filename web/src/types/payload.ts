@@ -62,6 +62,22 @@ export interface PayloadHomepage {
 		certifications: Array<{ title: string }>;
 		image?: PayloadMedia;
 	};
+	contact: {
+		title: string;
+		description: string;
+		horario: string;
+		socials: Array<{
+			type:
+				| "email"
+				| "telephone"
+				| "instagram"
+				| "tiktok"
+				| "facebook"
+				| "other";
+			url: string;
+			label?: string | null;
+		}>;
+	};
 	featuredSections: Array<{
 		section: PayloadSectionPreview;
 	}>;

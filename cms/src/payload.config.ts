@@ -1,5 +1,4 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
@@ -39,18 +38,6 @@ const plugins = isProduction
 		]
 	: [];
 
-const db = isProduction
-	? postgresAdapter({
-			pool: {
-				connectionString: getStringEnv("DATABASE_URL"),
-			},
-		})
-	: sqliteAdapter({
-			client: {
-				url: "file:./payload.db",
-			},
-		});
-
 export default buildConfig({
 	admin: {
 		user: Users.slug,
@@ -78,7 +65,11 @@ export default buildConfig({
 	secret: getStringEnv("PAYLOAD_SECRET"),
 	serverURL: getStringEnv("NEXT_PUBLIC_SERVER_URL"),
 	cors: [frontendURL],
-	db,
+	db: postgresAdapter({
+		pool: {
+			connectionString: getStringEnv("DATABASE_URL"),
+		},
+	}),
 	sharp,
 	typescript: {
 		outputFile: path.resolve(dirname, "payload-types.ts"),

@@ -422,6 +422,18 @@ export interface Homepage {
         id?: string | null;
       }[]
     | null;
+  navigation?: {
+    /**
+     * Select up to four homepage anchors. Use existing sections or the fixed Contact anchor.
+     */
+    items?:
+      | {
+          type: 'section' | 'contact';
+          section?: (number | null) | Section;
+          id?: string | null;
+        }[]
+      | null;
+  };
   biography: {
     title: string;
     image: number | Image;
@@ -448,14 +460,21 @@ export interface Homepage {
         }[]
       | null;
   };
-  navigation?: {
+  contact: {
+    title: string;
+    description: string;
+    horario: string;
     /**
-     * Select up to four homepage anchors. Use existing sections or the fixed Contact anchor.
+     * Add the contact links to show and drag to control display order.
      */
-    items?:
+    socials?:
       | {
-          type: 'section' | 'contact';
-          section?: (number | null) | Section;
+          type: 'email' | 'telephone' | 'instagram' | 'tiktok' | 'facebook' | 'other';
+          url: string;
+          /**
+           * Optional. If left empty, the URL/value will be shown.
+           */
+          label?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -495,6 +514,17 @@ export interface HomepageSelect<T extends boolean = true> {
         section?: T;
         id?: T;
       };
+  navigation?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              type?: T;
+              section?: T;
+              id?: T;
+            };
+      };
   biography?:
     | T
     | {
@@ -509,14 +539,18 @@ export interface HomepageSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  navigation?:
+  contact?:
     | T
     | {
-        items?:
+        title?: T;
+        description?: T;
+        horario?: T;
+        socials?:
           | T
           | {
               type?: T;
-              section?: T;
+              url?: T;
+              label?: T;
               id?: T;
             };
       };
