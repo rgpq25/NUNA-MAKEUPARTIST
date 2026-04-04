@@ -423,7 +423,7 @@ export interface Homepage {
   /**
    * Select up to four homepage anchors. Use the featured sections selected above or the fixed Contact anchor.
    */
-  'Navigation Items'?:
+  navigationItems?:
     | {
         type: 'section' | 'contact';
         section?: (number | null) | Section;
@@ -510,7 +510,7 @@ export interface HomepageSelect<T extends boolean = true> {
         section?: T;
         id?: T;
       };
-  'Navigation Items'?:
+  navigationItems?:
     | T
     | {
         type?: T;

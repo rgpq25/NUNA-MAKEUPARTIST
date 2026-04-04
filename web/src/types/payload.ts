@@ -80,16 +80,14 @@ export interface PayloadHomepage {
 	featuredSections: Array<{
 		section: PayloadSectionPreview;
 	}>;
-	navigation: {
-		items: Array<{
-			type: "section" | "contact";
-			section: {
-				id: number;
-				slug: string;
-				title: string;
-			} | null;
-		}>;
-	};
+	navigationItems: Array<{
+		type: "section" | "contact";
+		section: {
+			id: number;
+			slug: string;
+			title: string;
+		} | null;
+	}>;
 }
 
 export interface PayloadDocsResponse<T> {

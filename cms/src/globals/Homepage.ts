@@ -246,7 +246,7 @@ export const Homepage: GlobalConfig = {
 			],
 		},
 		{
-			name: "Navigation Items",
+			name: "navigationItems",
 			type: "array",
 			minRows: 1,
 			maxRows: 4,

@@ -68,7 +68,7 @@ export async function getHomepageContent(): Promise<HomePageContent | null> {
 		}))
 		.filter((item) => item.url.length > 0);
 
-	const navigation: NavLink[] = homepagePayload.navigation.items.map(
+	const navigation: NavLink[] = homepagePayload.navigationItems.map(
 		(item) => {
 			if (item.type === "contact" || !item.section) {
 				return {
