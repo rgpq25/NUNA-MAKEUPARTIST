@@ -4,7 +4,6 @@ export type PayloadID = number | string;
 
 export interface PayloadMedia {
 	id: number;
-	uid: string;
 	title: string;
 	description: string;
 	url: string;

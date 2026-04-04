@@ -158,7 +158,6 @@ export interface Image {
   id: number;
   title: string;
   description?: string | null;
-  uid: string;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -312,7 +311,6 @@ export interface UsersSelect<T extends boolean = true> {
 export interface ImagesSelect<T extends boolean = true> {
   title?: T;
   description?: T;
-  uid?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

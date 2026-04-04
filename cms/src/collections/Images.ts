@@ -18,7 +18,7 @@ export const Images: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "uid", "updatedAt"],
+		defaultColumns: ["fileName", "title", "updatedAt"],
 	},
 	hooks: {
 		afterChange: [redeployAfterImageChange],
@@ -37,27 +37,6 @@ export const Images: CollectionConfig = {
 		{
 			name: "description",
 			type: "textarea",
-		},
-		{
-			name: "uid",
-			type: "text",
-			required: true,
-			unique: true,
-			admin: {
-				position: "sidebar",
-				readOnly: true,
-			},
-			hooks: {
-				beforeValidate: [
-					({ value }: { value?: unknown }) => {
-						if (typeof value === "string" && value.trim()) {
-							return value;
-						}
-
-						return crypto.randomUUID();
-					},
-				],
-			},
 		},
 	],
 };

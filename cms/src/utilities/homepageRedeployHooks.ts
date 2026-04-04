@@ -93,7 +93,7 @@ export const redeployAfterImageChange: CollectionAfterChangeHook<
 		req,
 		imageIDs,
 		doc.id,
-		`homepage image / featured section image / featured section photoshoot image changed (${doc.uid})`,
+		`homepage image / featured section image / featured section photoshoot image changed (${doc.id})`,
 	);
 
 	return doc;
