@@ -166,13 +166,13 @@ export const Homepage: GlobalConfig = {
 				{
 					name: "title",
 					type: "text",
-					defaultValue: "NUNA Makeup Artist | Home",
+					defaultValue: "NUNA Makeup Artist",
 				},
 				{
 					name: "description",
 					type: "textarea",
 					defaultValue:
-						"Landing page editorial para NUNA Makeup Artist, creada a partir del export de Figma.",
+						"Landing page editorial para NUNA Makeup Artist.",
 				},
 			],
 		},
