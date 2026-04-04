@@ -25,6 +25,8 @@ export const Images: CollectionConfig = {
 		beforeDelete: [preventHomepageImageDelete],
 	},
 	upload: {
+		crop: false,
+		focalPoint: false,
 		staticDir: isProduction ? undefined : "media",
 		mimeTypes: ["image/*"],
 	},
