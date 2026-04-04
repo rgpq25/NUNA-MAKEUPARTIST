@@ -246,74 +246,68 @@ export const Homepage: GlobalConfig = {
 			],
 		},
 		{
-			name: "navigation",
-			type: "group",
+			name: "Navigation Items",
+			type: "array",
+			minRows: 1,
+			maxRows: 4,
+			validate: (value, { data }) =>
+				validateNavigationItems(
+					value as unknown[] | null | undefined,
+					data as HomepageData | null | undefined,
+				),
+			admin: {
+				description:
+					"Select up to four homepage anchors. Use the featured sections selected above or the fixed Contact anchor.",
+			},
 			fields: [
 				{
-					name: "items",
-					type: "array",
-					minRows: 1,
-					maxRows: 4,
-					validate: (value, { data }) =>
-						validateNavigationItems(
-							value as unknown[] | null | undefined,
+					name: "type",
+					type: "select",
+					required: true,
+					defaultValue: "section",
+					options: [
+						{
+							label: "Section",
+							value: "section",
+						},
+						{
+							label: "Contact",
+							value: "contact",
+						},
+					],
+				},
+				{
+					name: "section",
+					type: "relationship",
+					relationTo: "sections",
+					filterOptions: ({ data }) =>
+						getFeaturedSectionFilter(
 							data as HomepageData | null | undefined,
 						),
 					admin: {
-						description:
-							"Select up to four homepage anchors. Use existing sections or the fixed Contact anchor.",
+						condition: (
+							_: unknown,
+							siblingData?: {
+								type?: "contact" | "section";
+							},
+						) => siblingData?.type === "section",
 					},
-					fields: [
+					validate: (
+						value: unknown,
 						{
-							name: "type",
-							type: "select",
-							required: true,
-							defaultValue: "section",
-							options: [
-								{
-									label: "Section",
-									value: "section",
-								},
-								{
-									label: "Contact",
-									value: "contact",
-								},
-							],
+							siblingData,
+						}: {
+							siblingData?: {
+								type?: "contact" | "section";
+							};
 						},
-						{
-							name: "section",
-							type: "relationship",
-							relationTo: "sections",
-							filterOptions: ({ data }) =>
-								getFeaturedSectionFilter(
-									data as HomepageData | null | undefined,
-								),
-							admin: {
-								condition: (
-									_: unknown,
-									siblingData?: {
-										type?: "contact" | "section";
-									},
-								) => siblingData?.type === "section",
-							},
-							validate: (
-								value: unknown,
-								{
-									siblingData,
-								}: {
-									siblingData?: {
-										type?: "contact" | "section";
-									};
-								},
-							) => {
-								if (siblingData?.type === "section" && !value) {
-									return "Select a section.";
-								}
+					) => {
+						if (siblingData?.type === "section" && !value) {
+							return "Select a section.";
+						}
 
-								return true;
-							},
-						},
-					],
+						return true;
+					},
 				},
 			],
 		},

@@ -420,18 +420,16 @@ export interface Homepage {
         id?: string | null;
       }[]
     | null;
-  navigation?: {
-    /**
-     * Select up to four homepage anchors. Use existing sections or the fixed Contact anchor.
-     */
-    items?:
-      | {
-          type: 'section' | 'contact';
-          section?: (number | null) | Section;
-          id?: string | null;
-        }[]
-      | null;
-  };
+  /**
+   * Select up to four homepage anchors. Use the featured sections selected above or the fixed Contact anchor.
+   */
+  'Navigation Items'?:
+    | {
+        type: 'section' | 'contact';
+        section?: (number | null) | Section;
+        id?: string | null;
+      }[]
+    | null;
   biography: {
     title: string;
     image: number | Image;
@@ -512,16 +510,12 @@ export interface HomepageSelect<T extends boolean = true> {
         section?: T;
         id?: T;
       };
-  navigation?:
+  'Navigation Items'?:
     | T
     | {
-        items?:
-          | T
-          | {
-              type?: T;
-              section?: T;
-              id?: T;
-            };
+        type?: T;
+        section?: T;
+        id?: T;
       };
   biography?:
     | T
