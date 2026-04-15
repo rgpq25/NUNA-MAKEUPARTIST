@@ -17,7 +17,7 @@ export async function optimizeImage(
 	const image = await getImage({
 		src: imageAsset.src,
 		format: options.format ?? "webp",
-		quality: options.quality ?? "mid",
+		quality: options.quality ?? "high",
 		inferSize: typeof imageAsset.src === "string",
 		width: options.width,
 		widths: options.widths,
