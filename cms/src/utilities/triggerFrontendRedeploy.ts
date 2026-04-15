@@ -27,6 +27,7 @@ export async function triggerFrontendRedeploy({
 	try {
 		const config = {
 			token: getStringEnv("RAILWAY_TOKEN"),
+			projectId: getStringEnv("RAILWAY_PROJECT_ID"),
 			environmentId: getStringEnv("RAILWAY_ENVIRONMENT_ID"),
 			serviceId: getStringEnv("RAILWAY_FRONTEND_SERVICE_ID"),
 		};
@@ -61,13 +62,12 @@ export async function triggerFrontendRedeploy({
 								serviceId: $serviceId
 								name: $name
 								value: $value
-								skipDeploys: true
 							}
 						)
 					}
 				`,
 				variables: {
-					projectId: '88d31be8-8161-4b4b-9dbc-6cf2aa0b0972',
+					projectId: config.projectId,
 					environmentId: config.environmentId,
 					serviceId: config.serviceId,
 					name: "CACHE_BUST",
