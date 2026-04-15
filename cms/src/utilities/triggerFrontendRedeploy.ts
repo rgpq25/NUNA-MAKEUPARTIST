@@ -35,38 +35,89 @@ export async function triggerFrontendRedeploy({
 			return;
 		}
 
-		const response = await fetch(RAILWAY_API_URL, {
+		// 🔥 STEP 1: Generate cache bust value
+		const cacheBust = Date.now().toString();
+
+		// 🔥 STEP 2: Upsert CACHE_BUST variable (NO deploy yet)
+		const varRes = await fetch(RAILWAY_API_URL, {
 			method: "POST",
-			headers: {
+			headers : {
 				"Content-Type": "application/json",
 				"Project-Access-Token": config.token,
 			},
 			body: JSON.stringify({
-				query: `mutation DeployService($serviceId: String!, $environmentId: String!) {
-					serviceInstanceDeploy(serviceId: $serviceId, environmentId: $environmentId)
-				}`,
+				query: `
+					mutation UpsertVar(
+						$projectId: String!,
+						$environmentId: String!,
+						$serviceId: String!,
+						$name: String!,
+						$value: String!
+					) {
+						variableUpsert(
+							input: {
+								projectId: $projectId
+								environmentId: $environmentId
+								serviceId: $serviceId
+								name: $name
+								value: $value
+								skipDeploys: true
+							}
+						)
+					}
+				`,
 				variables: {
+					projectId: '88d31be8-8161-4b4b-9dbc-6cf2aa0b0972',
 					environmentId: config.environmentId,
 					serviceId: config.serviceId,
+					name: "CACHE_BUST",
+					value: cacheBust,
 				},
 			}),
 		});
 
-		const result = (await response.json()) as {
-			errors?: {
-				message?: string;
-			}[];
-		};
+		const varResult = await varRes.json();
 
-		if (!response.ok || result.errors?.length) {
-			const errorMessage = result.errors
-				?.map((error) => error.message)
-				.join(", ");
+		if (!varRes.ok || varResult.errors?.length) {
 			throw new Error(
-				errorMessage ||
-					`Railway API request failed with status ${response.status}`,
+				varResult.errors?.map((e: any) => e.message).join(", ") ||
+					`Variable update failed (${varRes.status})`,
 			);
 		}
+
+
+		// const response = await fetch(RAILWAY_API_URL, {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		"Project-Access-Token": config.token,
+		// 	},
+		// 	body: JSON.stringify({
+		// 		query: `mutation DeployService($serviceId: String!, $environmentId: String!) {
+		// 			serviceInstanceDeploy(serviceId: $serviceId, environmentId: $environmentId)
+		// 		}`,
+		// 		variables: {
+		// 			environmentId: config.environmentId,
+		// 			serviceId: config.serviceId,
+		// 		},
+		// 	}),
+		// });
+
+		// const result = (await response.json()) as {
+		// 	errors?: {
+		// 		message?: string;
+		// 	}[];
+		// };
+
+		// if (!response.ok || result.errors?.length) {
+		// 	const errorMessage = result.errors
+		// 		?.map((error) => error.message)
+		// 		.join(", ");
+		// 	throw new Error(
+		// 		errorMessage ||
+		// 			`Railway API request failed with status ${response.status}`,
+		// 	);
+		// }
 
 		req.payload.logger.info(`Triggered frontend redeploy: ${reason}`);
 	} catch (error) {
